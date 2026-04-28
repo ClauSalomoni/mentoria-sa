@@ -11,7 +11,11 @@ import './src/models/user.model.js'
 
 const app = express();
 
-app.use(cors()); // Isso permite que o seu React acesse o Backend
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+})); // Isso permite que o seu React acesse o Backend
 app.use(express.json());
 //chama metodo das rotas
 app.use('/user', UserRouter)

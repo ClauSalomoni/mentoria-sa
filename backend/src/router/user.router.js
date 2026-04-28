@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as userCtrl from '../controller/user.controller.js'
+import { autenticarToken} from '../middlewares/auth.middleware.js'
 const UserRouter = Router()
 
 //rotas do User
@@ -16,6 +17,8 @@ UserRouter.get('/:id',userCtrl.getUserId)
 
 //Delete - destruir um registro de usuario por id
 
-
+UserRouter.get('/perfil', autenticarToken, userCtrl.perfil)
+UserRouter.put('/perfil', autenticarToken, userCtrl.atualizarPerfil)
+UserRouter.delete('/perfil', autenticarToken, userCtrl.desativarConta)
 
 export default UserRouter;
