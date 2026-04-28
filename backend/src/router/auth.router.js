@@ -9,6 +9,6 @@ const AuthRouter = Router()
 AuthRouter.post('/cadastro', AuthCtrl.createUser)
 //Delete - destruir um registro de usuario por id
 
-AuthRouter.post('/login', AuthCtrl)
+AuthRouter.post('/login', AuthCtrl.login)
 
 export default AuthRouter;
