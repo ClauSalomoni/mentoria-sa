@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import sequelize from './src/database/db.js';
 import UserRouter from './src/router/user.router.js';
+import AuthRouter from './src/router/auth.router.js';
 
 //importar o modelo para garantir o registro do sequelize
 import './src/models/user.model.js'
@@ -14,6 +15,7 @@ app.use(cors()); // Isso permite que o seu React acesse o Backend
 app.use(express.json());
 //chama metodo das rotas
 app.use('/user', UserRouter)
+app.use('/auth', AuthRouter)
 
 sequelize.sync({alter: true}).then(() =>{
     app.listen(process.env.API_PORT, () =>{

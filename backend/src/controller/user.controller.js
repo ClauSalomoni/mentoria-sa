@@ -5,6 +5,9 @@ export async function getUser(req, res){
     try{
         //puxando todos usuarios da tabel User
         const allUser = await User.findAll();
+        console.log("\nTipo da variavel: ", typeof(allUser));
+        console.log("\nConteudo variavel:", allUser);
+        
         res.status(201).json(allUser);
         
     } catch(error){
@@ -16,6 +19,7 @@ export async function getUserId(req, res){
     const id = req.params.id;
     console.log("tendando buscar por id", id);
     
+    
     try{
         //puxando da tabela DB User pelo id/Primary Key
         const resUserId = await User.findByPk(id);
@@ -26,22 +30,3 @@ export async function getUserId(req, res){
     }
 }
 
-export async function createUser(req, res){
-    const {nome, email, senha} = req.body;
-    try{
-        if(!nome || !email || !senha){
-            res.status(403).json({error: "requisição incompleta"})
-        }
-        const senha_hash = await bcrypt.hash(senha, 10)
-        const resCreateUser = await User.create({
-            nome: nome,
-            email: email, 
-            senha: senha_hash
-    });
-    const userJson = resCreateUser.toJSON()
-    delete userJson.senha
-        res.status(200).json({mensagem: "Usuario criado com sucesso", resCreateUser: userJson})
-    } catch(error){
-        res.status(500).json(error);
-    }
-}

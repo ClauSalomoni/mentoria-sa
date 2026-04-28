@@ -16,7 +16,8 @@ export const User = sequelize.define('User', {
     email:{
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {isEmail: true}
     },
     senha: {
         type: DataTypes.STRING,
@@ -25,4 +26,8 @@ export const User = sequelize.define('User', {
             len: [8, 255]
         }
     },
+    ativo: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    }
 })

@@ -13,8 +13,7 @@ const UserRouter = Router()
 UserRouter.get('/', userCtrl.getUser)
 //GET puxar usuario por id
 UserRouter.get('/:id',userCtrl.getUserId)
-//POST - cadastrar user
-UserRouter.post('/', userCtrl.createUser)
+
 //Delete - destruir um registro de usuario por id
 
 
