@@ -28,14 +28,22 @@ export async function login(req, res){
     const{email, senha} = req.body;
     try{
         if(!email || !senha){
-            res.status(403).json({error: "requisição incompleta"})
+            return res.status(400).json({error: "requisição incompleta"})
         }
         const usuarioEncontrado = await User.findOne({where:{email: email}})
-        console.log(usuarioEncontrado);
+
+        if (!usuarioEncontrado){
+            return res.status(401).json({error: "Dados Inválidos"})
+        };
+        
+        if (usuarioEncontrado.ativo === false) {
+            return res.status(403).json({ error: "Conta desativada. Entre em contato com o suporte." });
+        }
+
         const compareSenha = await bcrypt.compare(senha, usuarioEncontrado.senha)
         
         if (!compareSenha){
-            res.status(400).json({Erro: "Dados invalidos"})
+            res.status(401).json({Erro: "Dados invalidos"})
         }  
         const token = jwt.sign(
             { id: usuarioEncontrado.id, email: usuarioEncontrado.email }, //payload dentro token
@@ -55,6 +63,7 @@ export async function login(req, res){
         });
 
     }catch(error){
-        res.status(500).json(error);
+        console.log(error)
+        return res.status(500).json({error: "Erro interno no servidor"});
     }
 }

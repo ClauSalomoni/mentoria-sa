@@ -12,9 +12,10 @@ import './src/models/user.model.js'
 const app = express();
 
 app.use(cors({
-    origin: '*',
+    origin: '*',//'http://localhost:5173', só para este frontend?
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 })); // Isso permite que o seu React acesse o Backend
 app.use(express.json());
 //chama metodo das rotas
