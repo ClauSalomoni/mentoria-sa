@@ -4,19 +4,15 @@ import cors from 'cors';
 import sequelize from './src/database/db.js';
 import UserRouter from './src/router/user.router.js';
 import AuthRouter from './src/router/auth.router.js';
-
+import { configCors } from './src/config/cors.js';
 //importar o modelo para garantir o registro do sequelize
 import './src/models/user.model.js'
 
 
 const app = express();
+console.log(configCors);
 
-app.use(cors({
-    origin: '*',//'http://localhost:5173', só para este frontend?
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-})); // Isso permite que o seu React acesse o Backend
+app.use(cors(configCors)); // Isso permite que o seu React acesse o Backend
 app.use(express.json());
 //chama metodo das rotas
 app.use('/user', UserRouter)

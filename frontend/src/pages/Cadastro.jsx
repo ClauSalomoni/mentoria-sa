@@ -2,27 +2,43 @@ import { useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import styles from '../components/Button.module.css'
+import api from '../services/api';
 
 export default function Cadastro({irParaLogin}){
     const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
+    const [loading, setLoading] = useState(false)
     const [confirmarSenha, setConfirmarSenha] = useState('')
 
-    const handlerRegister = (e) =>{
+    const handlerRegister = async (e) =>{
         e.preventDefault();
         if (senha !== confirmarSenha){
             alert("As senhas não estão iguais!")
             return
         }
-        const payload = {nome, email, senha};
-        console.log("JSON para o Backend:", JSON.stringify(payload, null, 2))
 
-        setNome("");
-        setEmail("");
-        setSenha("");
-        setConfirmarSenha("");
-        alert("Cadastro realizado com sucesso!")
+        setLoading(true)
+
+        const payload = {nome, email, senha};
+        try {
+           const response = await api.post('/auth/cadastro', payload)
+           console.log("JSON para o Backend: Resposta DO servidor:", response.data)
+   
+           alert("Cadastro realizado com sucesso!")
+           setNome("");
+           setEmail("");
+           setSenha("");
+           setConfirmarSenha("");
+
+           //redirecionando user:
+           irParaLogin()
+        } catch (error){
+            const msg = error.response?.data?.error || "Erro ao realizar cadastro"
+
+        } finally {
+            setLoading(false)
+        }
     };
     return (
         <div className="auth-card">

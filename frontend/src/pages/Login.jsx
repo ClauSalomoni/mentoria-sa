@@ -2,26 +2,39 @@ import { useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import styles from '../components/Button.module.css'
+import api from '../services/api';
 
 export default function Login({irParaCadastro}){
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [loading, setLoading] = useState(false)
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => { //precisa ASYNC!
         e.preventDefault()
-        setLoading(true)
+        setLoading(true);
 
-        setTimeout(() =>{
-            console.log("Tentativa de Login: ", {email, senha});
+try {
+            // 3. Faça a chamada real para o seu Backend
+            const response = await api.post('/auth/login', { email, senha });
 
-            setEmail("");
-            setSenha("");
-
-            setLoading(false);
-            alert("Login simulado com sucesso!")
+            // 4. Se chegou aqui, o login deu certo. Guardamos o Token!
+            const { token, user } = response.data;
             
-        }, 2000)
+            localStorage.setItem('@App:token', token);
+            localStorage.setItem('@App:user', JSON.stringify(user));
+
+            alert(`Bem-vindo, ${user.nome}!`);
+            
+            // 5. Redirecionar o usuário (ex: para a Home)
+            // window.location.href = '/dashboard'; 
+
+        } catch (error) {
+            // 6. Tratamento de erro (CORS, Senha errada, Conta desativada)
+            const mensagemErro = error.response?.data?.error || "Erro ao conectar com o servidor";
+            alert(mensagemErro);
+        } finally {
+            setLoading(false);
+        }
     };
     return(
         <div className="auth-card">
