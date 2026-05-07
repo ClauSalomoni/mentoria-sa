@@ -38,7 +38,7 @@ export default function Login(){
 
     } catch (error) {
             // 6. Tratamento de erro (CORS, Senha errada, Conta desativada)
-            const mensagemErro = error.response?.data?.error || "Erro ao conectar com o servidor";
+            const mensagemErro = error.response?.data?.message || "Erro ao conectar com o servidor";
             alert(mensagemErro);
     } finally {
         setLoading(false);

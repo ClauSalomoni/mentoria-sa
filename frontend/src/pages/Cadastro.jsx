@@ -39,7 +39,7 @@ export default function Cadastro(){
 
            //redirecionando user:
         } catch (error){
-            const mensagemErro = error.response?.data?.detalhes ||error.response?.data?.error || "Erro ao realizar cadastro"
+            const mensagemErro = error.response?.data?.detalhes ||error.response?.data?.message || "Erro ao realizar cadastro"
             console.error("Erro no cadastro:", error.response?.data);
             alert(`Erro no cadastro: ${mensagemErro}`)
 
