@@ -16,14 +16,24 @@ export const User = sequelize.define('User', {
     email:{
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
-        validate: {isEmail: true}
+        unique: {
+            msg: "Este e-mail já está cadastrado!"
+        },
+        validate: {
+            isEmail: {
+                args: true,
+                msg: "Por favor insira um e-mail válido."
+            }
+        }
     },
     senha: {
         type: DataTypes.STRING,
         allowNull: false,
         validate:{
-            len: [8, 255]
+            len: {
+                args: [8, 255],
+                msg: "A senha deve ter pelo menos 8 caracteres"
+            }
         }
     },
     ativo: {

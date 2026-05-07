@@ -1,15 +1,18 @@
 //ROTAS PUBLICAS, inicio acesso sem token necessario
 import 'dotenv/config'; // ← sempre primeira linha
-import { where } from 'sequelize';
+//import { where } from 'sequelize';
 import { User} from'../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export async function createUser(req, res){
-    const {nome, email, senha} = req.body;
+    console.log("--> ENTRANDO NA FUNÇÃO CREATEUSER");
+    console.log("--> DADOS RECEBIDOS:", req.body);
     try{
+        const {nome, email, senha} = req.body;
+        console.log("Dados extraídos com sucesso:", { nome, email });
         if(!nome || !email || !senha){
-            return res.status(403).json({error: "requisição incompleta"})
+            return res.status(403).json({message: "requisição incompleta"})
         }
         const senha_hash = await bcrypt.hash(senha, 10)
         const resCreateUser = await User.create({
@@ -19,31 +22,33 @@ export async function createUser(req, res){
     });
     const userJson = resCreateUser.toJSON()
     delete userJson.senha
-        res.status(200).json({mensagem: "Usuario criado com sucesso", resCreateUser: userJson})
+        res.status(201).json({message: "Usuario criado com sucesso", resCreateUser: userJson})
     } catch(error){
-        res.status(500).json(error);
+        console.log("--- ERRO CAPTURADO ---");
+        console.error(error); // Agora sim ele vai aparecer no terminal!
+        res.status(500).json({ message: "Erro interno", detalhes: error.message });
     }
 }
 export async function login(req, res){
     const{email, senha} = req.body;
     try{
         if(!email || !senha){
-            return res.status(400).json({error: "requisição incompleta"})
+            return res.status(400).json({message: "requisição incompleta"})
         }
         const usuarioEncontrado = await User.findOne({where:{email: email}})
 
         if (!usuarioEncontrado){
-            return res.status(401).json({error: "Dados Inválidos"})
+            return res.status(401).json({message: "Dados Inválidos"})
         };
         
         if (usuarioEncontrado.ativo === false) {
-            return res.status(403).json({ error: "Conta desativada. Entre em contato com o suporte." });
+            return res.status(403).json({ message: "Conta desativada. Entre em contato com o suporte." });
         }
 
         const compareSenha = await bcrypt.compare(senha, usuarioEncontrado.senha)
         
         if (!compareSenha){
-            res.status(401).json({Erro: "Dados invalidos"})
+            res.status(401).json({message: "Dados invalidos"})
         }  
         const token = jwt.sign(
             { id: usuarioEncontrado.id, email: usuarioEncontrado.email }, //payload dentro token
@@ -64,6 +69,6 @@ export async function login(req, res){
 
     }catch(error){
         console.log(error)
-        return res.status(500).json({error: "Erro interno no servidor"});
+        return res.status(500).json({message: "Erro interno no servidor"});
     }
 }

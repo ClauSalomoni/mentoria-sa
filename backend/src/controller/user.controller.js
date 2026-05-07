@@ -9,12 +9,12 @@ export async function perfil(req, res) {
             attributes: {exclude: ['senha']}
         })
         if(!user){
-            return res.status(404).json({error: "Usuário não encontrado"})
+            return res.status(404).json({message: "Usuário não encontrado"})
         }
         return res.json(user)
 
     }catch(error){
-        return res.status(500).json({error: "Erro ao buscar perfil"})
+        return res.status(500).json({message: "Erro ao buscar perfil"})
     }
 }
 
@@ -25,7 +25,7 @@ export async function atualizarPerfil(req, res) {
         const user = await User.findByPk(req.user.id)
     
     if (!user) {
-            return res.status(404).json({ error: "Usuário não encontrado" });
+            return res.status(404).json({ message: "Usuário não encontrado" });
         }
 
         // Atualiza campos básicos
@@ -45,7 +45,7 @@ export async function atualizarPerfil(req, res) {
 
         return res.json(usuarioAtualizado);
     } catch (error) {
-        return res.status(500).json({ error: "Erro ao atualizar perfil" });
+        return res.status(500).json({ message: "Erro ao atualizar perfil", detalhes: error.message  });
     }
     
 }
@@ -56,7 +56,7 @@ export async function desativarConta(req, res) {
         const user = await User.findByPk(req.user.id);
 
         if (!user) {
-            return res.status(404).json({ error: "Usuário não encontrado" });
+            return res.status(404).json({ message: "Usuário não encontrado" });
         }
 
         // Soft delete: apenas desativa
@@ -70,7 +70,7 @@ export async function desativarConta(req, res) {
         // 204 No Content: sucesso, mas sem corpo na resposta
         return res.status(204).send();
     } catch (error) {
-        return res.status(500).json({ error: "Erro ao desativar conta" });
+        return res.status(500).json({ message: "Erro ao desativar conta" });
     }
 };
 

@@ -11,11 +11,11 @@ import './src/models/user.model.js'
 
 
 const app = express();
+app.use(express.json());
 // 1. Segurança de Cabeçalhos (Blindagem)
 app.use(configHelmet);
 app.use(configCors); // Isso permite que o seu React acesse o Backend
 app.use(limitadorGlobal);
-app.use(express.json());
 
 
 //ROTAS
