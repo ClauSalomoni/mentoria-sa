@@ -1,0 +1,86 @@
+/* Layout Principal */
+.home-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f7f6; /* Um cinza bem claro para destacar os cards brancos */
+}
+
+/* Sidebar Fixa */
+.sidebar {
+  width: 250px;
+  background-color: #1a1a1a; /* Escuro para contraste */
+  color: white;
+  padding: 20px;
+}
+
+/* Área de Conteúdo */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.home-header {
+  height: 60px;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Botão Sair (Usando seu tom de vermelho sugerido antes) */
+.btn-sair {
+  background-color: #8b0000;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Grid de Cards */
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.card-estudo {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 6px solid #8b0000; /* Cor padrão, mas o Style do React sobrescreve */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.card-estudo:hover {
+  transform: translateY(-5px);
+}
+
+.progress-bar-bg {
+  background: #eee;
+  height: 8px;
+  border-radius: 4px;
+  margin: 15px 0;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  transition: width 0.5s ease-in-out;
+}
+
+.btn-acessar {
+  background: transparent;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
