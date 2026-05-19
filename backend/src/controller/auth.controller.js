@@ -5,9 +5,10 @@ import { User} from'../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+
 export async function createUser(req, res){
-    console.log("--> ENTRANDO NA FUNÇÃO CREATEUSER");
-    console.log("--> DADOS RECEBIDOS:", req.body);
+    // console.log("--> ENTRANDO NA FUNÇÃO CREATEUSER");
+    // console.log("--> DADOS RECEBIDOS:", req.body);
     try{
         const {nome, email, senha} = req.body;
         console.log("Dados extraídos com sucesso:", { nome, email });
@@ -24,8 +25,8 @@ export async function createUser(req, res){
     delete userJson.senha
         res.status(201).json({message: "Usuario criado com sucesso", resCreateUser: userJson})
     } catch(error){
-        console.log("--- ERRO CAPTURADO ---");
-        console.error(error); // Agora sim ele vai aparecer no terminal!
+        //console.log("--- ERRO CAPTURADO ---");
+        //console.error(error); // Agora sim ele vai aparecer no terminal!
         res.status(500).json({ message: "Erro interno", detalhes: error.message });
     }
 }
@@ -36,6 +37,7 @@ export async function login(req, res){
             return res.status(400).json({message: "requisição incompleta"})
         }
         const usuarioEncontrado = await User.findOne({where:{email: email}})
+        console.log("--> USUÁRIO ENCONTRADO NO BANCO:", usuarioEncontrado ? "SIM" : "NÃO");
 
         if (!usuarioEncontrado){
             return res.status(401).json({message: "Dados Inválidos"})
@@ -46,9 +48,10 @@ export async function login(req, res){
         }
 
         const compareSenha = await bcrypt.compare(senha, usuarioEncontrado.senha)
+        console.log("--> A SENHA COINCIDE?:", compareSenha);
         
         if (!compareSenha){
-            res.status(401).json({message: "Dados invalidos"})
+            return res.status(401).json({message: "Dados invalidos"})
         }  
         const token = jwt.sign(
             { id: usuarioEncontrado.id, email: usuarioEncontrado.email }, //payload dentro token

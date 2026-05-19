@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as AuthCtrl from '../controller/auth.controller.js'
+import { limitadorErrosLogin } from '../config/rateLimit.js';
 
 const AuthRouter = Router()
 
@@ -9,6 +10,6 @@ const AuthRouter = Router()
 AuthRouter.post('/cadastro', AuthCtrl.createUser)
 //Delete - destruir um registro de usuario por id
 
-AuthRouter.post('/login', AuthCtrl.login)
+AuthRouter.post('/login', limitadorErrosLogin, AuthCtrl.login)
 
 export default AuthRouter;

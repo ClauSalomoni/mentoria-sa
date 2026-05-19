@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import styles from '../components/Button.module.css'
@@ -11,6 +11,11 @@ export default function Login(){
     const [loading, setLoading] = useState(false)
     
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setEmail("")
+        setSenha("")
+    }, []);
 
     const handleLogin = async (e) => { //precisa ASYNC!
         e.preventDefault()
@@ -28,8 +33,10 @@ export default function Login(){
 
             alert(`Bem-vindo(a) ${user.nome}!`);
             navigate('/mentoria')
-            setEmail('')
-            setSenha('')
+
+            //Limpei com useEffect antes do handleLogin!
+            // setEmail('')
+            // setSenha('')
 
                    
             
@@ -37,9 +44,18 @@ export default function Login(){
             // window.location.href = '/dashboard'; 
 
     } catch (error) {
-            // 6. Tratamento de erro (CORS, Senha errada, Conta desativada)
+            // 🚨 CONFIGURAÇÃO INTELIGENTE DE ERROS:
+        
+        // Se o backend respondeu com o status 429 (Muitas requisições)
+        if (error.response?.status === 429) {
+            const mensagemBloqueio = error.response?.data?.erro || "Muitas tentativas. Tente novamente mais tarde.";
+            alert(`⚠️ Bloqueado: ${mensagemBloqueio}`);
+            
+        } else {
+            // Tratamento comum para outros erros (401 Dados inválidos, 403 Conta desativada, etc.)
             const mensagemErro = error.response?.data?.message || "Erro ao conectar com o servidor";
             alert(mensagemErro);
+        }
     } finally {
         setLoading(false);
     }

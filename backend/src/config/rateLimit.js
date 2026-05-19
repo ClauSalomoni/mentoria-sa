@@ -37,3 +37,27 @@ export const limitadorLocal = rateLimit({
 });
 //para usar colocamos limitadorLocal apos rota, DEVE SER o PRIMEIRO, para validar limites, e seguir ou bloquear.
 //por exemplo:  UserRouter.get('/perfil', limitadosLocal, autenticarToken, userCtrl.perfil)  
+
+export const limitadorErrosLogin = rateLimit({
+    windowMs: 1 * 60 * 1000, // Janela de 1 minuto
+    max: 3, // Bloqueia na 4ª tentativa após 3 erros
+    statusCode: 429,
+    message: {
+        erro: "Muitas tentativas incorretas. Conta bloqueada por 1 minuto."
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+
+    keyGenerator: (req) => {
+        if (req.body && req.body.email) {
+            return `erro_login:${req.body.email.trim().toLowerCase()}`;
+        }
+        return 'usuario_desconhecido';
+    },
+
+    skipSuccessfulRequests: true,
+
+    // 🛠️ DESATIVA A CHECAGEM RIGOROSA DE IP:
+    // Avisa à biblioteca que sabemos o que estamos fazendo com a chave customizada
+    validate: { xForwardedForHeader: false, ip: false }
+});
