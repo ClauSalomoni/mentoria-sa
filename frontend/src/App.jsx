@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import Home from './pages/Home';
-import './App.css';
+import "./styles/global.css"
 import robo from './assets/robo.jpg'
 import RotaProtegida from './components/RotaProtegida';
 

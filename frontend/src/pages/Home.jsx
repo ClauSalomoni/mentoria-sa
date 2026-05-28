@@ -57,7 +57,7 @@ export default function Home() {
                         
                         {/* LISTA DE ESTUDOS */}
                         <section className="study-column">
-                            <h3>O que estudar hoje?</h3>
+                            
                             <div className="list-container">
                                 {cursosSugestoes.map((curso) => (
                                     <div key={curso.id} className="item-estudo glass-effect" style={{ borderLeftColor: curso.cor }}>
