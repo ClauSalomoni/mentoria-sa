@@ -10,12 +10,7 @@ import RotaProtegida from './components/RotaProtegida';
 function App() {
   
   return (
-    <div className='main-container'>
-      <div className='header-container'>
-        <img src={robo} className='app-logo' alt="Logo"/>
-        <h1 className='app-title'>Mentor IA +</h1>
-
-      </div>
+    <>
       {/* Definindo as rotas */}
       <Routes>
         {/* Se abrir a página limpa, ele redireciona para o cadastro */}
@@ -36,7 +31,7 @@ function App() {
 
       </Routes>
       
-    </div>
+    </>
   )
 }
 

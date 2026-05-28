@@ -1,31 +1,36 @@
 .btn{
     width: 100%;
     padding: 12px;
-    background: #007bff;
+    background: #aa3bff;
     color: white;
     border: none;
     border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 .btn:hover:not(:disabled){
-    background: #0056b3;
+    /* Um tom levemente mais escuro para o efeito de hover */
+    background: #932ae6; 
+    /* Adiciona um brilho sutil (neon) combinando com a proposta do projeto */
+    box-shadow: 0 0 12px rgba(170, 59, 255, 0.4);
 }
 
 .btn:disabled{
     background: #ccc;
     cursor: not-allowed;
+    box-shadow: none; /* Garante que o botão desabilitado não brilhe */
 }
 
 .linkButton {
+  width: 100%; /* ◄ ADICIONE ISSO: Força o link a ter a mesma largura do card */
+  text-align: center; /* ◄ ADICIONE ISSO: Garante que o texto fique centralizado */
   background: none;
   border: none;
-  color: #4a90e2;
+  color: #aa3bff;
   font-weight: bold;
   cursor: pointer;
   padding: 0;
-  margin-left: 5px;
   font-size: 0.9rem;
   text-decoration: underline;
   transition: color 0.2s;
@@ -33,12 +38,13 @@
 .divBtn{
     display: flex;
     flex-direction: column;
-    margin: 10px;
     gap: 15px;
+    width: 100%;
 }
 
 .linkButton:hover {
-  color: #357abd;
+   
+  color: #932ae6;
 }
 
 .loader{

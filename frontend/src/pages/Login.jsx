@@ -3,6 +3,8 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import styles from '../components/Button.module.css'
 import api from '../services/api';
+import robo from '../assets/robo.jpg'
+import './Login.css';
 import { useNavigate } from "react-router-dom";
 
 export default function Login(){
@@ -15,6 +17,10 @@ export default function Login(){
     useEffect(() => {
         setEmail("")
         setSenha("")
+        return () => {
+            setEmail("");
+            setSenha("");
+        };
     }, []);
 
     const handleLogin = async (e) => { //precisa ASYNC!
@@ -61,20 +67,28 @@ export default function Login(){
     }
 };
     return(
-        <div className="auth-card">
-            <h2>Faça o seu Login para acessar a plataforma</h2>
-            <form onSubmit={handleLogin}>
-                <Input label="E-mail" type="email" value={email} placeholder= "Digite seu e-mail aqui..." onChange={(e) => setEmail(e.target.value)} required />
-                <Input label="senha" type="password" value={senha} placeholder="Digite a sua senha aqui..." onChange={(e) => setSenha(e.target.value)} required />
-
-                <div className={styles.divBtn}> 
-                    <Button type="submit" loading={loading}>Entrar</Button>
-                    <Button type="button" variant="link" onClick={() => navigate('/cadastro')}>
-                    Criar conta
-                    </Button>
+        <div className="main-container">
+            <div className="auth-card glass-effect">
+                {/* Área da Logo integrada ao Card */}
+                <div className="auth-logo-area">
+                    <img src={robo} alt="MentorIA" className="auth-logo" />
+                    <h2>Mentor IA +</h2>
                 </div>
-            </form>
+                
+                <p className="auth-subtitle">Faça o seu Login para acessar a plataforma</p>
+                
+                <form onSubmit={handleLogin}>
+                    <Input label="E-mail" type="email" value={email} placeholder="Digite seu e-mail..." onChange={(e) => setEmail(e.target.value)} required />
+                    <Input label="Senha" type="password" value={senha} placeholder="Digite sua senha..." onChange={(e) => setSenha(e.target.value)} required />
 
+                    <div className={styles.divBtn}> 
+                        <Button type="submit" loading={loading}>Entrar</Button>
+                        <Button type="button" variant="link" onClick={() => navigate('/cadastro')}>
+                            Criar conta
+                        </Button>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }

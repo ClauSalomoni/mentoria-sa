@@ -1,52 +1,36 @@
+/* Reset Inicial Seguro */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Base de Cores e Fundo Escuro para TODO o ecossistema */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 10% 20%, rgba(170, 59, 255, 0.15) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(0, 123, 255, 0.1) 0%, transparent 50%),
+              #0f1015;
+  background-attachment: fixed;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #f3f4f6;
+  overflow-x: hidden;
+}
+
+/* Força o roteador do React a ocupar a tela inteira de forma flexível */
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Container de Autenticação (Usado nas telas de Login e Cadastro) */
 .main-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f0f2f5;
-  font-family: sans-serif;
-}
-
-.auth-card {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  padding: 20px;
   width: 100%;
-  max-width: 400px;
 }
-
-.auth-card h2 {
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  color: #333;
-
-}
-
-.header-container {
-  display: flex;
-  flex-direction: row; /* Imagem e texto lado a lado */
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 10px; /* Um ajuste fino de distância */
-}
-
-.app-logo {
-  width: 150px; 
-
-}
-
-.app-title {
-  font-size: 2.8rem;
-  color: #333;
-  margin: 0;
-}
-
