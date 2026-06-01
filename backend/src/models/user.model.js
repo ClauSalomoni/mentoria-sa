@@ -39,6 +39,12 @@ export const User = sequelize.define('User', {
     ativo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
+    },
+    //RBAC:: definindo roles
+    role: {
+        type: DataTypes.ENUM('aluno', 'admin'),
+        defaultValue: 'aluno', // Todo mundo que se cadastrar pelo site nasce como aluno
+        allowNull: false
     }
     
 })

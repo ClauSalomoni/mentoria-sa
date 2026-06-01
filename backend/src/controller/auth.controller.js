@@ -1,6 +1,7 @@
 //ROTAS PUBLICAS, inicio acesso sem token necessario
 import 'dotenv/config'; // ← sempre primeira linha
 //import { where } from 'sequelize';
+import { cadastroUsuarioSchema } from "../validator/user.validator.js";
 import { User} from'../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -10,7 +11,9 @@ export async function createUser(req, res){
     // console.log("--> ENTRANDO NA FUNÇÃO CREATEUSER");
     // console.log("--> DADOS RECEBIDOS:", req.body);
     try{
-        const {nome, email, senha} = req.body;
+        // O Zod intercepta e valida os dados do body
+        const dadosValidados = cadastroUsuarioSchema.parse(req.body);
+        const {nome, email, senha} = dadosValidados
         console.log("Dados extraídos com sucesso:", { nome, email });
         if(!nome || !email || !senha){
             return res.status(403).json({message: "requisição incompleta"})
@@ -19,15 +22,24 @@ export async function createUser(req, res){
         const resCreateUser = await User.create({
             nome: nome,
             email: email, 
-            senha: senha_hash
+            senha: senha_hash,
+            role
+
     });
     const userJson = resCreateUser.toJSON()
     delete userJson.senha
         res.status(201).json({message: "Usuario criado com sucesso", resCreateUser: userJson})
     } catch(error){
+        // Se o erro for do Zod, nós tratamos e devolvemos os detalhes amigáveis para o Front
+        if (error instanceof z.ZodError) {
+            return res.status(400).json({ 
+                message: "Erro de validação nos dados enviados", 
+                erros: error.errors.map(err => ({ campo: err.path[0], mensagem: err.message }))
+            });
+        }
         //console.log("--- ERRO CAPTURADO ---");
         //console.error(error); // Agora sim ele vai aparecer no terminal!
-        res.status(500).json({ message: "Erro interno", detalhes: error.message });
+        return res.status(500).json({ message: "Erro interno", detalhes: error.message });
     }
 }
 export async function login(req, res){
@@ -66,7 +78,8 @@ export async function login(req, res){
             user: {
                 id: usuarioEncontrado.id,
                 nome: usuarioEncontrado.nome,
-                email: usuarioEncontrado.email
+                email: usuarioEncontrado.email,
+                role: usuarioEncontrado.role
             }
         });
 
