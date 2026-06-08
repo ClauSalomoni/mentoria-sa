@@ -1,8 +1,8 @@
 import { Router } from "express";
 import * as DashCtrl from "../controller/dashboard.controller.js";
 import { criarAula } from "../controller/aula.controller.js";
-import { autenticarToken } from "../middleware/auth.middleware.js";
-import { concederAcesso } from "../middleware/rbac.middleware.js"; // Novo middleware
+import { autenticarToken } from "../middlewares/auth.middleware.js";
+import { concederAcesso } from "../middlewares/rbac.middleware.js"; // Novo middleware
 
 const DashboardRouter = Router();
 

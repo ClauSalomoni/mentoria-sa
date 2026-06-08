@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
@@ -6,6 +5,8 @@ import Home from './pages/Home';
 import "./styles/global.css"
 import robo from './assets/robo.jpg'
 import RotaProtegida from './components/RotaProtegida';
+import Aulas from './pages/Aulas'
+import Mentoria from './pages/Mentoria';
 
 function App() {
   
@@ -21,15 +22,35 @@ function App() {
         
         {/* Exemplo de uma futura rota protegida */}
         <Route 
-          path="/mentoria" 
+          path="/home" 
           element={
             <RotaProtegida>
+              
               <Home />
             </RotaProtegida>
           }
         />
 
+        <Route 
+          path="/curso/:cursoId" 
+          element={
+            <RotaProtegida>
+              <Aulas /> 
+            </RotaProtegida>
+          }
+        />
+
+        <Route 
+          path="/mentoria" 
+          element={
+            <RotaProtegida>
+              <Mentoria />
+            </RotaProtegida>
+          }
+        />
       </Routes>
+
+      
       
     </>
   )

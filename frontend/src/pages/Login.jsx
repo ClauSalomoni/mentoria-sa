@@ -38,7 +38,7 @@ export default function Login(){
             localStorage.setItem('@App:user', JSON.stringify(user));
 
             alert(`Bem-vindo(a) ${user.nome}!`);
-            navigate('/mentoria')
+            navigate('/home')
 
             //Limpei com useEffect antes do handleLogin!
             // setEmail('')

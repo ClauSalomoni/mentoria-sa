@@ -110,7 +110,7 @@
 
 /* Botão Sair Controlado */
 .home-header button {
-  background-color: #8b0000 !important;
+  background-color: rgba(170, 59, 255, 0.15) !important;
   padding: 8px 18px !important;
   font-size: 0.9rem;
   font-weight: 600;
@@ -122,7 +122,7 @@
 }
 
 .home-header button:hover {
-  background-color: #a30000 !important;
+  background-color: rgba(170, 59, 255, 0.5) !important;
 }
 
 /* Área de Trabalho Interna */

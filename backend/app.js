@@ -3,6 +3,7 @@ import express from 'express';
 import sequelize from './src/database/db.js';
 import UserRouter from './src/router/user.router.js';
 import AuthRouter from './src/router/auth.router.js';
+import DashboardRouter from './src/router/dashboardAulas.router.js';
 import { configCors } from './src/config/cors.js';
 import { configHelmet} from './src/config/helmet.js';
 import { limitadorGlobal } from './src/config/rateLimit.js';
@@ -21,6 +22,7 @@ app.use(limitadorGlobal);
 //ROTAS
 app.use('/user', UserRouter)
 app.use('/auth', AuthRouter)
+app.use('/', DashboardRouter);
 
 
 // ****       alterar para MIGRATIONS assim que sai de dev  ****
