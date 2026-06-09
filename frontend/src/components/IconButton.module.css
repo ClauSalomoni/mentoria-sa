@@ -1,0 +1,68 @@
+/* ===================================================
+   BOTÃO DE ÍCONE CUSTOMIZADO - TEMA MENTORIA IA
+   =================================================== */
+
+.button {
+    background: rgba(255, 255, 255, 0.03); /* Fundo sutil translúcido do input do chat */
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Borda padrão do chat */
+    color: #aa3bff !important; /* Cor do texto das mensagens da IA */
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Espaço entre o ícone e o texto */
+    padding: 12px 18px; /* Padding confortável simulando o do chat */
+    border-radius: 10px; /* Mesmo arredondamento do input do chat */
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 💜 Efeito Hover: Puxando o brilho neon do Chat da IA */
+.button:hover:not(:disabled) {
+    background: rgba(170, 59, 255, 0.15); /* Fundo roxo translúcido */
+    border-color: #aa3bff; /* Borda acesa com o roxo neon */
+    color: #ffffff; /* Texto totalmente branco no foco */
+    box-shadow: 0 0 12px rgba(170, 59, 255, 0.2); /* Brilho neon sutil igual ao status dot */
+}
+
+/* Efeito de Clique (Active) */
+.button:active:not(:disabled) {
+    transform: scale(0.98); /* Leve clique físico */
+    background: #aa3bff; /* Fundo sólido igual ao balão do usuário */
+    color: white;
+}
+
+/* Estado Desabilitado (ex: quando o chat está carregando/loading) */
+.button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.01);
+    border-color: rgba(255, 255, 255, 0.03);
+    color: #9ca3af;
+}
+
+/* 🎯 Tamanho e comportamento do elemento do ícone */
+.iconElement {
+    font-size: 1.2rem;
+    width: 20px; 
+    height: 20px;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+/* Animação sutil no ícone quando o usuário passa o mouse */
+.button:hover .iconElement:not(:disabled) {
+    transform: translateY(-1px); /* O ícone flutua de leve */
+}
+
+/* ===================================================
+   VARIAÇÃO: APENAS ÍCONE (Sem texto / Icon-Only)
+   =================================================== */
+.isIconOnly {
+    padding: 12px; /* Deixa o botão perfeitamente quadrado/circular */
+    width: 44px;         /* Altura e largura idênticas para garantir o círculo */
+    height: 44px;
+    /* border-radius: 50%; Transforma em um botão redondo estilo avatar/status */
+}

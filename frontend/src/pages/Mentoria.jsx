@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Button from '../components/Button';
 import robo from '../assets/robo.jpg';
-import './Mentoria.css'; // Vamos criar esse arquivo a seguir
+import './Mentoria.css'; 
+import IconButton from '../components/IconButton';
 
 export default function Mentoria() {
     const navigate = useNavigate();
@@ -108,7 +109,10 @@ export default function Mentoria() {
                                 onChange={(e) => setInput(e.target.value)}
                                 disabled={loading}
                             />
-                            <Button type="submit" disabled={loading}>Enviar</Button>
+                            <IconButton 
+                            type="submit"
+                            icon={IoSendSharp}
+                            disabled={loading}></IconButton>
                         </form>
                     </div>
                 </main>
