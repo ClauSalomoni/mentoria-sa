@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import Button from '../components/Button';
+import Sidebar from '../components/Sidebar';
 import robo from '../assets/robo.jpg';
-import './Mentoria.css'; // Vamos criar esse arquivo a seguir
+import './Mentoria.css'; 
+import { IoSendSharp } from "react-icons/io5";
+import IconButton from '../components/IconButton';
 
 export default function Mentoria() {
     const navigate = useNavigate();
@@ -53,20 +55,7 @@ export default function Mentoria() {
     return (
         <div className="home-layout">
             {/* Mantemos a sua Sidebar Original para consistência de design */}
-            <aside className="sidebar">
-                <div className="sidebar-logo-area">
-                    <img src={robo} alt="Logo" className="sidebar-logo" />
-                    <h2 className="sidebar-title">Dashboard</h2>
-                </div>
-                <hr className="sidebar-divider" />
-                <nav>
-                    <ul>
-                        <li onClick={() => navigate('/home')}>Início</li>
-                        <li className="active">MentorIA</li>
-                        <li>Meus Cursos</li>
-                    </ul>
-                </nav>
-            </aside>
+            <Sidebar paginaAtiva="mentoria" />
 
             <div className="main-content">
                 <Header onLogout={() => { localStorage.clear(); navigate('/login'); }} />
@@ -108,7 +97,11 @@ export default function Mentoria() {
                                 onChange={(e) => setInput(e.target.value)}
                                 disabled={loading}
                             />
-                            <Button type="submit" disabled={loading}>Enviar</Button>
+                            <IconButton 
+                                type="submit"
+                                icon={IoSendSharp}
+                                disabled={loading}
+                            />
                         </form>
                     </div>
                 </main>

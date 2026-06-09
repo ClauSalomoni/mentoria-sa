@@ -65,14 +65,14 @@ export default function Cadastro(){
                     <Input label="Senha" type="password" value={senha} placeholder="Digite sua senha..." onChange={(e) => setSenha(e.target.value)} required/>
                     <Input label="Confirmar Senha" type="password" value={confirmarSenha} placeholder="Confirme a sua senha" onChange={(e) => setConfirmarSenha(e.target.value)} required/>
                     
-                </form>
                 
-                <div className={styles.divBtn}>
-                    <Button type="submit" loading={loading}>Cadastrar</Button>
-                    <Button type="button" variant="link" onClick={() => navigate('/login')}>
-                        Fazer Login
-                    </Button>
-                </div>
+                    <div className={styles.divBtn}>
+                        <Button type="submit" loading={loading}>Cadastrar</Button>
+                        <Button type="button" variant="link" onClick={() => navigate('/login')}>
+                            Fazer Login
+                        </Button>
+                    </div>
+                </form>
             </div>
         </div>
     )

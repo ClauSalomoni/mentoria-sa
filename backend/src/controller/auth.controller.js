@@ -5,7 +5,7 @@ import { cadastroUsuarioSchema } from "../validator/user.validator.js";
 import { User} from'../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
+import { z } from 'zod'; //
 
 export async function createUser(req, res){
     // console.log("--> ENTRANDO NA FUNÇÃO CREATEUSER");
@@ -23,26 +23,32 @@ export async function createUser(req, res){
             nome: nome,
             email: email, 
             senha: senha_hash,
-            role
-
+          
     });
     const userJson = resCreateUser.toJSON()
     delete userJson.senha
         res.status(201).json({message: "Usuario criado com sucesso", resCreateUser: userJson})
-    } catch(error){
-        // Se o erro for do Zod, nós tratamos e devolvemos os detalhes amigáveis para o Front
-        if (error instanceof z.ZodError) {
+    } catch (error) {
+        // 🚀 CORREÇÃO DO BUG: Nova checagem segura para erros do Zod
+        if (error instanceof z.ZodError || error.name === "ZodError") {
             return res.status(400).json({ 
                 message: "Erro de validação nos dados enviados", 
-                erros: error.errors.map(err => ({ campo: err.path[0], mensagem: err.message }))
+                // Usamos o 'error.issues' que é o padrão oficial do Zod para listar erros
+                detalhes: error.issues?.map(err => `${err.path[0]}: ${err.message}`).join(', ') || "Dados inválidos"
             });
         }
-        //console.log("--- ERRO CAPTURADO ---");
-        //console.error(error); // Agora sim ele vai aparecer no terminal!
-        return res.status(500).json({ message: "Erro interno", detalhes: error.message });
+
+        // Se o erro for do Sequelize (ex: E-mail duplicado)
+        if (error.name === "SequelizeUniqueConstraintError") {
+            return res.status(400).json({ message: "Este e-mail já está cadastrado!" });
+        }
+        
+        console.error("❌ Erro interno no servidor:", error);
+        return res.status(500).json({ message: "Erro interno no servidor", detalhes: error.message });
     }
 }
 export async function login(req, res){
+    
     const{email, senha} = req.body;
     try{
         if(!email || !senha){
@@ -66,7 +72,7 @@ export async function login(req, res){
             return res.status(401).json({message: "Dados invalidos"})
         }  
         const token = jwt.sign(
-            { id: usuarioEncontrado.id, email: usuarioEncontrado.email }, //payload dentro token
+            { id: usuarioEncontrado.id, email: usuarioEncontrado.email, role: usuarioEncontrado.role }, //payload dentro token
             process.env.JWT_SECRET,  //chave secreta
             { expiresIn: process.env.JWT_EXPIRES_IN } //tempo de validade
         )
