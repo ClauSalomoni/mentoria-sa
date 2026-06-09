@@ -1,49 +1,60 @@
+/* ===================================================
+   COMPONENTE: SIDEBAR LATERAL (GLASSMORPHISM)
+   =================================================== */
 .sidebar {
   width: 250px;
   min-width: 250px;
-  background-color: #16171d; 
-  color: white;
-  padding: 20px;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  height: 100vh; /* Garante que ela ocupe toda a altura da tela */
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
+  padding: 25px 20px;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  box-sizing: border-box; /* Evita que o padding estique a largura dela */
 }
 
+/* Área da Logo */
 .sidebar-logo-area {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 12px;
+  flex-direction: row;  
+  align-items: center;  
+  gap: 15px;            
   padding: 10px 0;
   margin-bottom: 15px;
 }
 
+/* Imagem do Robô (Logo) */
 .sidebar-logo {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;   
   object-fit: cover;
-  border: 2px solid rgba(170, 59, 255, 0.5);
+  border: 2px solid rgba(170, 59, 255, 0.5); 
   padding: 2px;
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* Título ao lado da logo */
 .sidebar-title {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   color: #ffffff;
   font-weight: 600;
   margin: 0;
   letter-spacing: -0.5px;
 }
 
+/* Linha divisória */
 .sidebar-divider {
   border: 0;
   height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 25px;
 }
 
+/* Links de Navegação */
 .sidebar nav ul {
   list-style: none;
   padding: 0;
@@ -55,15 +66,17 @@
 
 .sidebar nav ul li {
   padding: 12px 15px;
-  border-radius: 8px;
+  border-radius: 10px;
   color: #9ca3af;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 0.95rem;
+  font-weight: 500;
 }
 
+/* Efeito de Hover e Classe Ativa Dinâmica */
 .sidebar nav ul li:hover, 
 .sidebar nav ul li.active {
-  background: rgba(170, 59, 255, 0.1);
+  background: rgba(170, 59, 255, 0.15) !important; /* Destaque roxo neon */
   color: #ffffff;
 }

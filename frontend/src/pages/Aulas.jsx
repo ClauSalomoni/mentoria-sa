@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "./Aulas.css"; // Vamos criar o CSS no próximo passo
 import Button from "../components/Button";
+import { IoMdReturnLeft } from "react-icons/io";
+import IconButton from "../components/IconButton";
 
 export default function Aulas() {
     const { cursoId } = useParams(); // Pega o ID (ex: 1, 2) vindo da URL
@@ -60,9 +62,9 @@ export default function Aulas() {
             <div className="player-main-content">
                 <Header onLogout={handleLogout} />
                   <div className="container-voltar">
-                    <Button variant="link" onClick={() => navigate('/home')}>
-                        ← Voltar para a Dashboard
-                    </Button>
+                    <IconButton onClick={() => navigate('/home')}
+                        icon={IoMdReturnLeft}
+                    />
                   </div>
 
                 <main className="player-body">

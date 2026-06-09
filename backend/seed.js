@@ -22,7 +22,7 @@ async function inicializarEPopular() {
     try {
         console.log("🔄 Conectando e sincronizando banco de dados...");
         // Sincroniza os modelos na ordem correta respeitando as Chaves Estrangeiras
-        await sequelize.sync({ alter: true }); 
+        await sequelize.sync({ alter: true }) 
         console.log("✅ Tabelas 'cursos' e 'aulas' criadas/atualizadas com sucesso!");
 
         const emailAdmin = "admin@plataforma.com";
@@ -88,7 +88,7 @@ async function inicializarEPopular() {
                 cursoId: cursoDados.id
             },
             {
-                titulo: "02 - Para que serve Python",
+                titulo: "05 - Para tudo serve Python",
                 ordem: 5,
                 videoUrl: "https://www.youtube.com/embed/ElRd0cbXIv4",
                 materialUrl: null,
@@ -110,8 +110,22 @@ async function inicializarEPopular() {
             {
                 titulo: "01 - O que é Banco de Dados Relacional",
                 ordem: 1,
-                videoUrl: "https://www.youtube.com/embed/Ofktsne-UtM",
-                descricao: "Entenda o conceito de tabelas, linhas e colunas.",
+                videoUrl: "https://www.youtube.com/embed/Ofktsne-utM",
+                descricao: "O que é um Banco de Dados",
+                cursoId: cursoSQL.id
+            },
+            {
+                titulo: "02 - O que é Banco de Dados Relacional",
+                ordem: 1,
+                videoUrl: "https://www.youtube.com/embed/5JbAOWJbgIA",
+                descricao: "Instalando MySQL",
+                cursoId: cursoSQL.id
+            },
+            {
+                titulo: "03 - O que é Banco de Dados Relacional",
+                ordem: 1,
+                videoUrl: "https://www.youtube.com/embed/R2HrwSQ6EPM",
+                descricao: "Instalando XAMPP",
                 cursoId: cursoSQL.id
             }
         ]);
@@ -129,7 +143,7 @@ async function inicializarEPopular() {
             {
                 titulo: "01 - Introdução ao Business Intelligence",
                 ordem: 1,
-                videoUrl: "https://www.youtube.com/embed/rfscVS0vtbw",
+                videoUrl: "https://www.youtube.com/embed/4mG9YIYUUQ8",
                 descricao: "Como transformar dados brutos em decisões inteligentes.",
                 cursoId: cursoBI.id
             }

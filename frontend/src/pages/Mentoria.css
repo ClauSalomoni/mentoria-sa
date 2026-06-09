@@ -1,15 +1,19 @@
+/* Garante que o painel da mentoria se alinhe perfeitamente no espaço do main-content */
 .mentoria-body {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 40px; /* Mesma folga interna do dashboard-body da Home */
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
+/* O Container do chat herda o comportamento ideal */
 .chat-container {
     width: 100%;
     max-width: 900px;
-    height: calc(100vh - 160px);
+    height: calc(100vh - 160px); /* Garante o encaixe perfeito na tela junto com o Header */
     display: flex;
     flex-direction: column;
     border-radius: 18px;
@@ -28,9 +32,14 @@
     gap: 12px;
 }
 
+.chat-header h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.15rem;
+}
+
 .ai-status-dot {
-    width: 100%;
-    max-width: 10px;
+    width: 10px;
     height: 10px;
     background-color: #aa3bff;
     border-radius: 50%;
@@ -67,6 +76,7 @@
     height: 35px;
     border-radius: 50%;
     border: 1px solid #aa3bff;
+    object-fit: cover;
 }
 
 .message-bubble {
@@ -89,13 +99,13 @@
     border: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-/* Área de Input inferior */
 .chat-input-area {
     padding: 20px;
     background: rgba(22, 23, 29, 0.8);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     gap: 12px;
+    align-items: center;
 }
 
 .chat-input-area input {
@@ -113,22 +123,4 @@
     outline: none;
     border-color: #aa3bff;
     background: rgba(255, 255, 255, 0.05);
-}
-
-/* Indicador Animado de "Digitando..." */
-.typing-indicator span {
-    height: 8px;
-    width: 8px;
-    float: left;
-    margin: 0 2px;
-    background-color: #9ca3af;
-    border-radius: 50%;
-    opacity: 0.4;
-    animation: bounce 1s infinite alternate;
-}
-.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes bounce {
-    to { transform: translateY(-6px); opacity: 1; }
 }

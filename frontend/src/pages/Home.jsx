@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Button from "../components/Button"; 
 import "./Home.css";
-import robo from "../assets/robo.jpg"; 
+import Sidebar from "../components/Sidebar";
 
 export default function Home() {
     const [cursos, setCursos] = useState([]); 
@@ -54,21 +54,7 @@ export default function Home() {
 
     return (
         <div className="home-layout">
-            <aside className="sidebar">
-                <div className="sidebar-logo-area">
-                    <img src={robo} alt="Logo" className="sidebar-logo" />
-                    <h2 className="sidebar-title">Dashboard</h2>
-                </div>
-                <hr className="sidebar-divider" />
-                <nav>
-                    <ul>
-                        <li className="active">Início</li>
-                        <li>Meus Cursos</li>
-                        <li>Simulados</li>
-                        <li>Configurações</li>
-                    </ul>
-                </nav>
-            </aside>
+            <Sidebar paginaAtiva="inicio" />
             
             <div className="main-content">
                 <Header onLogout={handleLogout} />
@@ -89,10 +75,7 @@ export default function Home() {
                                         <div key={curso.id} className="item-estudo glass-effect" style={{ borderLeftColor: curso.cor }}>
                                             <div className="item-info">
                                                 <h4>{curso.titulo}</h4>
-                                                
-                                                {/* 🔥 CORREÇÃO 2: Como a tabela Curso não tem progresso direto, forçamos o padrão 0% com segurança */}
                                                 <p>Progresso: 0%</p>
-                                                
                                                 <div className="progress-bar-bg">
                                                     <div 
                                                         className="progress-bar-fill" 
@@ -105,10 +88,7 @@ export default function Home() {
                                             </div>
 
                                             <div className="item-action">
-                                                <Button 
-                                                    onClick={() => handleAcessarCurso(curso.id)}
-                                                    // Se quiser, pode passar classes específicas de layout ou variantes aqui
-                                                >
+                                                <Button onClick={() => handleAcessarCurso(curso.id)}>
                                                     Assistir
                                                 </Button>
                                             </div>
