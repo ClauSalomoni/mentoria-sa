@@ -84,7 +84,7 @@ export default function Mentoria() {
             <Sidebar paginaAtiva="mentoria" />
 
             <div className="main-content">
-                <Header onLogout={() => { localStorage.clear(); navigate('/login'); }} />
+                <Header onLogout={() => { localStorage.clear(); navigate('/login'); }} showBackButton={true}/>
                 
                 <main className="mentoria-body">
                     <div className="chat-container glass-effect">

@@ -225,3 +225,35 @@
 .card-cta-ai button:hover {
   background-color: #932ae6 !important;
 }
+
+/* Alinha a seta de voltar e o texto de boas-vindas perfeitamente */
+.header-left-side {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+/* ==========================================================================
+   FORÇAR O GLOW DO ICONBUTTON DENTRO DO HEADER
+   ========================================================================== */
+
+/* Localiza o botão gerado pelo CSS Module do IconButton dentro do seu Header */
+.header-left-side button[class*="button"] {
+  /* Força a transição suave para que o brilho não apareça de estalo */
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Aplica o efeito hover turbinado com contraste para o Header */
+.header-left-side button[class*="button"]:hover:not(:disabled) {
+  background: rgba(170, 59, 255, 0.2) !important; 
+  border-color: #aa3bff !important;
+  color: #ffffff !important;
+  
+  /* Aumentamos o raio do neon (de 12px para 18px) e a opacidade (de 0.2 para 0.6) 
+     para que ele vença o fundo escuro da barra superior */
+  box-shadow: 0 0 18px rgba(170, 59, 255, 0.6) !important; 
+}
+
+/* Mantém o ícone interno ganhando o efeito de flutuar */
+.header-left-side button[class*="button"]:hover svg {
+  transform: translateY(-1px);
+}

@@ -1,6 +1,11 @@
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
+import { IoMdReturnLeft } from "react-icons/io";
+import IconButton from "../components/IconButton";
 
-export default function Header({ onLogout }) {
+
+export default function Header({ onLogout, showBackButton = false }) {
+  const navigate = useNavigate();
   // 1. Busca a string do localStorage
   const userData = localStorage.getItem('@App:user');
   
@@ -12,8 +17,20 @@ export default function Header({ onLogout }) {
 
   return (
     <header className="home-header">
-      <div className="header-info">
-        <span>Bem-vindo, <strong>{nomeExibicao}</strong>!</span>
+      {/* Bloco da Esquerda: Seta condicional + Mensagem */}
+      <div className="header-left-side" >
+        
+        {/* Se a prop showBackButton for verdadeira, renderiza seu IconButton reaproveitado */}
+        {showBackButton && (
+          <IconButton 
+            icon={IoMdReturnLeft} 
+            onClick={() => navigate(-1)} 
+            // Sem passar a prop 'titulo', seu componente ativa automaticamente o styles.isIconOnly!
+          />
+        )}
+        <div className="header-info">
+          <span>Bem-vindo, <strong>{nomeExibicao}</strong>!</span>
+        </div>
       </div>
       
       <div style={{ width: '120px' }}>

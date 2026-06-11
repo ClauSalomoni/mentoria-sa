@@ -33,6 +33,7 @@
     grid-template-columns: 2.5fr 1fr;
     gap: 30px;
     flex: 1;
+    margin-top: 30px;
 }
 
 .video-column {

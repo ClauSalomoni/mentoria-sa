@@ -2,8 +2,9 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import Home from './pages/Home';
-import "./styles/global.css"
-import robo from './assets/robo.jpg'
+import "./styles/global.css";
+import PerfilTrilha from './pages/PerfilTrilha'
+import EditarPerfil from './pages/EditarPerfil';
 import RotaProtegida from './components/RotaProtegida';
 import Aulas from './pages/Aulas'
 import Mentoria from './pages/Mentoria';
@@ -45,6 +46,24 @@ function App() {
           element={
             <RotaProtegida>
               <Mentoria />
+            </RotaProtegida>
+          }
+        />
+
+        <Route 
+          path="/trilha" 
+          element={
+            <RotaProtegida>
+              <PerfilTrilha />
+            </RotaProtegida>
+          }
+        />
+
+        <Route 
+          path="/perfil" 
+          element={
+            <RotaProtegida>
+              <EditarPerfil />
             </RotaProtegida>
           }
         />

@@ -32,11 +32,17 @@ export default function Sidebar({ paginaAtiva }) {
                     <li className={paginaAtiva === "cursos" ? "active" : ""}>
                         Meus Cursos
                     </li>
-                    <li className={paginaAtiva === "simulados" ? "active" : ""}>
-                        Simulados
+                    <li 
+                        className={paginaAtiva === "trilha" ? "active" : ""}
+                        onClick={() => navigate("/trilha")}
+                    >
+                        Minhas Trilhas
                     </li>
-                    <li className={paginaAtiva === "configuracoes" ? "active" : ""}>
-                        Configurações
+                    <li 
+                        className={paginaAtiva === "perfil" ? "active" : ""}
+                        onClick={() => navigate("/perfil")}
+                    >
+                        Perfil
                     </li>
                 </ul>
             </nav>

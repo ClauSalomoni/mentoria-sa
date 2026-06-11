@@ -1,0 +1,116 @@
+/* Customizações locais sem conflitos */
+.profile-full-card {
+    padding: 2.5rem !important;
+    border-radius: 18px !important;
+    width: 100%;
+}
+
+.profile-form-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Divisores Visuais Internos do Formulário */
+.section-form-title {
+    font-size: 1.1rem;
+    color: #aa3bff;
+    margin: 15px 0 15px 0;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid rgba(170, 59, 255, 0.15);
+    padding-bottom: 6px;
+}
+
+/* Cabeçalho de Perfil com Avatar */
+.profile-avatar-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.profile-avatar-image {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(170, 59, 255, 0.5);
+    padding: 3px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.profile-avatar-block h2 {
+    font-size: 1.4rem;
+    margin: 0;
+    color: #fff;
+    font-weight: 600;
+}
+
+.profile-avatar-block p {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 0.85rem;
+}
+
+/* Componentes de Seleção e Inputs Especiais */
+.profile-input-wrapper {
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.profile-field-label {
+    font-size: 0.9rem;
+    color: #e5e4e7 !important;
+    font-weight: 500;
+}
+
+/* Botões do Seletor de Nível */
+.level-buttons-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.level-selection-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #9ca3af;
+    padding: 12px 5px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.level-selection-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.level-selection-btn.active {
+    background: rgba(170, 59, 255, 0.15);
+    border-color: #aa3bff;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(170, 59, 255, 0.2);
+}
+
+/* Alinhamento dos botões de ação finais */
+.profile-actions-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 1.5rem;
+    width: 100%;
+    flex-direction: row !important;
+}
+
+.profile-actions-row button {
+    flex: 1;
+}
