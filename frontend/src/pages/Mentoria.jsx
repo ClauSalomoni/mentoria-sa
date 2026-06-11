@@ -6,6 +6,7 @@ import robo from '../assets/robo.jpg';
 import './Mentoria.css'; 
 import { IoSendSharp } from "react-icons/io5";
 import IconButton from '../components/IconButton';
+import api from '../services/api';  //AXIOS
 
 export default function Mentoria() {
     const navigate = useNavigate();
@@ -31,23 +32,48 @@ export default function Mentoria() {
         setLoading(true);
 
         try {
-            // 💡 Aqui você conectará com o seu back-end futuramente
-            // const token = localStorage.getItem('@App:token');
-            // const response = await fetch("http://localhost:3000/mentoria/chat", { ... })
-            
-            // Simulação de resposta da IA (MOCK) após 1.5 segundos:
-            setTimeout(() => {
-                const iaResponse = {
-                    id: Date.now() + 1,
-                    text: `Entendi a sua dúvida sobre "${userMessage.text}". Na trilha de programação, este conceito é fundamental porque otimiza o fluxo de dados...`,
-                    sender: "ia"
-                };
-                setMensagens(prev => [...prev, iaResponse]);
-                setLoading(false);
-            }, 1500);
+            // 2. Recupera o token de autenticação gerado no Login
+            const token = localStorage.getItem('@App:token');
+
+            // 3. Faz a requisição real para o seu endpoint REST do Backend
+            const response = await api.post('/mentoria/chat', 
+                { mensagem: userMessage.text }, // Payload esperado pelo backend
+                { 
+                    headers: { 
+                        Authorization: `Bearer ${token}` // Envia o token no formato Bearer
+                    } 
+                }
+            );
+
+            // 4. Se chegou aqui, extraímos a resposta de texto da IA
+            // O backend retorna: { resposta: "texto da ia" }
+            const iaResponse = {
+                id: Date.now() + 1,
+                text: response.data.resposta,
+                sender: "ia"
+            };
+
+            // 5. Adiciona a resposta do Mentor no chat da tela
+            setMensagens(prev => [...prev, iaResponse]);
 
         } catch (error) {
             console.error("Erro ao falar com a IA:", error);
+            
+            // Tratamento inteligente caso o token tenha expirado (401)
+            if (error.response?.status === 401) {
+                alert("Sua sessão expirou. Por favor, faça login novamente.");
+                localStorage.clear();
+                navigate('/login');
+            } else {
+                // Outros erros genéricos do servidor
+                const msgErro = error.response?.data?.message || "O Mentor está pensando muito e falhou. Tente novamente!";
+                
+                setMensagens(prev => [
+                    ...prev, 
+                    { id: Date.now(), text: `❌ Erro: ${msgErro}`, sender: "ia" }
+                ]);
+            }
+        } finally {
             setLoading(false);
         }
     };
