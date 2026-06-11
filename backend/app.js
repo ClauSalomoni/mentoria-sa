@@ -7,6 +7,7 @@ import DashboardRouter from './src/router/dashboardAulas.router.js';
 import { configCors } from './src/config/cors.js';
 import { configHelmet} from './src/config/helmet.js';
 import { limitadorGlobal } from './src/config/rateLimit.js';
+import MentoriaRouter from './src/router/mentoria.router.js';
 //importar o modelo para garantir o registro do sequelize
 import './src/models/user.model.js'
 
@@ -23,7 +24,7 @@ app.use(limitadorGlobal);
 app.use('/user', UserRouter)
 app.use('/auth', AuthRouter)
 app.use('/', DashboardRouter);
-
+app.use("/mentoria", MentoriaRouter);
 
 // ****       alterar para MIGRATIONS assim que sai de dev  ****
 sequelize.sync({alter: true}).then(() =>{
