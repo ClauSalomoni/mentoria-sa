@@ -32,12 +32,12 @@ export async function conversarComMentor(req, res) {
         });
 
         // A estrutura de resposta mapeada com sucesso
-        const respostaDoGemeni = response.choices[0].message.content;
+        const respostaDoGemini = response.choices[0].message.content;
 
-        return res.status(200).json({ resposta: respostaDoGemeni });
+        return res.status(200).json({ resposta: respostaDoGemini });
 
     } catch (error) {
-        console.error("❌ Erro ao chamar a API do Gemeni via OpenRouter:", error);
-        return res.status(500).json({ message: "O Mentor Gemeni falhou ao responder. Tente novamente!" });
+        console.error("❌ Erro ao chamar a API do Gemini via OpenRouter:", error);
+        return res.status(500).json({ message: "O Mentor Gemini falhou ao responder. Tente novamente!" });
     }
 }
