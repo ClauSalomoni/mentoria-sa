@@ -3,7 +3,7 @@ import { OpenAI } from "openai";
 
 // 🚀 Deixamos apenas UMA instância configurada apontando para o OpenRouter
 const ai = new OpenAI({
-    apiKey: process.env.GROK_API_KEY, // Nome da variável que você salvou no .env
+    apiKey: process.env.OPENROUTER_API_KEY, // Nome da variável que você salvou no .env
     baseURL: "https://openrouter.ai/api/v1", // URL correta para o OpenRouter fazer a ponte
 });
 
@@ -32,12 +32,12 @@ export async function conversarComMentor(req, res) {
         });
 
         // A estrutura de resposta mapeada com sucesso
-        const respostaDoGrok = response.choices[0].message.content;
+        const respostaDoGemini = response.choices[0].message.content;
 
-        return res.status(200).json({ resposta: respostaDoGrok });
+        return res.status(200).json({ resposta: respostaDoGemini });
 
     } catch (error) {
-        console.error("❌ Erro ao chamar a API do Grok via OpenRouter:", error);
-        return res.status(500).json({ message: "O Mentor Grok falhou ao responder. Tente novamente!" });
+        console.error("❌ Erro ao chamar a API do Gemini via OpenRouter:", error);
+        return res.status(500).json({ message: "O Mentor Gemini falhou ao responder. Tente novamente!" });
     }
 }

@@ -75,7 +75,7 @@
 /* Grid de duas colunas (Split) */
 .dashboard-split-container {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 35px;
   align-items: start;
 }

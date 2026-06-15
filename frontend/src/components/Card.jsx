@@ -4,7 +4,9 @@ import Select from "./Select";
 import Button from "./Button";
 import robo from "../assets/robo.jpg";
 import stylesBtn from "./Button.module.css";
+import './Card.css'
 import "../pages/PerfilTrilha";
+import '../pages/PerfilTrilha.css'
 
 export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, loading = false }) {
     // Estados compartilhados
@@ -95,8 +97,16 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, l
                             </div>
                         </div>
 
-                        <h3 className="section-form-title">Nível de Conhecimento</h3>
+                           <div className="profile-label-row">
+                             <h3 className="section-form-title">Nível de Conhecimento</h3>
+                                
+                                <Button onClick={() => alert("Dica sobre os níveis!")}>
+                                    Verificar Nível
+                                </Button>
+                            </div>
                         <div className="profile-input-wrapper">
+                         
+
                             <div className="level-buttons-row">
                                 {["Iniciante", "Intermediário", "Avançado"].map((lvl) => (
                                     <button

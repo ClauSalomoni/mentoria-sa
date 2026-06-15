@@ -114,3 +114,31 @@
 .profile-actions-row button {
     flex: 1;
 }
+
+/* 1. O container pai ativa o Flexbox e define o espaçamento entre os dois cards */
+.dashboard-split-container {
+    display: flex;
+    gap: 24px;          /* Espaçamento elegante entre os dois cards */
+    width: 100%;
+    align-items: flex-start; /* Impede que o card menor estique verticalmente à força */
+}
+
+/* 2. A seção do formulário de perfil vai ocupar 2 partes da proporção (2/3) */
+.profile-form-section {
+    flex: 2;            /* Ganha o peso de 2 partes */
+    min-width: 0;       /* Evita estouros de layout causados por elementos filhos rígidos */
+}
+
+/* 3. A coluna da IA vai ocupar 1 parte da proporção (1/3) */
+.ai-column {
+    flex: 1;            /* Ganha o peso de 1 parte */
+    min-width: 0;       /* Evita estouros de layout */
+}
+
+/* 4. Garante que os componentes internos usem toda a largura que a seção deles ganhou */
+.profile-reusable-card,
+.card-cta-ai {
+    max-width: none !important; /* Remove o teto dos 420px */
+    width: 100%;
+    box-sizing: border-box;
+}

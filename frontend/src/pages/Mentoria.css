@@ -124,3 +124,54 @@
     border-color: #aa3bff;
     background: rgba(255, 255, 255, 0.05);
 }
+
+/* Ajustes para a renderização do Markdown dentro do balão da IA */
+.markdown-container p {
+    max-width: 100%;
+    max-height: 100%;
+    word-break: break-word; /* Força palavras muito longas a quebrarem de linha */
+    overflow-wrap: break-word; /* Garante que o texto não vaze */
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+}
+
+.markdown-container p:last-child {
+    margin-bottom: 0; /* Remove margem do último parágrafo */
+}
+
+.markdown-container ul, .markdown-container ol {
+    margin-left: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.markdown-container li {
+    margin-bottom: 0.4rem;
+}
+
+.markdown-container strong {
+    color: #fff; /* Destaca bem os negritos */
+    font-weight: 600;
+}
+
+/* Caso a IA mande blocos de código (```python) */
+.markdown-container pre {
+    max-width: 100%;
+    overflow-x: auto; /* Se o código for muito grande, o scroll fica só dentro da caixinha preta */
+    white-space: pre-wrap; /* Força o código a quebrar linha em telas pequenas */
+    background: rgba(0, 0, 0, 0.4);
+    padding: 12px;
+    border-radius: 6px;
+    margin: 0.8rem 0;
+    word-spacing: normal;
+    word-break: break-all;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.markdown-container code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 2px 4px;
+    border-radius: 4px;
+    word-break: break-word;
+}
