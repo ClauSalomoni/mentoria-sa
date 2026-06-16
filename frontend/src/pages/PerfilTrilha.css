@@ -59,9 +59,10 @@
 .profile-input-wrapper {
     margin-bottom: 1.25rem;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    flex-direction: row;
+    gap: 18px;
     width: 100%;
+    
 }
 
 .profile-field-label {
@@ -113,14 +114,6 @@
 
 .profile-actions-row button {
     flex: 1;
-}
-
-/* 1. O container pai ativa o Flexbox e define o espaçamento entre os dois cards */
-.dashboard-split-container {
-    display: flex;
-    gap: 24px;          /* Espaçamento elegante entre os dois cards */
-    width: 100%;
-    align-items: flex-start; /* Impede que o card menor estique verticalmente à força */
 }
 
 /* 2. A seção do formulário de perfil vai ocupar 2 partes da proporção (2/3) */

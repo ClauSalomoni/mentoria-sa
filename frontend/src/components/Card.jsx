@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "./Input";
 import Select from "./Select";
 import Button from "./Button";
 import robo from "../assets/robo.jpg";
 import stylesBtn from "./Button.module.css";
+import api from"../services/api";
 import './Card.css'
 import "../pages/PerfilTrilha";
 import '../pages/PerfilTrilha.css'
@@ -14,6 +15,7 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, l
     const [email, setEmail] = useState("");
     const [area, setArea] = useState("");
     const [nivel, setNivel] = useState("");
+    const [avatar, setAvatar] = useState(robo)
 
     const opcoesAreas = [
         { value: "frontend", label: "Desenvolvimento Front-End" },
@@ -21,6 +23,37 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, l
         { value: "fullstack", label: "Desenvolvimento Full-Stack" },
         { value: "data", label: "Ciência de Dados & IA" }
     ];
+
+    useEffect(() =>{
+        if (mode === "perfil") {
+            const carregarDadosDoUsuario = async () => {
+                try{
+                    const token = localStorage.getItem('@App:token');
+                    if(!token) return;
+
+                    const response = await api.get('auth/perfil', {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    const dadosUsuario = response.data;
+                    if(dadosUsuario.nome) setNome(dadosUsuario.nome);
+                    if(dadosUsuario.email) setNome(dadosUsuario.email);
+                    if(dadosUsuario.avatarUrl) setNome(dadosUsuario.avatarUrl);
+                } catch (error){
+                    console.error({"Erro ao carregar perfil vindo do DB": error})
+                    // Fallback de segurança: Se a API falhar, lê o que foi gravado no Login
+                    const userString = localStorage.getItem('@App:user');
+                    if (userString) {
+                        const localUser = JSON.parse(userString);
+                        setNome(localUser.nome || "");
+                        setEmail(localUser.email || "");
+                    }
+                }
+            };
+            carregarDadosDoUsuario()
+        }
+    }, [mode])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -46,9 +79,9 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, l
             {/* Se for modo Perfil, exibe o bloco de Avatar exigido */}
             {mode === "perfil" && (
                 <div className="profile-avatar-block">
-                    <img src={robo} alt="Avatar" className="profile-avatar-image" />
-                    <h2>{nome}</h2>
-                    <p>{email}</p>
+                    <img src={avatar || robo} alt="Avatar" className="profile-avatar-image" />
+                    <h2>{nome || "Carregando..."}</h2>
+                    <p>{email || "carregando..."}</p>
                 </div>
             )}
 
@@ -79,11 +112,16 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, l
                 ) : (
                     <>
                         <h1>Minha Trilha</h1>
-                        <h3 className="section-form-title" style={{ marginTop: 0 }}>Área de Aprendizado</h3>
-                        <div className="profile-input-wrapper">
-                            <label className="profile-field-label">Opções de áreas</label>
-                            <div className="select-with-action-row">
-                                <div className="select-grow-container">
+                        
+                            <div className="profile-label-row">
+                                <h3 className="section-form-title" style={{ marginTop: 0 }}>Área de Aprendizado</h3>
+                                                                 
+                                    <Button onClick={handleAdicionarNovaArea}>
+                                        Adicionar Nova
+                                    </Button>
+                                </div>
+                            
+                                <div className="profile-input-wrapper">
                                     <Select 
                                         value={area} 
                                         onChange={(e) => setArea(e.target.value)} 
@@ -91,11 +129,6 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, l
                                         required 
                                     />
                                 </div>
-                                <button type="button" className="btn-add-inline" onClick={handleAdicionarNovaArea}>
-                                    +
-                                </button>
-                            </div>
-                        </div>
 
                            <div className="profile-label-row">
                              <h3 className="section-form-title">Nível de Conhecimento</h3>
@@ -129,7 +162,7 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, l
                         {mode === "trilha" ? "Voltar" : "Cancelar"}
                     </Button>
                     <Button type="submit" loading={loading}>
-                        Salvar
+                        {mode === "trilha" ? "Cadastrar" : "Salvar"}
                     </Button>
                 </div>
             </form>

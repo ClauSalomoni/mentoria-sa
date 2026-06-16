@@ -35,13 +35,24 @@
     align-items: center;           /* Alinha os dois verticalmente no centro */
     width: 100%;
     margin-top: 15px;              /* Espaço antes do bloco */
-    margin-bottom: 5px;  
-    gap: 10px          /* Espaço antes dos botões de níveis */
+    margin-bottom: 25px;  
+    gap: 10px;        /* Espaço antes dos botões de níveis */
+    border-bottom: 1px solid rgba(170, 59, 255, 0.15);
 }
 
 
-/* .profile-label-row .section-form-title {
+
+.profile-label-row .section-form-title {
     margin: 0 !important;         
     border-bottom: none !important;
     padding-bottom: 0 !important;
-} */
+}
+.profile-label-row button {
+    width: auto !important;    /* Cancela o width 100% do .btn */
+    padding: 6px 14px;         /* Deixa o botão mais baixo e menos largo */
+    font-size: 0.8rem;         /* Diminui levemente o texto */
+    font-weight: 600;
+    white-space: nowrap;       /* Garante que o texto não quebre em duas linhas */
+    border-radius: 6px;
+    margin-bottom: 2px;        /* Arredondamento sutil combinando com o layout */
+}
