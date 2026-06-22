@@ -36,6 +36,13 @@ export const User = sequelize.define('User', {
             }
         }
     },
+    // ◄ ADICIONADO: Campo para armazenar a URL ou caminho do avatar do usuário
+    avatar: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null // Começa sem avatar (o front usa o robô como fallback)
+    },
+    
     ativo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

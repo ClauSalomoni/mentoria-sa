@@ -9,7 +9,7 @@ import './Card.css'
 import "../pages/PerfilTrilha";
 import '../pages/PerfilTrilha.css'
 
-export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, loading = false }) {
+export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, onVerificarNivel, loading = false }) {
     // Estados compartilhados
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
@@ -17,11 +17,12 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, l
     const [nivel, setNivel] = useState("");
     const [avatar, setAvatar] = useState(robo)
 
+    // Dentro do seu ProfileCard
     const opcoesAreas = [
-        { value: "frontend", label: "Desenvolvimento Front-End" },
-        { value: "backend", label: "Desenvolvimento Back-End" },
-        { value: "fullstack", label: "Desenvolvimento Full-Stack" },
-        { value: "data", label: "Ciência de Dados & IA" }
+        { value: "javascript", label: "JavaScript & Ecossistema" },
+        { value: "postgresql", label: "Banco de Dados (PostgreSQL)" },
+        { value: "logica",     label: "Lógica de Programação" },
+        { value: "fullstack",  label: "Desenvolvimento Full-Stack" }
     ];
 
     useEffect(() =>{
@@ -38,8 +39,8 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, l
                     });
                     const dadosUsuario = response.data;
                     if(dadosUsuario.nome) setNome(dadosUsuario.nome);
-                    if(dadosUsuario.email) setNome(dadosUsuario.email);
-                    if(dadosUsuario.avatarUrl) setNome(dadosUsuario.avatarUrl);
+                    if(dadosUsuario.email) setEmail(dadosUsuario.email);
+                    if(dadosUsuario.avatar) setAvatar(dadosUsuario.avatar);
                 } catch (error){
                     console.error({"Erro ao carregar perfil vindo do DB": error})
                     // Fallback de segurança: Se a API falhar, lê o que foi gravado no Login
@@ -133,7 +134,13 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, l
                            <div className="profile-label-row">
                              <h3 className="section-form-title">Nível de Conhecimento</h3>
                                 
-                                <Button onClick={() => alert("Dica sobre os níveis!")}>
+                                <Button onClick={() => {
+                                    if (!area) {
+                                        alert("Por favor, selecione uma Área de Aprendizado primeiro!");
+                                        return;
+                                    }
+                                    onVerificarNivel(area);
+                                }}>
                                     Verificar Nível
                                 </Button>
                             </div>

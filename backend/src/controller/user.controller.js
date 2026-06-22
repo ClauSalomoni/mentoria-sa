@@ -21,7 +21,7 @@ export async function perfil(req, res) {
 //PUT/user/perfil
 export async function atualizarPerfil(req, res) {
     try{
-        const {nome, email, senha} = req.body;
+        const {nome, email, senha, avatar} = req.body;
         const user = await User.findByPk(req.user.id)
     
     if (!user) {
@@ -31,6 +31,7 @@ export async function atualizarPerfil(req, res) {
         // Atualiza campos básicos
         if (nome) user.nome = nome;
         if (email) user.email = email;
+        if (avatar) user.avatar = avatar;
 
         // Se enviou senha, gera novo hash
         if (senha) {

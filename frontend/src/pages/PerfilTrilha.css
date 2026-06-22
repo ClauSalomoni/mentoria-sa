@@ -1,3 +1,51 @@
+/* ==========================================
+   Renderizando VERIFICAÇÂO NIVEL
+   ========================================== */
+/* Quando o simulado estiver ativo, mudamos o container para bloco único */
+.dashboard-split-container.simulado-ativo {
+    display: flex !important;      /* Mantém o flex, mas mudamos a lógica interna */
+    flex-direction: column;        /* Alinha verticalmente se necessário */
+    width: 100% !important;
+}
+
+/* ...forçamos a seção do formulário a resetar o 'flex: 2' e ocupar o espaço total */
+.dashboard-split-container.simulado-ativo .profile-form-section {
+    flex: none !important;         /* Remove a proporção 2/3 antiga */
+    width: 100% !important;        /* Força a largura total da linha */
+    max-width: 900px !important;   /* Define um teto confortável para leitura */
+    margin: 0 auto !important;     /* Centraliza o bloco na tela */
+}
+
+/* Garante que o card do simulado use tudo que a section ganhou */
+.dashboard-split-container.simulado-ativo .simulado-container {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+/* ==========================================
+   Renderizando RESULTADO
+   ========================================== */
+
+/* 1. Quando o resultado estiver ativo, esconde a coluna da IA */
+.dashboard-split-container.resultado-ativo .ai-column {
+    display: none !important;
+}
+
+/* 2. Força a seção do formulário/resultado a redefinir o flex e ocupar tudo */
+.dashboard-split-container.resultado-ativo .profile-form-section {
+    flex: none !important;      /* Cancela o 'flex: 2' antigo que limitava o tamanho */
+    flex-direction: column;        
+    width: 100% !important;        /* Obriga a ocupar toda a largura disponível */
+    max-width: 900px !important;   /* Define um teto confortável (mude para 100% se quiser esticar total) */
+    margin: 0 auto !important;     /* Centraliza o bloco na tela */
+}
+
+/* 3. Garante que o container interno do resultado preencha todo o novo espaço ganho */
+.dashboard-split-container.resultado-ativo .resultado-container {
+    width: 100% !important;
+    max-width: none !important;
+}
+
 /* Customizações locais sem conflitos */
 .profile-full-card {
     padding: 2.5rem !important;
