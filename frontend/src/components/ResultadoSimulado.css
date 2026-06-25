@@ -3,7 +3,6 @@
 .resultado-container {
     text-align: left;
     padding: 35px;
-    max-width: 750px;
     margin: 0 auto;
 }
 
@@ -97,7 +96,6 @@
     margin: 2px 0 0 0;
     font-size: 0.95rem;
     color: #fff;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
