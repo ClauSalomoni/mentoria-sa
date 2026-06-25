@@ -67,24 +67,30 @@ export async function responderAvaliacao(req, res) {
     const prompt = `
       Corrija a avaliação diagnóstica do aluno sobre ${area}.
 
-      Respostas do aluno:
+      Respostas enviadas pelo aluno (contém o enunciado ou ID e a alternativa escolhida):
       ${JSON.stringify(respostas)}
 
       Com base nas respostas:
-      1. Calcule a pontuação de 0 a 10;
+      1. Calcule o total de acertos, pontuação de 0 a 10;
       2. Classifique o aluno estritamente como BASICO, INTERMEDIARIO ou AVANCADO (use exatamente estes termos em caixa alta, sem acentos)
-      3. Gere uma trilha personalizada de estudos;
-      4. Gere planos de estudo para essa trilha.
+      3. Para CADA resposta enviada, informe se o aluno acertou ou errou para montarmos o relatório visual.
+      4. Gere uma trilha personalizada de estudos;
+      5. Gere planos de estudo para essa trilha.
 
       Retorne APENAS um JSON neste formato:
 
       {
         "pontuacao": 8,
+        "totalQuestoes": 10,
         "nivelAnterior": "BASICO",
         "nivelAtual": "INTERMEDIARIO",
+        "detalhes": [
+          { "questaoId": 1, "correto": true },
+          { "questaoId": 2, "correto": false }
+        ],
         "trilha": {
-          "nome": "Trilha de Lógica de Programação",
-          "area": "Lógica de Programação",
+          "nome": "Trilha de ${area}",
+          "area": "Trilha de ${area}",
           "nivelObjetivo": "AVANCADO",
           "planos": [
             {
@@ -112,12 +118,11 @@ export async function responderAvaliacao(req, res) {
       userId: req.user.id,
     });
 
-    const avaliacao = await historicoAvaliacao.create({
+    const historicoSalvo = await historicoAvaliacao.create({
       pontuacao: dados.pontuacao,
       nivelAnterior: dados.nivelAnterior,
       nivelAtual: dados.nivelAtual,
-      dataAvaliacao: new Date(),
-      userId: req.user.id,
+      // dataAvaliacao: new Date(),
       trilhaId: novaTrilha.id,
     });
 
@@ -136,13 +141,23 @@ export async function responderAvaliacao(req, res) {
         }
       })
     );
-
-    return res.status(201).json({
+    // 4. Monta a resposta do Front-end unificando os dados reais salvos
+    const respostaFormatada = {
+      avaliacao: {
+        id: historicoSalvo.id,
+        dataAvaliacao: historicoSalvo.dataAvaliacao,
+        totalQuestoes: dados.totalQuestoes || 10,
+        acertos: dados.pontuacao,
+        nivelVerificado: dados.nivelAtual,
+        detalhes: dados.detalhes || []
+      },
       mensagem: "Avaliação corrigida, trilha criada e planos salvos com sucesso.",
-      avaliacao,
       trilha: novaTrilha,
-      planos,
-    });
+      planos: planos
+    };
+    
+
+    return res.status(201).json(respostaFormatada);
   } catch (error) {
     return res.status(500).json({
       mensagem: "Erro ao responder avaliação e gerar trilha",
@@ -163,7 +178,24 @@ export async function listarTrilhas(req, res) {
       include: [planoEstudo],
     });
 
-    return res.status(200).json(trilhas);
+    // 🌟 NORMALIZAÇÃO DIRETA NO CONTROLLER:
+    // Mapeamos a resposta para garantir compatibilidade sem quebrar nenhum arquivo.
+    // Injetamos a chave ".planos" com os mesmos dados de ".planoEstudos" que o Sequelize gerou.
+    const trilhasFormatadas = trilhas.map(t => {
+    const item = t.toJSON();
+    
+    // Captura o array correto vindo da aba redes do seu Sequelize
+    const listaPlanos = item.planoEstudos || []; 
+    
+    return {
+      ...item,
+      planos: listaPlanos,         // Garante a leitura do Front-end que busca por .planos
+      planoEstudos: listaPlanos    // Mantém o padrão original caso outra tela dependa dele
+    };
+  });
+ 
+
+    return res.status(200).json(trilhasFormatadas);
   } catch (error) {
     return res.status(500).json({
       mensagem: "Erro ao listar as trilhas",

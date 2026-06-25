@@ -38,13 +38,13 @@ export default function ResultadoSimulado({ dados, questoesOriginal = [], onCont
                 ) : (
                     questoesOriginal.map((questao, idx) => {
                         // Descobre se o usuário acertou esta questão olhando o retorno do backend
-                        const feedback = detalhes.find(d => d.questaoId === questao?.id);
+                        const feedback = detalhes.find(d => d.questaoId === questao?.id || d.questaoId === (idx + 1));
                         const acertou = feedback ? feedback.correto : false;
 
                         // Proteção contra enunciados nulos ou curtos
-                        const enunciadoExibicao = questao?.enunciado 
-                            ? (questao.enunciado.length > 90 ? `${questao.enunciado.substring(0, 90)}...` : questao.enunciado)
-                            : "Enunciado não disponível";
+                        // const enunciadoExibicao = questao?.enunciado 
+                        //     ? (questao.enunciado.length > 90 ? `${questao.enunciado.substring(0, 90)}...` : questao.enunciado)
+                        //     : "Enunciado não disponível";
 
                         return (
                             <div key={questao?.id || idx} className={`revisao-item ${acertou ? "status-acerto" : "status-erro"}`}>
@@ -53,6 +53,7 @@ export default function ResultadoSimulado({ dados, questoesOriginal = [], onCont
                                 </div>
                                 <div className="revisao-texto">
                                     <span>Questão {idx + 1}</span>
+                                    <p>{questao?.pergunta || "Enunciado indisponível"}</p>
                                     {/* <p>{enunciadoExibicao}</p> */}
                                 </div>
                             </div>

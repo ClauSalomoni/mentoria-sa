@@ -9,6 +9,7 @@ import RotaProtegida from './components/RotaProtegida';
 import Aulas from './pages/Aulas'
 import Mentoria from './pages/Mentoria';
 import MinhasTrilhas from './pages/MinhasTrilhas';
+import TrilhaDetalhes from './pages/TrilhaDetalhes';
 
 function App() {
   
@@ -59,6 +60,15 @@ function App() {
             </RotaProtegida>
           }
         />
+        <Route 
+          path="/trilha/:id" 
+          element={
+            <RotaProtegida>
+              <TrilhaDetalhes />
+            </RotaProtegida>
+          }
+        />
+
         <Route 
           path="/trilhas" 
           element={

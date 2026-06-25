@@ -13,6 +13,7 @@ import MentoriaRouter from './src/router/mentoria.router.js';
 //importar o modelo para garantir o registro do sequelize
 import './src/models/user.model.js'
 import './src/models/index.js'
+import DashboardRouter from './src/router/dashboardAulas.router.js';
 
 
 const app = express();
@@ -24,6 +25,8 @@ app.use(limitadorGlobal);
 
 
 //ROTAS
+app.use('/', DashboardRouter)
+
 app.use('/user', UserRouter)
 app.use('/auth', AuthRouter)
 //app.use('/', DashboardRouter);

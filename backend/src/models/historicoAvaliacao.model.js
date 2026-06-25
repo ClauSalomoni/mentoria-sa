@@ -20,7 +20,7 @@ export const historicoAvaliacao = sequelize.define("historicoAvaliacao", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    data: {
+    dataAvaliacao: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW
 

@@ -19,7 +19,9 @@ export default function MinhasTrilhas() {
                 // 🌟 O GET acontece aqui, na página de listagem!
                 const response = await api.get('/trilhas', {
                     headers: { Authorization: `Bearer ${token}` }
-                });
+                    });
+                // console.log("=== DIAGNÓSTICO DO BACKEND ===");
+                // console.log("O que chegou no Front:", response.data);
                 setTrilhas(response.data);
             } catch (error) {
                 console.error("Erro ao listar trilhas:", error);

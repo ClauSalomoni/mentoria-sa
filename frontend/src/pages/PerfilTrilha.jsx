@@ -73,15 +73,17 @@ export default function PerfilTrilha() {
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-
+            console.log(response.data.avaliacao)
+            const { avaliacao, trilha, planos } = response.data;
             // 1. Guarda os dados detalhados que vieram do banco
-            setResultadoSimulado(response.data.avaliacao);
+            setResultadoSimulado(avaliacao);
             
             // Guarda os dados da trilha e planos que o banco acabou de persistir
             setDadosTrilhaGerada({
                 nome: response.data.trilha.nome,
+                nivelAtual: trilha.nivelAtual,
                 nivelObjetivo: response.data.trilha.nivelObjetivo,
-                planos: response.data.planos // Nova estrutura flat vinda do sequelize
+                planos: planos 
             });
             setStatusFluxo("resultado-simulado");
             // handleGerarTrilhaIA({ area: areaSelecionada, nivel: response.data.nivelVerificado });
