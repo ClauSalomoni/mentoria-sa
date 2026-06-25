@@ -34,13 +34,23 @@ export default function PerfilTrilha() {
                 navigate("/login");
                 return;
             }
-            const response = await api.get(`/avaliacao/questoes?area=${areaDoCard}`, {
+            const response = await api.post('/trilhas/avaliacao', {area: areaDoCard}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            setQuestoes(response.data);
+
+            // 🌟 CORREÇÃO AQUI: Garanta que estamos pegando a propriedade 'questoes' que é o Array.
+            // Se ela não existir, usamos um array vazio de fallback para evitar o erro de .map()
+            const listaQuestoes = response.data.questoes || (Array.isArray(response.data) ? response.data : []);
+            
+            if (listaQuestoes.length === 0) {
+                throw new Error("A IA não retornou uma lista de questões válida.");
+            }
+
+            setQuestoes(listaQuestoes);
             setStatusFluxo("simulado");
         } catch (error) {
             console.error("Erro detalhado do simulado:", error.response || error);
+            alert("Erro ao buscar smulado gerado pela IA")
         
             // Se o banco retornar 401 mesmo com o código certo, o token expirou
             if (error.response?.status === 401) {
@@ -54,9 +64,10 @@ export default function PerfilTrilha() {
     };
 
     const handleFinalizarSimulado = async (payloadRespostas) => {
+        setStatusFluxo("gerando");
         try {
             const token = localStorage.getItem('@App:token');
-            const response = await api.post('/avaliacao/enviar', {
+            const response = await api.post('/trilhas/avaliacao/responder', {
                 area: areaSelecionada,
                 respostas: payloadRespostas
             }, {
@@ -64,32 +75,46 @@ export default function PerfilTrilha() {
             });
 
             // 1. Guarda os dados detalhados que vieram do banco
-            setResultadoSimulado(response.data);
+            setResultadoSimulado(response.data.avaliacao);
             
-            // 2. Avança o fluxo para a tela de feedback do simulado
+            // Guarda os dados da trilha e planos que o banco acabou de persistir
+            setDadosTrilhaGerada({
+                nome: response.data.trilha.nome,
+                nivelObjetivo: response.data.trilha.nivelObjetivo,
+                planos: response.data.planos // Nova estrutura flat vinda do sequelize
+            });
             setStatusFluxo("resultado-simulado");
-            // handleSolicitarTrilhaIA({ area: areaSelecionada, nivel: response.data.nivelVerificado });
+            // handleGerarTrilhaIA({ area: areaSelecionada, nivel: response.data.nivelVerificado });
         } catch (error) {
+            console.error(error);
+            alert("Erro ao processar respostas e gerar trilha.");
+            setStatusFluxo("formulario");
             alert("Erro ao processar respostas.");
         }
     };
 
     // Fase 1: Envia as escolhas do Card para o backend chamar a MentorIA
-    const handleSolicitarTrilhaIA = async (dadosCard) => {
+    const handleGerarTrilhaIA = async (dadosCard) => {
         setStatusFluxo("gerando");
         try {
             const token = localStorage.getItem('@App:token');
             
             // Chama o endpoint da mentoria para gerar o cronograma com IA
-            const response = await api.post('/mentoria/gerar-trilha', {
-                area: dadosCard.area,
-                nivel: dadosCard.nivel
+            const response = await api.post('/trilhas', {
+                nome: dadosCard.area,              // O tema escolhido
+                nivelAtual: dadosCard.nivel || "INICIANTE", 
+                nivelObjetivo: dadosCard.nivelObjetivo || "AVANCADO"
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            // Guarda o retorno (o JSONB esperado com { area, nivel, cronograma })
-            setDadosTrilhaGerada(response.data);
+            // O backend já salva a trilha e os planos no banco de dados e nos retorna o objeto pronto
+            setDadosTrilhaGerada({
+                nome: response.data.trilha.nome,
+                nivelAtual: response.data.trilha.nivelAtual,
+                nivelObjetivo: response.data.trilha.nivelObjetivo,
+                planos: response.data.planos
+            });
             setStatusFluxo("resultado");
 
         } catch (error) {
@@ -99,27 +124,33 @@ export default function PerfilTrilha() {
         }
     };
 
-    // Fase 2: Persiste a trilha revisada no Postgres
-    const handleConfirmarEGraduarTrilha = async () => {
-        setLoadingSalvar(true);
-        try {
-            const token = localStorage.getItem('@App:token');
-
-            // Envia o payload completo que a IA gerou direto para o banco
-            await api.post('/trilha/trilha', dadosTrilhaGerada, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-
-            alert("Trilha salva no seu histórico com sucesso!");
-            navigate("/home"); 
-
-        } catch (error) {
-            console.error("Erro ao persistir trilha no Postgres:", error);
-            alert("Erro ao gravar trilha no banco de dados.");
-        } finally {
-            setLoadingSalvar(false);
-        }
+    // Como os dados já estão salvos no banco pelo backend, esta função apenas parabeniza e redireciona
+    const handleConfirmarRedirecionamento = () => {
+        alert("Sua trilha já está ativa e salva no seu perfil!");
+        navigate("/trilhas"); 
     };
+
+    // Fase 2: Persiste a trilha revisada no Postgres
+    // const handleConfirmarEGraduarTrilha = async () => {
+    //     setLoadingSalvar(true);
+    //     try {
+    //         const token = localStorage.getItem('@App:token');
+
+    //         // Envia o payload completo que a IA gerou direto para o banco
+    //         await api.post('/trilha/trilha', dadosTrilhaGerada, {
+    //             headers: { Authorization: `Bearer ${token}` }
+    //         });
+
+    //         alert("Trilha salva no seu histórico com sucesso!");
+    //         navigate("/home"); 
+
+    //     } catch (error) {
+    //         console.error("Erro ao persistir trilha no Postgres:", error);
+    //         alert("Erro ao gravar trilha no banco de dados.");
+    //     } finally {
+    //         setLoadingSalvar(false);
+    //     }
+    // };
 
     return (
         <div className="home-layout">
@@ -140,7 +171,7 @@ export default function PerfilTrilha() {
                                 <ProfileCard 
                                     mode="trilha" 
                                     onBackOrCancel={() => navigate("/home")} 
-                                    onSave={handleSolicitarTrilhaIA}
+                                    onSave={handleGerarTrilhaIA}
                                     onVerificarNivel={handleIniciarSimulado}
                                     loading={loadingSimulado} 
                                 />
@@ -159,7 +190,7 @@ export default function PerfilTrilha() {
                                 <ResultadoSimulado 
                                     dados={resultadoSimulado} 
                                     questoesOriginal={questoes} // Passamos as questões para mostrar os enunciados
-                                    onContinuar={() => handleSolicitarTrilhaIA({ area: areaSelecionada, nivel: resultadoSimulado.nivelVerificado })}
+                                    onContinuar={() => setStatusFluxo("resultado")}
                                 />
                             )}
 
@@ -175,18 +206,23 @@ export default function PerfilTrilha() {
                                 <div className="auth-card glass-effect resultado-trilha-box">
                                     <h2>Seu Cronograma Personalizado</h2>
                                     <p className="subtitle-resultado">
-                                        Foco em <strong>{dadosTrilhaGerada.area}</strong> ({dadosTrilhaGerada.nivel})
+                                        Foco em: <strong>{dadosTrilhaGerada.nome}</strong> <br/>
+                                        Seu Nível Alvo: <strong>{dadosTrilhaGerada.nivelObjetivo}</strong>
                                     </p>
                                     
                                     <div className="cronograma-render-area">
-                                        {dadosTrilhaGerada.cronograma?.modulos?.map((modulo, index) => (
-                                            <div key={index} className="modulo-card">
-                                                <h4>{modulo.titulo}</h4>
-                                                <ul>
-                                                    {modulo.aulas?.map((aula, idx) => (
-                                                        <li key={idx}>🔹 {aula}</li>
-                                                    ))}
-                                                </ul>
+                                        {/* Mapeia a lista de planos de estudo criada no banco */}
+                                        {dadosTrilhaGerada.planos?.map((plano, index) => (
+                                            <div key={plano.id || index} className="modulo-card">
+                                                {/* 🌟 Acessando propriedades exatas do seu model planoEstudo */}
+                                                <h4>Etapa {plano.ordem}: {plano.titulo}</h4>
+                                                <p>{plano.descricao}</p>
+                                                <div className="plano-meta-info">
+                                                    <small>⏱️ Tempo Estimado: {plano.tempoEstimado}h</small>
+                                                    <span className={`status-badge ${plano.status.toLowerCase()}`}>
+                                                        {plano.status}
+                                                    </span>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
@@ -195,8 +231,8 @@ export default function PerfilTrilha() {
                                         <Button type="button" variant="link" onClick={() => setStatusFluxo("formulario")}>
                                             Refazer Escolhas
                                         </Button>
-                                        <Button type="button" loading={loadingSalvar} onClick={handleConfirmarEGraduarTrilha}>
-                                            Salvar no meu Perfil
+                                        <Button type="button" onClick={handleConfirmarRedirecionamento}>
+                                            Ir para meus Estudos (Dashboard)
                                         </Button>
                                     </div>
                                 </div>

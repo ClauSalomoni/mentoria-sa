@@ -1,33 +1,37 @@
-// src/models/trilha.model.js
 import sequelize from "../database/db.js";
-import { DataTypes } from "sequelize";
-import { User } from "./user.model.js"; // Importa para fazer o relacionamento
+import pkg from 'sequelize';
+const { DataTypes } = pkg;
 
-export const Trilha = sequelize.define('Trilha', {
+export const trilha = sequelize.define('trilha', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    area: {
+    nome: {
         type: DataTypes.STRING,
-        allowNull: false // Ex: "frontend"
-    },
-    nivel: {
-        type: DataTypes.STRING,
-        allowNull: false // Ex: "Iniciante"
-    },
-    cronograma: {
-        // Usamos JSONB porque o Postgres gerencia objetos JSON de forma ultra performática.
-        // Isso permite que a IA responda um JSON complexo e o banco salve perfeitamente.
-        type: DataTypes.JSONB, 
         allowNull: false
-    }
-}, {
-    tableName: 'trilhas'
-});
+    },
 
-// ◄ RELACIONAMENTO (Chaves Estrangeiras)
-// Um Usuário pode gerar muitas Trilhas (Histórico)
-User.hasMany(Trilha, { foreignKey: 'userId', onDelete: 'CASCADE' });
-Trilha.belongsTo(User, { foreignKey: 'userId' });
+    nivelAtual: {
+        type: DataTypes.ENUM("INICIANTE" , "INTERMEDIARIO", "AVANCADO"),
+        allowNull: true,
+        set(value) {
+            if (value) this.setDataValue('nivelAtual', value.trim().toUpperCase());
+        }
+    },
+    nivelObjetivo: {
+        type: DataTypes.ENUM("INICIANTE" , "INTERMEDIARIO", "AVANCADO"),
+        allowNull: false,
+        set(value) {
+            if (value) this.setDataValue('nivelObjetivo', value.trim().toUpperCase());
+        }
+       
+    },
+     status: {
+        type: DataTypes.ENUM("NAO_INICIADO" , "EM_ANDAMENTO", "CONCLUIDO"),
+        defaultValue: "NAO_INICIADO"
+    }
+    
+
+})

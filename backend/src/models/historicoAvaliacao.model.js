@@ -1,7 +1,8 @@
 import sequelize from "../database/db.js";
-import { DataTypes } from "sequelize";
+import pkg from 'sequelize';
+const { DataTypes } = pkg;
 
-export const historicoAvaliacaoProfe = sequelize.define("historicoAvaliacaoProfe", {
+export const historicoAvaliacao = sequelize.define("historicoAvaliacao", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,

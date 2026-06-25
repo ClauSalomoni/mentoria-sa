@@ -1,7 +1,8 @@
 //cRiar Classes das tabelas
 // Aqui configuramos nosso codigo de acordo com o DB que temos!
 import sequelize from "../database/db.js";
-import { DataTypes } from "sequelize";
+import pkg from 'sequelize';
+const { DataTypes } = pkg;
 
 export const User = sequelize.define('User', {
     id: {

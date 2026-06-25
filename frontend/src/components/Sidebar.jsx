@@ -34,7 +34,7 @@ export default function Sidebar({ paginaAtiva }) {
                     </li>
                     <li 
                         className={paginaAtiva === "trilha" ? "active" : ""}
-                        onClick={() => navigate("/trilha")}
+                        onClick={() => navigate("/trilhas")}
                     >
                         Minhas Trilhas
                     </li>

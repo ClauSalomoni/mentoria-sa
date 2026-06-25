@@ -14,7 +14,9 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [area, setArea] = useState("");
-    const [nivel, setNivel] = useState("");
+    const [nivelObjetivo, setNivelObjetivo] = useState("");
+    const [nivelAtual, setNivelAtual] = useState("");
+    const [mostrarInputLivre, setMostrarInputLivre] = useState(false)
     const [avatar, setAvatar] = useState(robo)
 
     // Dentro do seu ProfileCard
@@ -22,7 +24,8 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
         { value: "javascript", label: "JavaScript & Ecossistema" },
         { value: "postgresql", label: "Banco de Dados (PostgreSQL)" },
         { value: "logica",     label: "Lógica de Programação" },
-        { value: "fullstack",  label: "Desenvolvimento Full-Stack" }
+        { value: "fullstack",  label: "Desenvolvimento Full-Stack" },
+        { value: "outro",      label: "➕ Outro (Digitar tema personalizado...)" }
     ];
 
     useEffect(() =>{
@@ -59,7 +62,15 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
     const handleSubmit = (e) => {
         e.preventDefault();
         if (mode === "trilha") {
-            onSave({ area, nivel });
+            if (!area.trim()) {
+            alert("Por favor, selecione uma área ou digite um tema personalizado.");
+            return;
+        }
+            onSave({ 
+                nome: area.trim(), 
+                nivelAtual: nivel || "INICIANTE",
+                nivelObjetivo: nivelObjetivo
+             });
         } else {
             onSave({ nome, email });
         }
@@ -124,36 +135,60 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
                             
                                 <div className="profile-input-wrapper">
                                     <Select 
-                                        value={area} 
-                                        onChange={(e) => setArea(e.target.value)} 
+                                        value={mostrarInputLivre ? "outro" : area} 
+                                        onChange={(e) => {
+                                            if (e.target.value === "outro") {
+                                                setMostrarInputLivre(true);
+                                                setArea(""); // Limpa para o usuário poder digitar do zero no input livre
+                                            } else {
+                                                setMostrarInputLivre(false);
+                                                setArea(e.target.value); // Grava a opção padrão diretamente em 'area'
+                                            }
+                                        }} 
                                         options={opcoesAreas} 
                                         required 
                                     />
                                 </div>
 
+                                {/* 🌟 RENDERIZAÇÃO CONDICIONAL: Se escolheu "Outro", o Input de texto livre aparece logo abaixo */}
+                                {mostrarInputLivre && (
+                                    <div className="profile-input-wrapper" style={{ marginTop: "10px", animation: "fadeIn 0.3s ease" }}>
+                                        <Input 
+                                            placeholder="Digite o tema exato (ex: Docker, React Native, Java...)" 
+                                            type="text" 
+                                            value={area} 
+                                            onChange={(e) => setArea(e.target.value)} 
+                                            required 
+                                        />
+                                    </div>
+                                )}
+
                            <div className="profile-label-row">
                              <h3 className="section-form-title">Nível de Conhecimento</h3>
                                 
-                                <Button onClick={() => {
-                                    if (!area) {
-                                        alert("Por favor, selecione uma Área de Aprendizado primeiro!");
-                                        return;
-                                    }
-                                    onVerificarNivel(area);
-                                }}>
-                                    Verificar Nível
+                                <Button type="button" 
+                                    loading={loading} 
+                                    onClick={() => {
+                                        if (!area.trim()) {
+                                            alert("Por favor, selecione uma área ou digite seu tema personalizado primeiro!");
+                                            return;
+                                        }
+                                        onVerificarNivel(area); // Envia o valor (seja do Select ou do Input) para o simulado
+                                    }}
+                                >
+                                    🚀 Fazer Avaliação por IA
                                 </Button>
                             </div>
                         <div className="profile-input-wrapper">
                          
 
                             <div className="level-buttons-row">
-                                {["Iniciante", "Intermediário", "Avançado"].map((lvl) => (
+                                {["INICIANTE", "INTERMEDIARIO", "AVANCADO"].map((lvl) => (
                                     <button
                                         key={lvl}
                                         type="button"
-                                        className={`level-selection-btn ${nivel === lvl ? "active" : ""}`}
-                                        onClick={() => setNivel(lvl)}
+                                        className={`level-selection-btn ${nivelAtual === lvl ? "active" : ""}`}
+                                        onClick={() => setNivelAtual(lvl)}
                                     >
                                         {lvl}
                                     </button>

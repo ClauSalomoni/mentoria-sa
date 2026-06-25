@@ -1,7 +1,8 @@
 import sequelize from "../database/db.js";
-import { DataTypes } from "sequelize";
+import pkg from 'sequelize';
+const { DataTypes } = pkg;
 
-export const planoEstudoProfe = sequelize.define("planoEstudoProfe", {
+export const planoEstudo = sequelize.define("planoEstudo", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -24,8 +25,8 @@ export const planoEstudoProfe = sequelize.define("planoEstudoProfe", {
         defaultValue: 0
     },
     status: {
-        type: DataTypes.ENUM("NAO_INICIADO" , "EM_ANDAMENTO", "CONCLUIDO"),
-        defaultValue: "NAO_INICIADO"
+        type: DataTypes.ENUM("PENDENTE" , "EM_ANDAMENTO", "CONCLUIDO"),
+        defaultValue: "PENDENTE"
     }
     
 })

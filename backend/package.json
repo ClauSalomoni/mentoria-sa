@@ -1,5 +1,5 @@
 {
-  "name": "orm",
+  "name": "mentor",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@google/genai": "^2.9.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
@@ -22,9 +23,13 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "openai": "^6.42.0",
-    "pg": "^8.20.0",
+    "pg": "^8.22.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.8",
+    
     "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/sequelize": "^4.28.20"
   }
 }

@@ -1,6 +1,7 @@
-// src/models/curso.model.js
+// src/models/curso.model.js    ABAIXO codigo ANTIGO RENDERIZADO
 import sequelize from "../database/db.js";
-import { DataTypes } from "sequelize";
+import pkg from 'sequelize';
+const { DataTypes } = pkg;
 import { User } from "./user.model.js"; // Importa o seu model de usuário existente
 
 export const Curso = sequelize.define('Curso', {

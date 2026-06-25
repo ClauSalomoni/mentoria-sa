@@ -1,0 +1,158 @@
+.trilhas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    margin-top: 25px;
+    box-sizing: border-box;
+}
+
+/* O Card com Efeito Glassmorphism baseado nos seus estilos */
+.trilha-card-salva.glass-effect {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efeito Hover brilhante seguindo a paleta roxo/neon */
+.trilha-card-salva.glass-effect:hover {
+    transform: translateY(-4px);
+    border-color: rgba(170, 59, 255, 0.4);
+    box-shadow: 0 8px 24px rgba(170, 59, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Cabeçalho interno do Card */
+.trilha-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.trilha-card-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* Badge de Nível (Ex: BASICO, AVANCADO) usando seu Roxo Ativo */
+.badge-nivel {
+    background: rgba(170, 59, 255, 0.15);
+    border: 1px solid #aa3bff;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 8px rgba(170, 59, 255, 0.2);
+    white-space: nowrap;
+}
+
+/* Texto descritivo do objetivo */
+.trilha-card-salva p {
+    margin: 0 0 20px 0;
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+/* Rodapé do Card (Módulos + Botão Acessar) */
+.trilha-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 12px;
+}
+
+.trilha-card-footer span {
+    color: #e5e4e7;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Botão do Card herdando transições nativas */
+.trilha-card-footer button {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.trilha-card-footer button:hover {
+    background: #aa3bff;
+    border-color: #aa3bff;
+    box-shadow: 0 0 12px rgba(170, 59, 255, 0.3);
+}
+
+/* Botão "+ Criar Nova Trilha" do Topo */
+.btn-criar-nova {
+    background: #aa3bff;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(170, 59, 255, 0.2);
+}
+
+.btn-criar-nova:hover {
+    background: #b854ff;
+    box-shadow: 0 4px 16px rgba(170, 59, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Card de Feedback de Estado Vazio (Quando não há trilhas) */
+.card-vazio.glass-effect {
+    grid-column: 1 / -1; /* Ocupa o grid inteiro */
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 40px;
+    text-align: center;
+    max-width: 500px;
+    margin: 40px auto 0 auto;
+}
+
+.card-vazio h3 {
+    color: #fff;
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+}
+
+.card-vazio p {
+    color: #9ca3af;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Centralizador do Spinner */
+.spinner-center {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    padding: 60px 0;
+}

@@ -8,6 +8,7 @@ import EditarPerfil from './pages/EditarPerfil';
 import RotaProtegida from './components/RotaProtegida';
 import Aulas from './pages/Aulas'
 import Mentoria from './pages/Mentoria';
+import MinhasTrilhas from './pages/MinhasTrilhas';
 
 function App() {
   
@@ -51,10 +52,18 @@ function App() {
         />
 
         <Route 
-          path="/trilha" 
+          path="/criar-trilha" 
           element={
             <RotaProtegida>
               <PerfilTrilha />
+            </RotaProtegida>
+          }
+        />
+        <Route 
+          path="/trilhas" 
+          element={
+            <RotaProtegida>
+              <MinhasTrilhas />
             </RotaProtegida>
           }
         />

@@ -1,45 +1,345 @@
-// src/controllers/trilha.controller.js
-import { Trilha } from "../models/trilha.model.js";
+import pkg from 'sequelize';
+const { where } = pkg;
+import { trilha, planoEstudo, historicoAvaliacao } from "../models/index.js";
+import { gerarRespostaGemini } from '../../services/geminiService.js'
+import { parseRespostaIA } from "../../utils/parseUtil.js";
+/*
+  POST /trilhas/avaliacao
+  Gera a prova diagnóstica
+*/
+export async function gerarAvaliacao(req, res) {
+  try {
+    const { area } = req.body;
 
-export const salvarTrilhaIA = async (req, res) => {
-    try {
-        const { area, nivel, cronograma } = req.body;
-        const userId = req.user.id; // Middleware de autenticação injeta isso aqui
+    const prompt = `
 
-        // Cria o registro no Postgres via Sequelize mapeando o userId automaticamente
-        const novaTrilha = await Trilha.create({
-            area,
-            nivel,
-            cronograma, // O objeto JSON vindo do MentorIA
-            userId
-        });
+      
+      
+      Atue como especialista em educação e tecnologia. Gere uma prova diagnóstica sobre ${area}.
+    Regras:
+    - Gere exatamente 10 questões
+    - Deve ter 5 alternativas em cada questão
+    - Apenas 1 alternativa deve ser correta
+    - Misture níveis de dificuldade
+    - Evite perguntas repetidas
+    - Retorne apens JSON.
+    - Misture a resposta correta entre as diferentes alternativas
+    - Não exiba a resposta para o usuário
+    - A prova deve avaliar se o aluno é BASICO, INTERMEDIARIO ou AVANCADO.
+    
+    Retorne APENAS um JSON neste formato:
+      {
+        "area": "${area}",
+        "questoes": [
+          {
+            "pergunta": "Texto da pergunta",
+            "alternativas": ["A", "B", "C", "D", "E"],
+            "respostaCorreta": "A"
+          }
+        ]
+      }
 
-        return res.status(201).json({
-            sucesso: true,
-            mensagem: "Trilha da MentorIA salva com sucesso!",
-            dados: novaTrilha
-        });
+      Gere 10 questões.      
+    `;
 
-    } catch (error) {
-        console.error("Erro ao salvar trilha:", error);
-        return res.status(500).json({ erro: "Erro interno no servidor ao salvar trilha." });
+    const respostaIA = await gerarRespostaGemini(prompt);
+    
+    const avaliacao = parseRespostaIA(respostaIA)
+    
+
+    return res.status(200).json(avaliacao);
+  } catch (error) {
+    return res.status(500).json({
+      mensagem: "Erro ao gerar avaliação",
+      erro: error.message,
+    });
+  }
+}
+
+/*
+  POST /trilhas/avaliacao/responder
+  Corrige a avaliação, salva histórico, cria trilha e planos
+*/
+export async function responderAvaliacao(req, res) {
+  try {
+    const { area, respostas } = req.body;
+
+    const prompt = `
+      Corrija a avaliação diagnóstica do aluno sobre ${area}.
+
+      Respostas do aluno:
+      ${JSON.stringify(respostas)}
+
+      Com base nas respostas:
+      1. Calcule a pontuação de 0 a 10;
+      2. Classifique o aluno estritamente como BASICO, INTERMEDIARIO ou AVANCADO (use exatamente estes termos em caixa alta, sem acentos)
+      3. Gere uma trilha personalizada de estudos;
+      4. Gere planos de estudo para essa trilha.
+
+      Retorne APENAS um JSON neste formato:
+
+      {
+        "pontuacao": 8,
+        "nivelAnterior": "BASICO",
+        "nivelAtual": "INTERMEDIARIO",
+        "trilha": {
+          "nome": "Trilha de Lógica de Programação",
+          "area": "Lógica de Programação",
+          "nivelObjetivo": "AVANCADO",
+          "planos": [
+            {
+              "titulo": "Variáveis e tipos de dados",
+              "descricao": "Estudar variáveis, tipos primitivos e entrada de dados.",
+              "tempoEstimado": "2h",
+              "ordem": 1
+            }
+          ]
+        }
+      }
+    `;
+
+    const respostaIA = await gerarRespostaGemini(prompt);
+    
+   
+    const dados = parseRespostaIA(respostaIA);
+
+    const novaTrilha = await trilha.create({
+      nome: dados.trilha.nome,
+      area: dados.trilha.area,
+      nivelAtual: dados.nivelAtual,
+      nivelObjetivo: dados.trilha.nivelObjetivo,
+      status: "EM_ANDAMENTO",
+      userId: req.user.id,
+    });
+
+    const avaliacao = await historicoAvaliacao.create({
+      pontuacao: dados.pontuacao,
+      nivelAnterior: dados.nivelAnterior,
+      nivelAtual: dados.nivelAtual,
+      dataAvaliacao: new Date(),
+      userId: req.user.id,
+      trilhaId: novaTrilha.id,
+    });
+
+    const planos = await planoEstudo.bulkCreate(
+      dados.trilha.planos.map((plano) => {
+        // 🌟 EXTRAI APENAS OS NÚMEROS DO TEXTO (Ex: "2h" ou "2 horas" vira 2)
+        const horasNumericas = parseFloat(String(plano.tempoEstimado || '').replace(/[^0-9.]/g, ''));
+        return {
+        titulo: plano.titulo,
+        descricao: plano.descricao,
+        tempoEstimado: Number.isNaN(horasNumericas) ? 2.0 : horasNumericas,
+        ordem: plano.ordem,
+        progresso: 0,
+        status: "PENDENTE",
+        trilhaId: novaTrilha.id,
+        }
+      })
+    );
+
+    return res.status(201).json({
+      mensagem: "Avaliação corrigida, trilha criada e planos salvos com sucesso.",
+      avaliacao,
+      trilha: novaTrilha,
+      planos,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      mensagem: "Erro ao responder avaliação e gerar trilha",
+      erro: error.message,
+    });
+  }
+}
+
+/*
+  GET /trilhas
+*/
+export async function listarTrilhas(req, res) {
+  try {
+    const trilhas = await trilha.findAll({
+      where: {
+        userId: req.user.id,
+      },
+      include: [planoEstudo],
+    });
+
+    return res.status(200).json(trilhas);
+  } catch (error) {
+    return res.status(500).json({
+      mensagem: "Erro ao listar as trilhas",
+      erro: error.message,
+    });
+  }
+}
+
+/*
+  GET /trilhas/:id
+*/
+export async function buscarTrilha(req, res) {
+  try {
+    const { id } = req.params;
+
+    const trilhaEncontrada = await trilha.findOne({
+      where: {
+        id,
+        userId: req.user.id,
+      },
+      include: [planoEstudo],
+    });
+
+    if (!trilhaEncontrada) {
+      return res.status(404).json({
+        mensagem: "Trilha não encontrada",
+      });
     }
-};
 
-// GET /trilha/minhas-trilhas
-export const listarTrilhasDoAluno = async (req, res) => {
-    try {
-        const userId = req.user.id; // Pega o ID do usuário logado pelo middleware
+    return res.status(200).json(trilhaEncontrada);
+  } catch (error) {
+    return res.status(500).json({
+      mensagem: "Erro ao buscar a trilha",
+      erro: error.message,
+    });
+  }
+}
 
-        // Busca todas as trilhas onde o userId bate com o aluno logado
-        const trilhas = await Trilha.findAll({
-            where: { userId },
-            order: [['createdAt', 'DESC']] // Traz as mais recentes primeiro
-        });
+/*
+  PUT /trilhas/:id
+*/
+export async function atualizarTrilha(req, res) {
+  try {
+    const { id } = req.params;
 
-        return res.json(trilhas);
-    } catch (error) {
-        console.error("Erro ao buscar trilhas:", error);
-        return res.status(500).json({ erro: "Erro ao carregar o histórico de trilhas." });
+    const trilhaEncontrada = await trilha.findOne({
+      where: {
+        id,
+        userId: req.user.id,
+      },
+    });
+
+    if (!trilhaEncontrada) {
+      return res.status(404).json({
+        mensagem: "Trilha não encontrada",
+      });
     }
-};
+
+    await trilhaEncontrada.update(req.body);
+
+    return res.status(200).json(trilhaEncontrada);
+  } catch (error) {
+    return res.status(500).json({
+      mensagem: "Erro ao atualizar a trilha",
+      erro: error.message,
+    });
+  }
+}
+export async function criarTrilha(req, res) {
+  try { 
+    const { nome, nivelAtual, nivelObjetivo } = req.body
+    console.log("verificação reqbody", req.body);
+    
+    if( !nome || !nivelObjetivo) {
+      return res.status(400).json({ mensagem: " Nome e nivel do objetivo são obrigatórios"})
+    }
+    const prompt = `
+    Atue como especialista em educação e tecnologia. Gere uma trilha personalizada de estudos.
+      
+      Tema/Nome da Trilha: ${nome}
+      Nível Atual do Aluno: ${nivelAtual || 'INICIANTE'}
+      Nível Objetivo: ${nivelObjetivo}
+
+      Regras:
+      - Crie um cronograma lógico e sequencial de aprendizado.
+      - Divida a trilha em planos de estudo (módulos/etapas).
+      - Retorne APENAS um JSON válido.
+
+      Retorne APENAS um JSON neste formato:
+      {
+        "nome": "Trilha personalizada de ${nome}",
+        "planos": [
+          {
+            "titulo": "Nome do tópico",
+            "descricao": "O que estudar nessa etapa.",
+            "tempoEstimado": "2h",
+            "ordem": 1
+          }
+        ]
+      }
+    
+    `
+    const respostaIa = await gerarRespostaGemini(prompt)
+    console.log(respostaIa, "Verificação 1")
+    
+   
+    const dados = parseRespostaIA(respostaIa)
+    console.log(dados, "Verificação 2")
+
+    const trilhaNova = await trilha.create({
+      nome: dados.nome,
+      nivelAtual: nivelAtual || "INICIANTE",
+      nivelObjetivo: nivelObjetivo.toUpperCase(),
+      status: "EM_ANDAMENTO",
+      userId: req.user.id
+    });
+    // 2. Cria em lote (bulkCreate) os planos gerados pela IA
+    const planos = await planoEstudo.bulkCreate(
+      dados.planos.map((plano) => {
+      const horasNumericas = parseFloat(String(plano.tempoEstimado || '').replace(/[^0-9.]/g, ''));
+      return  {
+          titulo: plano.titulo,
+          descricao: plano.descricao,
+          tempoEstimado: Number.isNaN(horasNumericas) ? 2.0 : horasNumericas,
+          ordem: plano.ordem,
+          progresso: 0,
+          status: "PENDENTE",
+          trilhaId: trilhaNova.id,
+          };
+      })
+    );
+
+    return res.status(201).json({
+      mensagem: "Trilha criada com sucesso através de IA!",
+      trilha: trilhaNova,
+      planos
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      mensagem: "Erro ao criar trilha com IA",
+      erro: error.message,
+    });
+  }
+}
+
+
+/*
+  DELETE /trilhas/:id
+*/
+export async function excluirTrilha(req, res) {
+  try {
+    const { id } = req.params;
+
+    const trilhaEncontrada = await trilha.findOne({
+      where: {
+        id,
+        userId: req.user.id,
+      },
+    });
+
+    if (!trilhaEncontrada) {
+      return res.status(404).json({
+        mensagem: "Trilha não encontrada",
+      });
+    }
+
+    await trilhaEncontrada.destroy();
+
+    return res.status(200).json({
+      mensagem: "Trilha excluída com sucesso",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      mensagem: "Erro ao excluir a trilha",
+      erro: error.message,
+    });
+  }
+}

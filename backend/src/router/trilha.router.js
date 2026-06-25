@@ -1,10 +1,21 @@
 import { Router } from "express";
-import { salvarTrilhaIA, listarTrilhasDoAluno } from "../controller/trilha.controller.js";
+import { gerarAvaliacao, 
+    responderAvaliacao, 
+    listarTrilhas, 
+    buscarTrilha, 
+    atualizarTrilha, 
+    excluirTrilha, 
+    criarTrilha} from "../controller/trilha.controller.js";
 import { autenticarToken } from "../middlewares/auth.middleware.js";
 
 const TrilhaRouter = Router()
 
-TrilhaRouter.post("/trilha", autenticarToken, salvarTrilhaIA);
-TrilhaRouter.get("/minhas-trilhas", autenticarToken, listarTrilhasDoAluno);
+TrilhaRouter.post("/avaliacao", autenticarToken, gerarAvaliacao);
+TrilhaRouter.post("/avaliacao/responder", autenticarToken, responderAvaliacao);
+TrilhaRouter.post("/", autenticarToken, criarTrilha);
+TrilhaRouter.get("/", autenticarToken, listarTrilhas);
+TrilhaRouter.get("/:id", autenticarToken, buscarTrilha);
+TrilhaRouter.put("/:id", autenticarToken, atualizarTrilha);
+TrilhaRouter.delete("/:id", autenticarToken, excluirTrilha);
 
 export default TrilhaRouter;

@@ -53,7 +53,7 @@ export default function ResultadoSimulado({ dados, questoesOriginal = [], onCont
                                 </div>
                                 <div className="revisao-texto">
                                     <span>Questão {idx + 1}</span>
-                                    <p>{enunciadoExibicao}</p>
+                                    {/* <p>{enunciadoExibicao}</p> */}
                                 </div>
                             </div>
                         );
