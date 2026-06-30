@@ -62,7 +62,7 @@ export default function Home() {
                 <main className="dashboard-body">
                     <section className="welcome-area">
                         <h1>Área do Aluno</h1>
-                        <p>Sua trilha de aprendizado adaptada por inteligência artificial.</p>
+                        <p>Assista aos Vídeos</p>
                     </section>
 
                     <div className="dashboard-split-container">
@@ -100,7 +100,7 @@ export default function Home() {
 
                         <section className="ai-column">
                             <div className="card-cta-ai glass-effect">
-                                <div className="ai-badge">NOVO</div>
+                                <div className="ai-badge">CHAT</div>
                                 <h3>Fale com a MentorIA</h3>
                                 <p>Tem alguma dúvida sobre os seus conteúdos ou quer gerar um simulado personalizado agora?</p>
                                 <div className="ai-features">

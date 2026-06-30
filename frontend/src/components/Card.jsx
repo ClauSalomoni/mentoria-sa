@@ -14,10 +14,13 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [area, setArea] = useState("");
+    const [senha, setSenha] = useState("")
     const [nivelObjetivo, setNivelObjetivo] = useState("");
     const [nivelAtual, setNivelAtual] = useState("");
     const [mostrarInputLivre, setMostrarInputLivre] = useState(false)
     const [avatar, setAvatar] = useState(robo)
+    // ◄ ADICIONADO: Controla se o formulário está liberado para edição no modo perfil
+    const [editando, setEditando] = useState(false);
 
     // Dentro do seu ProfileCard
     const opcoesAreas = [
@@ -35,7 +38,7 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
                     const token = localStorage.getItem('@App:token');
                     if(!token) return;
 
-                    const response = await api.get('auth/perfil', {
+                    const response = await api.get('user/perfil', {
                         headers: {
                             Authorization: `Bearer ${token}`
                         }
@@ -61,6 +64,9 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (mode === "perfil" && !editando) {
+        return;
+    }
         if (mode === "trilha") {
             if (!area.trim()) {
             alert("Por favor, selecione uma área ou digite um tema personalizado.");
@@ -72,7 +78,9 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
                 nivelObjetivo: nivelObjetivo
              });
         } else {
-            onSave({ nome, email });
+            // ◄ MODIFICADO: Passa a senha junto se ela foi preenchida
+            onSave({ nome, email, avatar, ...(senha && { senha }) });
+            setEditando(false); // Fecha o modo edição após salvar
         }
     };
 
@@ -82,8 +90,15 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
     };
 
     const handleAlterarSenha = () => {
-        const nova = prompt("Digite sua nova senha:");
-        if (nova) alert("Senha alterada localmente!");
+        const nova = prompt("Digite sua nova senha (mínimo 8 caracteres):");
+        if (nova) {
+            if(nova.length < 8) {
+                alert("A senha precisa ter pelo menos 8 caracteres!");
+                return;
+            }
+            setSenha(nova); // ◄ Guarda a senha temporariamente no estado
+            alert("Nova senha definida! Clique em 'Salvar' para gravar no sistema.");
+        }
     };
 
     return (
@@ -94,6 +109,14 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
                     <img src={avatar || robo} alt="Avatar" className="profile-avatar-image" />
                     <h2>{nome || "Carregando..."}</h2>
                     <p>{email || "carregando..."}</p>
+
+                    {/* ◄ ADICIONADO: Botão de alternância superior para quando NÃO está editando */}
+                    {!editando && (
+                        <Button type="button" onClick={() => setEditando(true)} style={{ marginTop: "10px" }}>
+                            Editar Perfil
+                        </Button>
+                    )}
+
                 </div>
             )}
 
@@ -107,6 +130,8 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
                             value={nome} 
                             onChange={(e) => setNome(e.target.value)} 
                             required 
+                            disabled={!editando} // ◄ Bloqueia se 'editando' for falso
+                        
                         />
                         <Input 
                             label="E-mail" 
@@ -114,16 +139,20 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
                             value={email} 
                             onChange={(e) => setEmail(e.target.value)} 
                             required 
+                            disabled={!editando} // ◄ Bloqueia se 'editando' for falso
                         />
-                        <div style={{ textAlign: "right", marginBottom: "15px" }}>
-                            <Button type="button" variant="link" onClick={handleAlterarSenha}>
-                                Alterar Senha
-                            </Button>
-                        </div>
+
+                        {editando && (
+                            <div style={{ textAlign: "right", marginBottom: "15px" }}>
+                                <Button type="button" variant="link" onClick={handleAlterarSenha}>
+                                    {senha ? "Senha Alterada" : "🔑 Alterar Senha"}
+                                </Button>
+                            </div>
+                        )}
                     </>
                 ) : (
                     <>
-                        <h1>Minha Trilha</h1>
+                        <h1>Personalizar Trilha</h1>
                         
                             <div className="profile-label-row">
                                 <h3 className="section-form-title" style={{ marginTop: 0 }}>Área de Aprendizado</h3>
@@ -200,12 +229,24 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
 
                 {/* Ações Inferiores dinâmicas com base no modo */}
                 <div className={stylesBtn.divBtn + " profile-actions-row"}>
-                    <Button type="button" variant="link" onClick={onBackOrCancel}>
-                        {mode === "trilha" ? "Voltar" : "Cancelar"}
-                    </Button>
-                    <Button type="submit" loading={loading}>
-                        {mode === "trilha" ? "Cadastrar" : "Salvar"}
-                    </Button>
+                    {mode === "trilha" ? (
+                        <>
+                            <Button type="button" variant="link" onClick={onBackOrCancel}>Voltar</Button>
+                            <Button type="submit" loading={loading}>Cadastrar</Button>
+                        </>
+                    ) : (
+                        /* No modo perfil, os botões inferiores de Salvar/Cancelar só aparecem se estiver editando */
+                        editando && (
+                            <>
+                                <Button type="button" variant="link" onClick={() => { setEditando(false); setSenha(""); }}>
+                                    Cancelar
+                                </Button>
+                                <Button type="submit" loading={loading}>
+                                    Salvar Alterações
+                                </Button>
+                            </>
+                        )
+                    )}
                 </div>
             </form>
         </div>

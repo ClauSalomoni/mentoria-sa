@@ -153,7 +153,8 @@ export default function PerfilTrilha() {
     //         setLoadingSalvar(false);
     //     }
     // };
-
+    console.log("statusFluxo", statusFluxo);
+    
     return (
         <div className="home-layout">
             <Sidebar paginaAtiva="trilha" />
@@ -162,7 +163,7 @@ export default function PerfilTrilha() {
                 
                 <main className="dashboard-body">
                     <section className="welcome-area">
-                        <h1>Minha Trilha</h1>
+                        <h1>Sua Área de Estudos</h1>
                     </section>
 
                     <div className={`dashboard-split-container ${statusFluxo === "simulado" ? "simulado-ativo" : ""} ${statusFluxo === "resultado-simulado" ? "resultado-ativo" : ""}`}>
@@ -244,7 +245,7 @@ export default function PerfilTrilha() {
 
                         <section className="ai-column">
                             <div className="card-cta-ai glass-effect">
-                                <div className="ai-badge">NOVO</div>
+                                <div className="ai-badge">CHAT</div>
                                 <h3>Fale com a MentorIA</h3>
                                 <p>Tem alguma dúvida sobre os seus conteúdos ou quer gerar um simulado personalizado agora?</p>
                                 <div className="ai-features">

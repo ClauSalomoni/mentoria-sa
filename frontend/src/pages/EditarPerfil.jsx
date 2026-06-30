@@ -1,17 +1,46 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import ProfileCard from "../components/Card";
 import Button from "../components/Button";
+import api from "../services/api";
 import "./PerfilTrilha.css";
 
 export default function EditarPerfil() {
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleSalvarPerfil = (dados) => {
+    const handleSalvarPerfil = async (dados) => {
         console.log("Salvando dados pessoais no Postgres...", dados);
-        alert("Perfil atualizado!");
-        navigate("/");
+        
+        setLoading(true);
+        try {
+            const token = localStorage.getItem('@App:token');
+            const response = await api.put('user/perfil', dados,{
+                headers: {
+                    Authorization: `Bearer ${token}`},
+
+            })
+
+            if(response.status === 200){
+                alert("Perfil atualizado!");
+                navigate("/");
+            } else{
+                alert("Comportamento inesperado ao salvar edição de Perfil")
+            }
+        } catch (error){
+            console.error("Erro ao atualizar perfil:", error);
+            
+            // Pega a mensagem vinda do seu backend, se houver
+            const mensagemErro = error.response?.data?.message || "Erro interno no servidor.";
+            alert(`Falha ao atualizar: ${mensagemErro}`);
+            
+        } finally {
+            // Executa sempre, limpando o estado de carregamento
+            setLoading(false);
+
+        }
     };
 
     return (
@@ -23,12 +52,17 @@ export default function EditarPerfil() {
                 <main className="dashboard-body">
                     <section className="welcome-area">
                         <h1>Editar Cadastro</h1>
-                        <p>Mantenha suas informações de acesso atualizadas no sistema.</p>
+                        <p>{loading ? "Salvando alterações..." : "Mantenha suas informações de acesso atualizadas no sistema."}</p>
                     </section>
 
                     <div className="dashboard-split-container">
                         <section className="profile-form-section">
-                            <ProfileCard mode="perfil" onBackOrCancel={() => navigate(-1)} onSave={handleSalvarPerfil} />
+                            <ProfileCard 
+                            mode="perfil" 
+                            onBackOrCancel={() => navigate(-1)} 
+                            onSave={handleSalvarPerfil}
+                            loading={loading}
+                             />
                         </section>
 
                         <section className="ai-column">

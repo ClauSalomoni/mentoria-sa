@@ -69,7 +69,7 @@ export default function MinhasTrilhas() {
                                     <p>Objetivo final: {t.nivelObjetivo}</p>
                                     <div className="trilha-card-footer">
                                         <span>📚 {t.planoEstudos?.length || 0} Módulos</span>
-                                        <button onClick={() => navigate(`/trilha/${t.id}`)}>Acessar Conteúdo</button>
+                                        <button onClick={() => navigate(`/trilha/${t.id}`)}>Ver Plano de Estudo</button>
                                     </div>
                                 </div>
                             ))

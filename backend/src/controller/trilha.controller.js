@@ -73,9 +73,10 @@ export async function responderAvaliacao(req, res) {
       Com base nas respostas:
       1. Calcule o total de acertos, pontuação de 0 a 10;
       2. Classifique o aluno estritamente como BASICO, INTERMEDIARIO ou AVANCADO (use exatamente estes termos em caixa alta, sem acentos)
-      3. Para CADA resposta enviada, informe se o aluno acertou ou errou para montarmos o relatório visual.
-      4. Gere uma trilha personalizada de estudos;
-      5. Gere planos de estudo para essa trilha.
+      3. A Classificação deve respeitar o numero de acertos: de 0 à 4 acertos é nível BASICO, de 5 à 7 nivel INTERMEDIARIO, de 8 á 10 é nivel AVANCADO. 
+      4. Para CADA resposta enviada, informe se o aluno acertou ou errou para montarmos o relatório visual.
+      5. Gere uma trilha personalizada de estudos de acordo com o nível de conhecimento e a área desejada;
+      6. Gere planos de estudo para essa trilha.
 
       Retorne APENAS um JSON neste formato:
 

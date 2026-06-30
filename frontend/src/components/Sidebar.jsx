@@ -29,9 +29,9 @@ export default function Sidebar({ paginaAtiva }) {
                     >
                         MentorIA
                     </li>
-                    <li className={paginaAtiva === "cursos" ? "active" : ""}>
+                    {/* <li className={paginaAtiva === "cursos" ? "active" : ""}>
                         Meus Cursos
-                    </li>
+                    </li> */}
                     <li 
                         className={paginaAtiva === "trilha" ? "active" : ""}
                         onClick={() => navigate("/trilhas")}
@@ -42,7 +42,7 @@ export default function Sidebar({ paginaAtiva }) {
                         className={paginaAtiva === "perfil" ? "active" : ""}
                         onClick={() => navigate("/perfil")}
                     >
-                        Perfil
+                        Ver Perfil
                     </li>
                 </ul>
             </nav>

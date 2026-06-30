@@ -1,3 +1,4 @@
+//codigo para implementação futura
 import { criarAulaSchema } from "../validator/curso.validator.js";
 import { Aula } from "../models/aula.model.js";
 import { z } from "zod";
