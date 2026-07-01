@@ -25,7 +25,7 @@ export async function gerarAvaliacao(req, res) {
     - Retorne apens JSON.
     - Misture a resposta correta entre as diferentes alternativas
     - Não exiba a resposta para o usuário
-    - A prova deve avaliar se o aluno é BASICO, INTERMEDIARIO ou AVANCADO.
+    - A prova deve avaliar se o aluno é INICIANTE, INTERMEDIARIO ou AVANCADO.
     
     Retorne APENAS um JSON neste formato:
       {
@@ -72,8 +72,8 @@ export async function responderAvaliacao(req, res) {
 
       Com base nas respostas:
       1. Calcule o total de acertos, pontuação de 0 a 10;
-      2. Classifique o aluno estritamente como BASICO, INTERMEDIARIO ou AVANCADO (use exatamente estes termos em caixa alta, sem acentos)
-      3. A Classificação deve respeitar o numero de acertos: de 0 à 4 acertos é nível BASICO, de 5 à 7 nivel INTERMEDIARIO, de 8 á 10 é nivel AVANCADO. 
+      2. Classifique o aluno estritamente como INICIANTE, INTERMEDIARIO ou AVANCADO (use exatamente estes termos em caixa alta, sem acentos)
+      3. A Classificação deve respeitar o numero de acertos: de 0 à 4 acertos é nível INICIANTE, de 5 à 7 nivel INTERMEDIARIO, de 8 á 10 é nivel AVANCADO. 
       4. Para CADA resposta enviada, informe se o aluno acertou ou errou para montarmos o relatório visual.
       5. Gere uma trilha personalizada de estudos de acordo com o nível de conhecimento e a área desejada;
       6. Gere planos de estudo para essa trilha.
@@ -83,7 +83,7 @@ export async function responderAvaliacao(req, res) {
       {
         "pontuacao": 8,
         "totalQuestoes": 10,
-        "nivelAnterior": "BASICO",
+        "nivelAnterior": "INICIANTE",
         "nivelAtual": "INTERMEDIARIO",
         "detalhes": [
           { "questaoId": 1, "correto": true },
@@ -307,7 +307,7 @@ export async function criarTrilha(req, res) {
     console.log(dados, "Verificação 2")
 
     const trilhaNova = await trilha.create({
-      nome: dados.nome,
+      nome: nome,
       nivelAtual: nivelAtual || "INICIANTE",
       nivelObjetivo: nivelObjetivo.toUpperCase(),
       status: "EM_ANDAMENTO",

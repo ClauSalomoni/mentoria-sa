@@ -1,6 +1,8 @@
 //Rotas PRIVADAS!!!
+import 'dotenv/config';
 import { User} from'../models/user.model.js';
 import bcrypt from 'bcryptjs';
+import jwt from "jsonwebtoken";
 
 //GET /user/perfil
 export async function perfil(req, res) {
@@ -43,8 +45,23 @@ export async function atualizarPerfil(req, res) {
         // Retorna os dados atualizados sem a senha
         const usuarioAtualizado = user.toJSON();
         delete usuarioAtualizado.senha;
+        // ==========================================
+        // 🚀 ALTERAÇÃO PROPOSTA (BOA PRÁTICA):
+        // Editando Perfil e SALVANDO local
+        // (Use a mesma SecretKey e tempo de expiração do seu login)
+        const novoToken = jwt.sign(
+            { id: usuarioAtualizado.id, email: usuarioAtualizado.email },
+            process.env.JWT_SECRET || "sua_chave_secreta", 
+            { expiresIn: "7d" } // mesmo tempo usado no login
+        );
+        // ==========================================
 
-        return res.json(usuarioAtualizado);
+        // Retorna o par perfeito: token novo + dados novos
+        return res.json({
+            token: novoToken,
+            user: usuarioAtualizado
+        });
+
     } catch (error) {
         return res.status(500).json({ message: "Erro ao atualizar perfil", detalhes: error.message  });
     }

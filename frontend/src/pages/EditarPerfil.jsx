@@ -24,8 +24,15 @@ export default function EditarPerfil() {
             })
 
             if(response.status === 200){
-                alert("Perfil atualizado!");
-                navigate("/");
+                        // 🚀 BOA PRÁTICA: Desestrutura a resposta perfeita que seu NOVO controller envia
+                const { token: novoToken, user: usuarioAtualizado } = response.data;
+
+                // Salva diretamente o que veio do servidor, sem remendos
+                localStorage.setItem('@App:token', novoToken);
+                localStorage.setItem('@App:user', JSON.stringify(usuarioAtualizado));
+
+                alert("Perfil atualizado com sucesso!");
+                navigate("/home"); 
             } else{
                 alert("Comportamento inesperado ao salvar edição de Perfil")
             }
@@ -67,7 +74,7 @@ export default function EditarPerfil() {
 
                         <section className="ai-column">
                             <div className="card-cta-ai glass-effect">
-                                <div className="ai-badge">NOVO</div>
+                                <div className="ai-badge">CHAT</div>
                                 <h3>Fale com a MentorIA</h3>
                                 <p>Tem alguma dúvida sobre os seus conteúdos ou quer gerar um simulado personalizado agora?</p>
                                 <div className="ai-features">

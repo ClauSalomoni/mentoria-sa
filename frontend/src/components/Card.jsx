@@ -4,52 +4,58 @@ import Select from "./Select";
 import Button from "./Button";
 import robo from "../assets/robo.jpg";
 import stylesBtn from "./Button.module.css";
-import api from"../services/api";
-import './Card.css'
-import "../pages/PerfilTrilha";
-import '../pages/PerfilTrilha.css'
+import api from "../services/api";
+import './Card.css';
 
-export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, onVerificarNivel, loading = false }) {
-    // Estados compartilhados
+export default function ProfileCard({ 
+    mode = "trilha", 
+    onBackOrCancel, 
+    onSave, 
+    onVerificarNivel, 
+    loading = false,
+    defaultNivelAtual = ""
+}) {
+    // Estados compartilhados e unificados
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
-    const [area, setArea] = useState("");
-    const [senha, setSenha] = useState("")
+    const [area, setArea] = useState(""); // Representa o nome da trilha/área no banco
+    const [senha, setSenha] = useState("");
     const [nivelObjetivo, setNivelObjetivo] = useState("");
     const [nivelAtual, setNivelAtual] = useState("");
-    const [mostrarInputLivre, setMostrarInputLivre] = useState(false)
-    const [avatar, setAvatar] = useState(robo)
-    // ◄ ADICIONADO: Controla se o formulário está liberado para edição no modo perfil
+    const [mostrarInputLivre, setMostrarInputLivre] = useState(false);
+    const [avatar, setAvatar] = useState(robo);
     const [editando, setEditando] = useState(false);
 
-    // Dentro do seu ProfileCard
     const opcoesAreas = [
         { value: "javascript", label: "JavaScript & Ecossistema" },
         { value: "postgresql", label: "Banco de Dados (PostgreSQL)" },
         { value: "logica",     label: "Lógica de Programação" },
-        { value: "fullstack",  label: "Desenvolvimento Full-Stack" },
-        { value: "outro",      label: "➕ Outro (Digitar tema personalizado...)" }
+        { value: "fullstack",  label: "Desenvolvimento Full-Stack" }
     ];
 
-    useEffect(() =>{
+    // Sincroniza o nível caso venha do simulado da IA
+    useEffect(() => {
+        if (defaultNivelAtual) {
+            setNivelAtual(defaultNivelAtual);
+        }
+    }, [defaultNivelAtual]);
+
+    useEffect(() => {
         if (mode === "perfil") {
             const carregarDadosDoUsuario = async () => {
-                try{
+                try {
                     const token = localStorage.getItem('@App:token');
-                    if(!token) return;
+                    if (!token) return;
 
                     const response = await api.get('user/perfil', {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
+                        headers: { Authorization: `Bearer ${token}` }
                     });
                     const dadosUsuario = response.data;
-                    if(dadosUsuario.nome) setNome(dadosUsuario.nome);
-                    if(dadosUsuario.email) setEmail(dadosUsuario.email);
-                    if(dadosUsuario.avatar) setAvatar(dadosUsuario.avatar);
-                } catch (error){
-                    console.error({"Erro ao carregar perfil vindo do DB": error})
-                    // Fallback de segurança: Se a API falhar, lê o que foi gravado no Login
+                    if (dadosUsuario.nome) setNome(dadosUsuario.nome);
+                    if (dadosUsuario.email) setEmail(dadosUsuario.email);
+                    if (dadosUsuario.avatar) setAvatar(dadosUsuario.avatar);
+                } catch (error) {
+                    console.error("Erro ao carregar perfil vindo do DB:", error);
                     const userString = localStorage.getItem('@App:user');
                     if (userString) {
                         const localUser = JSON.parse(userString);
@@ -58,65 +64,68 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
                     }
                 }
             };
-            carregarDadosDoUsuario()
+            carregarDadosDoUsuario();
         }
-    }, [mode])
+    }, [mode]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (mode === "perfil" && !editando) {
-        return;
-    }
+        if (mode === "perfil" && !editando) return;
+
         if (mode === "trilha") {
             if (!area.trim()) {
-            alert("Por favor, selecione uma área ou digite um tema personalizado.");
-            return;
-        }
+                alert("Por favor, selecione uma área ou digite um tema personalizado.");
+                return;
+            }
+            if (!nivelAtual) {
+                alert("Por favor, selecione seu nível atual ou clique em 'Avaliar com IA'.");
+                return;
+            }
+            if (!nivelObjetivo) {
+                alert("Por favor, selecione o seu nível objetivo.");
+                return;
+            }
             onSave({ 
                 nome: area.trim(), 
-                nivelAtual: nivel || "INICIANTE",
+                nivelAtual: nivelAtual,
                 nivelObjetivo: nivelObjetivo
-             });
+            });
         } else {
-            // ◄ MODIFICADO: Passa a senha junto se ela foi preenchida
             onSave({ nome, email, avatar, ...(senha && { senha }) });
-            setEditando(false); // Fecha o modo edição após salvar
+            setSenha("");
+            setEditando(false);
         }
     };
 
-    const handleAdicionarNovaArea = () => {
-        const novaArea = prompt("Digite a nova área de aprendizado:");
-        if (novaArea) alert(`Área "${novaArea}" sugerida com sucesso!`);
+    const handleAlternarInputLivre = () => {
+        setArea(""); 
+        setMostrarInputLivre(!mostrarInputLivre);
     };
 
     const handleAlterarSenha = () => {
         const nova = prompt("Digite sua nova senha (mínimo 8 caracteres):");
         if (nova) {
-            if(nova.length < 8) {
+            if (nova.length < 8) {
                 alert("A senha precisa ter pelo menos 8 caracteres!");
                 return;
             }
-            setSenha(nova); // ◄ Guarda a senha temporariamente no estado
+            setSenha(nova);
             alert("Nova senha definida! Clique em 'Salvar' para gravar no sistema.");
         }
     };
 
     return (
         <div className="auth-card glass-effect profile-reusable-card">
-            {/* Se for modo Perfil, exibe o bloco de Avatar exigido */}
             {mode === "perfil" && (
                 <div className="profile-avatar-block">
                     <img src={avatar || robo} alt="Avatar" className="profile-avatar-image" />
                     <h2>{nome || "Carregando..."}</h2>
                     <p>{email || "carregando..."}</p>
-
-                    {/* ◄ ADICIONADO: Botão de alternância superior para quando NÃO está editando */}
                     {!editando && (
                         <Button type="button" onClick={() => setEditando(true)} style={{ marginTop: "10px" }}>
                             Editar Perfil
                         </Button>
                     )}
-
                 </div>
             )}
 
@@ -124,28 +133,13 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
                 {mode === "perfil" ? (
                     <>
                         <h3 className="section-form-title" style={{ marginTop: 0 }}>Dados Pessoais</h3>
-                        <Input 
-                            label="Nome" 
-                            type="text" 
-                            value={nome} 
-                            onChange={(e) => setNome(e.target.value)} 
-                            required 
-                            disabled={!editando} // ◄ Bloqueia se 'editando' for falso
-                        
-                        />
-                        <Input 
-                            label="E-mail" 
-                            type="email" 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)} 
-                            required 
-                            disabled={!editando} // ◄ Bloqueia se 'editando' for falso
-                        />
+                        <Input label="Nome" type="text" value={nome} onChange={(e) => setNome(e.target.value)} required disabled={!editando} />
+                        <Input label="E-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={!editando} />
 
                         {editando && (
-                            <div style={{ textAlign: "right", marginBottom: "15px" }}>
+                            <div style={{ textAlign: "right", marginBottom: "15px", marginTop: "10px" }}>
                                 <Button type="button" variant="link" onClick={handleAlterarSenha}>
-                                    {senha ? "Senha Alterada" : "🔑 Alterar Senha"}
+                                    {senha ? "✓ Senha Alterada" : "🔑 Alterar Senha"}
                                 </Button>
                             </div>
                         )}
@@ -154,70 +148,90 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
                     <>
                         <h1>Personalizar Trilha</h1>
                         
-                            <div className="profile-label-row">
-                                <h3 className="section-form-title" style={{ marginTop: 0 }}>Área de Aprendizado</h3>
-                                                                 
-                                    <Button onClick={handleAdicionarNovaArea}>
-                                        Adicionar Nova
-                                    </Button>
-                                </div>
+                        <div className="profile-label-row">
+                            <h3 className="section-form-title" style={{ marginTop: 0 }}>Área de Aprendizado</h3>
+                            <Button type="button" onClick={handleAlternarInputLivre} variant="button">
+                                {mostrarInputLivre ? "Selecionar da Lista" : "➕ Adicionar Area"}
+                            </Button>
+                        </div>
                             
-                                <div className="profile-input-wrapper">
-                                    <Select 
-                                        value={mostrarInputLivre ? "outro" : area} 
-                                        onChange={(e) => {
-                                            if (e.target.value === "outro") {
-                                                setMostrarInputLivre(true);
-                                                setArea(""); // Limpa para o usuário poder digitar do zero no input livre
-                                            } else {
-                                                setMostrarInputLivre(false);
-                                                setArea(e.target.value); // Grava a opção padrão diretamente em 'area'
-                                            }
-                                        }} 
-                                        options={opcoesAreas} 
-                                        required 
-                                    />
-                                </div>
-
-                                {/* 🌟 RENDERIZAÇÃO CONDICIONAL: Se escolheu "Outro", o Input de texto livre aparece logo abaixo */}
-                                {mostrarInputLivre && (
-                                    <div className="profile-input-wrapper" style={{ marginTop: "10px", animation: "fadeIn 0.3s ease" }}>
-                                        <Input 
-                                            placeholder="Digite o tema exato (ex: Docker, React Native, Java...)" 
-                                            type="text" 
-                                            value={area} 
-                                            onChange={(e) => setArea(e.target.value)} 
-                                            required 
-                                        />
-                                    </div>
-                                )}
-
-                           <div className="profile-label-row">
-                             <h3 className="section-form-title">Nível de Conhecimento</h3>
-                                
-                                <Button type="button" 
-                                    loading={loading} 
-                                    onClick={() => {
-                                        if (!area.trim()) {
-                                            alert("Por favor, selecione uma área ou digite seu tema personalizado primeiro!");
-                                            return;
-                                        }
-                                        onVerificarNivel(area); // Envia o valor (seja do Select ou do Input) para o simulado
-                                    }}
-                                >
-                                    🚀 Fazer Avaliação por IA
-                                </Button>
-                            </div>
                         <div className="profile-input-wrapper">
-                         
+                            {mostrarInputLivre ? (
+                                <Input 
+                                    placeholder="Ex: Docker, React Native, Java, Go..." 
+                                    type="text" 
+                                    value={area} 
+                                    onChange={(e) => setArea(e.target.value)} 
+                                    required 
+                                />
+                            ) : (
+                                <Select 
+                                    value={area} 
+                                    onChange={(e) => setArea(e.target.value)} 
+                                    options={opcoesAreas} 
+                                    required 
+                                />
+                            )}
+                        </div>
 
+                        <div className="profile-label-row" style={{ marginTop: "20px" }}>
+                            <h3 className="section-form-title">1. Seu Nível de Conhecimento Atual</h3>
+                            <Button type="button" 
+                                loading={loading} 
+                                onClick={() => {
+                                    if (!area.trim()) {
+                                        alert("Por favor, escolha uma área antes de chamar a IA!");
+                                        return;
+                                    }
+                                    onVerificarNivel(area); 
+                                }}
+                            >
+                                🚀 Avaliar com IA
+                            </Button>
+                        </div>
+                        
+                        <div className="profile-input-wrapper">
                             <div className="level-buttons-row">
                                 {["INICIANTE", "INTERMEDIARIO", "AVANCADO"].map((lvl) => (
                                     <button
-                                        key={lvl}
+                                        key={`atual-${lvl}`}
                                         type="button"
-                                        className={`level-selection-btn ${nivelAtual === lvl ? "active" : ""}`}
-                                        onClick={() => setNivelAtual(lvl)}
+                                        className={`level-selection-btn ${nivelAtual === lvl ? "active-atual" : ""}`}
+                                        onClick={() => {
+                                            if (!nome || nome.trim() === "") {
+                                                alert("Por favor, digite ou selecione uma ÁREA/CONTEÚDO antes de escolher o seu nível atual.");
+                                                return; // Para a execução aqui e não deixa selecionar o nível
+                                            }
+                                            setNivelAtual(lvl)
+                                        }}
+                                    >
+                                        {lvl}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="profile-label-row" style={{ marginTop: "24px" }}>
+                            <h3 className="section-form-title">2. Qual Nível Você Deseja Chegar?</h3>
+                        </div>
+                        
+                        <div className="profile-input-wrapper">
+                            <div className="level-buttons-row">
+                                {["INICIANTE", "INTERMEDIARIO", "AVANCADO"].map((lvl) => (
+                                    <button
+                                        key={`obj-${lvl}`}
+                                        type="button"
+                                        className={`level-selection-btn ${nivelObjetivo === lvl ? "active-objetivo" : ""}`}
+                                        onClick={() => {
+                                            
+                                            // 🚀 VALIDAÇÃO: Garante que o tema foi preenchido primeiro
+                                            if (!nome || nome.trim() === "") {
+                                                alert("Por favor, digite ou selecione uma ÁREA/CONTEÚDO antes de escolher o seu nível objetivo.");
+                                                return; // Bloqueia a seleção
+                                            }
+                                            setNivelObjetivo(lvl)
+                                        }
+                                        }
                                     >
                                         {lvl}
                                     </button>
@@ -227,23 +241,17 @@ export default function ProfileCard({ mode = "trilha", onBackOrCancel, onSave, o
                     </>
                 )}
 
-                {/* Ações Inferiores dinâmicas com base no modo */}
                 <div className={stylesBtn.divBtn + " profile-actions-row"}>
                     {mode === "trilha" ? (
                         <>
                             <Button type="button" variant="link" onClick={onBackOrCancel}>Voltar</Button>
-                            <Button type="submit" loading={loading}>Cadastrar</Button>
+                            <Button type="submit" loading={loading}>Gerar Trilha</Button>
                         </>
                     ) : (
-                        /* No modo perfil, os botões inferiores de Salvar/Cancelar só aparecem se estiver editando */
                         editando && (
                             <>
-                                <Button type="button" variant="link" onClick={() => { setEditando(false); setSenha(""); }}>
-                                    Cancelar
-                                </Button>
-                                <Button type="submit" loading={loading}>
-                                    Salvar Alterações
-                                </Button>
+                                <Button type="button" variant="link" onClick={() => { setEditando(false); setSenha(""); }}>Cancelar</Button>
+                                <Button type="submit" loading={loading}>Salvar Alterações</Button>
                             </>
                         )
                     )}

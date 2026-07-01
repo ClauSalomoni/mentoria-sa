@@ -103,8 +103,8 @@ export default function PerfilTrilha() {
             
             // Chama o endpoint da mentoria para gerar o cronograma com IA
             const response = await api.post('/trilhas', {
-                nome: dadosCard.area,              // O tema escolhido
-                nivelAtual: dadosCard.nivel || "INICIANTE", 
+                nome: dadosCard.nome,              // O tema escolhido
+                nivelAtual: dadosCard.nivelAtual || "INICIANTE", 
                 nivelObjetivo: dadosCard.nivelObjetivo || "AVANCADO"
             }, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -177,6 +177,7 @@ export default function PerfilTrilha() {
                                     onSave={handleGerarTrilhaIA}
                                     onVerificarNivel={handleIniciarSimulado}
                                     loading={loadingSimulado} 
+                                    defaultNivelAtual={resultadoSimulado?.nivelAtual || ""}
                                 />
                             )}
 

@@ -56,3 +56,45 @@
     border-radius: 6px;
     margin-bottom: 2px;        /* Arredondamento sutil combinando com o layout */
 }
+
+/* --- ESTILO BASE DO BOTÃO (Caso não tenha) --- */
+.level-selection-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    transition: all 0.25s ease-in-out;
+}
+
+.level-selection-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* --- 🚀 ESTADOS SELECIONADOS (ATIVOS) --- */
+
+/* Botão Ativo do Nível Atual (Ex: Um tom azul/ciano tecnológico) */
+.level-selection-btn.active-atual {
+    background: rgba(155, 89, 182, 0.2);
+    border-color: #9b59b6;
+    color: lightgray; /* Cor dourada/destacada para o "Objetivo" fica excelente */
+    font-weight: 700;
+    box-shadow: 0 0 15px rgba(155, 89, 182, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Botão Ativo do Nível Objetivo (Ex: Um tom roxo/violeta inteligente) */
+.level-selection-btn.active-objetivo {
+    background: rgba(155, 89, 182, 0.2);
+    border-color: #9b59b6;
+    color: lightgray; /* Cor dourada/destacada para o "Objetivo" fica excelente */
+    font-weight: 700;
+    box-shadow: 0 0 15px rgba(155, 89, 182, 0.3);
+    transform: translateY(-1px);
+}

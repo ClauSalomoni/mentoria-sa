@@ -47,7 +47,7 @@
     line-height: 1.4;
 }
 
-/* Badge de Nível (Ex: BASICO, AVANCADO) usando seu Roxo Ativo */
+/* Badge de Nível (Ex:INICIANTE , AVANCADO) usando seu Roxo Ativo */
 .badge-nivel {
     background: rgba(170, 59, 255, 0.15);
     border: 1px solid #aa3bff;
