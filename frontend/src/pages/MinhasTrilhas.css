@@ -156,3 +156,28 @@
     justify-content: center;
     padding: 60px 0;
 }
+
+/* Container que abriga a tabela mantendo o efeito do resto da aplicação */
+.tabela-container.glass-effect {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+}
+
+.avaliacoes-table th {
+    color: var(--text-primary, #374151);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.avaliacoes-table td {
+    color: var(--text-secondary, #4b5563);
+    font-size: 0.9rem;
+}
+
+/* Efeito visual ao passar o mouse por cima das linhas */
+.table-row-hover:hover {
+    background: rgba(255, 255, 255, 0.3);
+}

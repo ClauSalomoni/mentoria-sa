@@ -98,3 +98,23 @@ REGRAS:
     });
   }
 }
+
+export async function obterHistoricoChat(req, res) {
+  try {
+    const userId = req.user.id;
+
+    // Busca o histórico ordenado do mais antigo para o mais recente (ou vice-versa)
+    const historico = await historicoChat.findAll({
+      where: { userId },
+      order: [["createdAt", "ASC"]], // ASC para o chat ler de cima para baixo
+    });
+
+    return res.status(200).json(historico);
+  } catch (error) {
+    return res.status(500).json({
+      mensagem: "Erro ao buscar histórico do chat.",
+      erro: error.message,
+    });
+  }
+}
+

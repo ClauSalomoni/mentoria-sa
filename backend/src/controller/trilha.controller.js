@@ -1,6 +1,6 @@
 import pkg from 'sequelize';
 const { where } = pkg;
-import { trilha, planoEstudo, historicoAvaliacao } from "../models/index.js";
+import { trilha, planoEstudo, historicoAvaliacao, } from "../models/index.js";
 import { gerarRespostaGemini } from '../../services/geminiService.js'
 import { parseRespostaIA } from "../../utils/parseUtil.js";
 /*
@@ -372,6 +372,30 @@ export async function excluirTrilha(req, res) {
   } catch (error) {
     return res.status(500).json({
       mensagem: "Erro ao excluir a trilha",
+      erro: error.message,
+    });
+  }
+}
+
+// No seu controller do backend
+export async function obterHistoricoAvaliacoes(req, res) {
+  try {
+    const userId = req.user.id;
+
+    // Buscamos as avaliações que pertencem às trilhas criadas por este usuário
+    const avaliacoes = await historicoAvaliacao.findAll({
+      include: [{
+        model: trilha,
+        where: { userId },
+        attributes: ['nome'] // Traz o nome da trilha para exibir na tabela
+      }],
+      order: [["dataAvaliacao", "DESC"]], // Exibe as mais recentes primeiro
+    });
+
+    return res.status(200).json(avaliacoes);
+  } catch (error) {
+    return res.status(500).json({
+      mensagem: "Erro ao buscar histórico de avaliações.",
       erro: error.message,
     });
   }

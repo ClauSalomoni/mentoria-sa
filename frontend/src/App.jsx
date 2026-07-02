@@ -10,6 +10,7 @@ import Aulas from './pages/Aulas'
 import Mentoria from './pages/Mentoria';
 import MinhasTrilhas from './pages/MinhasTrilhas';
 import TrilhaDetalhes from './pages/TrilhaDetalhes';
+import HistoricoMentoria from './pages/HistoricoMentoria';
 
 function App() {
   
@@ -48,6 +49,14 @@ function App() {
           element={
             <RotaProtegida>
               <Mentoria />
+            </RotaProtegida>
+          }
+        />
+        <Route 
+          path="/historico" 
+          element={
+            <RotaProtegida>
+              <HistoricoMentoria />
             </RotaProtegida>
           }
         />

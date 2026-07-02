@@ -29,6 +29,12 @@ export default function Sidebar({ paginaAtiva }) {
                     >
                         MentorIA
                     </li>
+                    <li 
+                        className={paginaAtiva === "historico" ? "active" : ""} 
+                        onClick={() => navigate("/historico")}
+                    >
+                        Historico Mentoria
+                    </li>
                     {/* <li className={paginaAtiva === "cursos" ? "active" : ""}>
                         Meus Cursos
                     </li> */}

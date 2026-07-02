@@ -53,10 +53,11 @@ export default function TrilhaDetalhes() {
                                         <p>{plano.descricao}</p>
                                         <div className="plano-meta-info">
                                             <small>⏱️ Tempo Estimado: {
-                                                                            plano.tempoEstimado && !isNaN(plano.tempoEstimado) 
-                                                                                ? `${plano.tempoEstimado}h` 
-                                                                                : '2h'
-                                                                        }</small>
+                                                        plano.tempoEstimado && !isNaN(plano.tempoEstimado) 
+                                                            ? `${plano.tempoEstimado}h` 
+                                                            : '2h'
+                                                    }
+                                            </small>
                                             <span className={`status-badge ${plano.status.toLowerCase()}`}>{plano.status}</span>
                                         </div>
                                     </div>
