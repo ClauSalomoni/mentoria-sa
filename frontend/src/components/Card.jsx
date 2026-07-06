@@ -198,7 +198,7 @@ export default function ProfileCard({
                                         type="button"
                                         className={`level-selection-btn ${nivelAtual === lvl ? "active-atual" : ""}`}
                                         onClick={() => {
-                                            if (!nome || nome.trim() === "") {
+                                            if (!area || area.trim() === "") {
                                                 alert("Por favor, digite ou selecione uma ÁREA/CONTEÚDO antes de escolher o seu nível atual.");
                                                 return; // Para a execução aqui e não deixa selecionar o nível
                                             }
@@ -225,7 +225,7 @@ export default function ProfileCard({
                                         onClick={() => {
                                             
                                             // 🚀 VALIDAÇÃO: Garante que o tema foi preenchido primeiro
-                                            if (!nome || nome.trim() === "") {
+                                            if (!area || area.trim() === "") {
                                                 alert("Por favor, digite ou selecione uma ÁREA/CONTEÚDO antes de escolher o seu nível objetivo.");
                                                 return; // Bloqueia a seleção
                                             }
