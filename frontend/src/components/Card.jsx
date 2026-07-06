@@ -3,6 +3,7 @@ import Input from "./Input";
 import Select from "./Select";
 import Button from "./Button";
 import robo from "../assets/robo.jpg";
+import novoAvatar from "../assets/novoAvatar.webp";
 import stylesBtn from "./Button.module.css";
 import api from "../services/api";
 import './Card.css';
@@ -23,7 +24,7 @@ export default function ProfileCard({
     const [nivelObjetivo, setNivelObjetivo] = useState("");
     const [nivelAtual, setNivelAtual] = useState("");
     const [mostrarInputLivre, setMostrarInputLivre] = useState(false);
-    const [avatar, setAvatar] = useState(robo);
+    const [avatar, setAvatar] = useState(novoAvatar);
     const [editando, setEditando] = useState(false);
 
     const opcoesAreas = [
@@ -118,7 +119,7 @@ export default function ProfileCard({
         <div className="auth-card glass-effect profile-reusable-card">
             {mode === "perfil" && (
                 <div className="profile-avatar-block">
-                    <img src={avatar || robo} alt="Avatar" className="profile-avatar-image" />
+                    <img src={avatar || novoAvatar} alt="Avatar" className="profile-avatar-image" />
                     <h2>{nome || "Carregando..."}</h2>
                     <p>{email || "carregando..."}</p>
                     {!editando && (

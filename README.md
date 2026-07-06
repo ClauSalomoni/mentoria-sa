@@ -38,24 +38,24 @@ Garante o acesso seguro às funcionalidades internas da plataforma. Após a vali
 
 ### 3. 🏠 Home (Dashboard de Vídeos)
 Ao se autenticar, o aluno é direcionado para a página inicial. Esta interface funciona como um hub centralizado de conteúdos, apresentando o catálogo de vídeos e aulas disponíveis para consumo imediato.
-* *Insira o print da sua tela Home aqui:* `![Home](./docs/home.png)`
+* *Insira o print da sua tela Home aqui:* `![Home](docs/printScreens/04HomeVideos.png)`
 
 ### 4. 🎛️ Painel de Trilhas (`/trilhas`)
 Exibe os cards das trilhas de aprendizado ativas do usuário. Dentro de cada trilha, o estudante tem acesso ao seu **Plano de Estudos** estruturado de forma sequencial com:
 * Título e descrição do módulo.
 * Tempo estimado de dedicação.
 * Status de progresso (`PENDENTE`, `EM_ANDAMENTO`, `CONCLUIDO`).
-* *Insira o print das suas Trilhas aqui:* `![Trilhas](./docs/trilhas.png)`
+* *Insira o print das suas Trilhas aqui:* `![Trilhas](docs/printScreens/08HistoricoTrilhas.png)`
 
 ### 5. 🚀 Personalização e Avaliação Diagnóstica com IA (`/criar-trilha`)
 Ao criar uma nova trilha, o aluno escolhe a área que deseja aprender. O sistema oferece duas abordagens inovadoras:
 * **Seleção Direta:** O aluno escolhe o seu nível atual de conhecimento (`INICIANTE`, `INTERMEDIARIO` ou `AVANCADO`) e o seu objetivo.
 * **Avaliação Avançada com IA:** O botão **"Avaliar com IA"** aciona a API do Gemini, que gera perguntas diagnósticas personalizadas. A IA corrige as respostas, define o nível atual do aluno automaticamente, calcula a pontuação e salva o registro no `historicoAvaliacao`.
-* *Insira o print do formulário/chat com IA aqui:* `![Criar Trilha](./docs/criar_trilha.png)`
+* *Insira o print do formulário/chat com IA aqui:* `![Criar Trilha](docs/printScreens/09TelaCriarTrilha.png)`
 
 ### 6. 👤 Gerenciamento de Perfil (`/perfil`)
 Espaço dedicado para que o estudante mantenha seus dados atualizados. O formulário permite a edição de campos pessoais como `nome` e `email`, além de disponibilizar a alteração segura de senha diretamente integrada com o banco de dados.
-* *Insira o print da sua tela de Perfil aqui:* `![Perfil](./docs/perfil.png)`
+* *Insira o print da sua tela de Perfil aqui:* `![Perfil](docs/printScreens/13TelaEditarPerfil.png)`
 
 ---
 
