@@ -1,0 +1,185 @@
+/* ==========================================
+   Renderizando VERIFICAÇÂO NIVEL
+   ========================================== */
+/* Quando o simulado estiver ativo, mudamos o container para bloco único */
+.dashboard-split-container.simulado-ativo {
+    display: flex !important;      /* Mantém o flex, mas mudamos a lógica interna */
+    flex-direction: column;        /* Alinha verticalmente se necessário */
+    width: 100% !important;
+}
+
+/* ...forçamos a seção do formulário a resetar o 'flex: 2' e ocupar o espaço total */
+.dashboard-split-container.simulado-ativo .profile-form-section {
+    flex: none !important;         /* Remove a proporção 2/3 antiga */
+    width: 100% !important;        /* Força a largura total da linha */
+    max-width: 900px !important;   /* Define um teto confortável para leitura */
+    margin: 0 auto !important;     /* Centraliza o bloco na tela */
+}
+
+/* Garante que o card do simulado use tudo que a section ganhou */
+.dashboard-split-container.simulado-ativo .simulado-container {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+/* ==========================================
+   Renderizando RESULTADO
+   ========================================== */
+
+/* 1. Quando o resultado estiver ativo, esconde a coluna da IA */
+.dashboard-split-container.resultado-ativo .ai-column {
+    display: none !important;
+}
+
+/* 2. Força a seção do formulário/resultado a redefinir o flex e ocupar tudo */
+.dashboard-split-container.resultado-ativo .profile-form-section {
+    flex: none !important;      /* Cancela o 'flex: 2' antigo que limitava o tamanho */
+    flex-direction: column;        
+    width: 100% !important;        /* Obriga a ocupar toda a largura disponível */
+    max-width: 900px !important;   /* Define um teto confortável (mude para 100% se quiser esticar total) */
+    margin: 0 auto !important;     /* Centraliza o bloco na tela */
+}
+
+/* 3. Garante que o container interno do resultado preencha todo o novo espaço ganho */
+.dashboard-split-container.resultado-ativo .resultado-container {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+/* Customizações locais sem conflitos */
+.profile-full-card {
+    padding: 2.5rem !important;
+    border-radius: 18px !important;
+    width: 100%;
+}
+
+.profile-form-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Divisores Visuais Internos do Formulário */
+.section-form-title {
+    font-size: 1.1rem;
+    color: #aa3bff;
+    margin: 15px 0 15px 0;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid rgba(170, 59, 255, 0.15);
+    padding-bottom: 6px;
+}
+
+/* Cabeçalho de Perfil com Avatar */
+.profile-avatar-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.profile-avatar-image {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(170, 59, 255, 0.5);
+    padding: 3px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.profile-avatar-block h2 {
+    font-size: 1.4rem;
+    margin: 0;
+    color: #fff;
+    font-weight: 600;
+}
+
+.profile-avatar-block p {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 0.85rem;
+}
+
+/* Componentes de Seleção e Inputs Especiais */
+.profile-input-wrapper {
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    width: 100%;
+    
+}
+
+.profile-field-label {
+    font-size: 0.9rem;
+    color: #e5e4e7 !important;
+    font-weight: 500;
+}
+
+/* Botões do Seletor de Nível */
+.level-buttons-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.level-selection-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #9ca3af;
+    padding: 12px 5px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.level-selection-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.level-selection-btn.active {
+    background: rgba(170, 59, 255, 0.15);
+    border-color: #aa3bff;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(170, 59, 255, 0.2);
+}
+
+/* Alinhamento dos botões de ação finais */
+.profile-actions-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 1.5rem;
+    width: 100%;
+    flex-direction: row !important;
+}
+
+.profile-actions-row button {
+    flex: 1;
+}
+
+/* 2. A seção do formulário de perfil vai ocupar 2 partes da proporção (2/3) */
+.profile-form-section {
+    flex: 2;            /* Ganha o peso de 2 partes */
+    min-width: 0;       /* Evita estouros de layout causados por elementos filhos rígidos */
+}
+
+/* 3. A coluna da IA vai ocupar 1 parte da proporção (1/3) */
+.ai-column {
+    flex: 1;            /* Ganha o peso de 1 parte */
+    min-width: 0;       /* Evita estouros de layout */
+}
+
+/* 4. Garante que os componentes internos usem toda a largura que a seção deles ganhou */
+.profile-reusable-card,
+.card-cta-ai {
+    max-width: none !important; /* Remove o teto dos 420px */
+    width: 100%;
+    box-sizing: border-box;
+}

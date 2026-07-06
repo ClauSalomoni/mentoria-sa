@@ -11,10 +11,10 @@
 
 import 'dotenv/config';
 import bcrypt from 'bcryptjs';
-import sequelize from "./src/database/db.js";
-import { User } from "./src/models/user.model.js";
-import { Curso } from "./src/models/curso.model.js";
-import { Aula } from "./src/models/aula.model.js";
+import sequelize from "../database/db.js";
+import { User } from "../models/user.model.js";
+import { Curso } from "../models/curso.model.js";
+import { Aula } from "../models/aula.model.js";
 
 async function inicializarEPopular() {
 

@@ -1,7 +1,8 @@
-//Unindo o auluno ao curso
+//Unindo o auluno ao curso  Codigo ANTIGO tambem renderizado
 
 import sequelize from "../database/db.js";
-import { DataTypes } from "sequelize";
+import pkg from 'sequelize';
+const { DataTypes } = pkg;
 import { User } from "./user.model.js";
 import { Curso } from "./curso.model.js";
 

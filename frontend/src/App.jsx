@@ -2,11 +2,15 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import Home from './pages/Home';
-import "./styles/global.css"
-import robo from './assets/robo.jpg'
+import "./styles/global.css";
+import PerfilTrilha from './pages/PerfilTrilha'
+import EditarPerfil from './pages/EditarPerfil';
 import RotaProtegida from './components/RotaProtegida';
 import Aulas from './pages/Aulas'
 import Mentoria from './pages/Mentoria';
+import MinhasTrilhas from './pages/MinhasTrilhas';
+import TrilhaDetalhes from './pages/TrilhaDetalhes';
+import HistoricoMentoria from './pages/HistoricoMentoria';
 
 function App() {
   
@@ -45,6 +49,49 @@ function App() {
           element={
             <RotaProtegida>
               <Mentoria />
+            </RotaProtegida>
+          }
+        />
+        <Route 
+          path="/historico" 
+          element={
+            <RotaProtegida>
+              <HistoricoMentoria />
+            </RotaProtegida>
+          }
+        />
+
+        <Route 
+          path="/criar-trilha" 
+          element={
+            <RotaProtegida>
+              <PerfilTrilha />
+            </RotaProtegida>
+          }
+        />
+        <Route 
+          path="/trilha/:id" 
+          element={
+            <RotaProtegida>
+              <TrilhaDetalhes />
+            </RotaProtegida>
+          }
+        />
+
+        <Route 
+          path="/trilhas" 
+          element={
+            <RotaProtegida>
+              <MinhasTrilhas />
+            </RotaProtegida>
+          }
+        />
+
+        <Route 
+          path="/perfil" 
+          element={
+            <RotaProtegida>
+              <EditarPerfil />
             </RotaProtegida>
           }
         />

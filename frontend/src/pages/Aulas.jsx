@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "./Aulas.css"; // Vamos criar o CSS no próximo passo
-import Button from "../components/Button";
-import { IoMdReturnLeft } from "react-icons/io";
+
 import IconButton from "../components/IconButton";
 
 export default function Aulas() {
@@ -60,12 +59,8 @@ export default function Aulas() {
     return (
         <div className="player-layout">
             <div className="player-main-content">
-                <Header onLogout={handleLogout} />
-                  <div className="container-voltar">
-                    <IconButton onClick={() => navigate('/home')}
-                        icon={IoMdReturnLeft}
-                    />
-                  </div>
+                <Header onLogout={handleLogout} showBackButton={true}/>
+                  
 
                 <main className="player-body">
                     {/* COLUNA DA ESQUERDA: O Player de Vídeo e Detalhes */}

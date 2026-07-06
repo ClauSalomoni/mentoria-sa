@@ -1,6 +1,7 @@
-// src/models/aula.model.js
+//    ABAIXO codigo antigo...
 import sequelize from "../database/db.js";
-import { DataTypes } from "sequelize";
+import pkg from 'sequelize';
+const { DataTypes } = pkg;
 import { Curso } from "./curso.model.js"; // Importa o model de curso acima
 
 export const Aula = sequelize.define('Aula', {

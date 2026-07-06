@@ -42,3 +42,37 @@ body {
   padding: 20px;
   width: 100%;
 }
+
+/* ==========================================================================
+   COMPONENTES GLOBAIS: SPINNER DE CARREGAMENTO (CLEAN CODE)
+   ========================================================================== */
+
+/* Container que centraliza o spinner no meio da tela/área */
+.spinner-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 200px; /* Garante que o loading não achate a tela */
+    padding: 20px;
+}
+
+/* O Spinner propriamente dito */
+.spinner {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    /* Linha base translúcida para dar o contraste de rotação */
+    border: 3px solid rgba(255, 255, 255, 0.1); 
+    border-radius: 50%;
+    /* A cor de destaque do topo - aqui usamos o seu roxo inteligente */
+    border-top-color: #9b59b6; 
+    animation: spinElegante 0.8s linear infinite;
+}
+
+/* Animação fluida de rotação */
+@keyframes spinElegante {
+    to {
+        transform: rotate(360deg);
+    }
+}

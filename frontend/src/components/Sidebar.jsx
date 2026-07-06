@@ -29,14 +29,26 @@ export default function Sidebar({ paginaAtiva }) {
                     >
                         MentorIA
                     </li>
-                    <li className={paginaAtiva === "cursos" ? "active" : ""}>
+                    <li 
+                        className={paginaAtiva === "historico" ? "active" : ""} 
+                        onClick={() => navigate("/historico")}
+                    >
+                        Historico Mentoria
+                    </li>
+                    {/* <li className={paginaAtiva === "cursos" ? "active" : ""}>
                         Meus Cursos
+                    </li> */}
+                    <li 
+                        className={paginaAtiva === "trilha" ? "active" : ""}
+                        onClick={() => navigate("/trilhas")}
+                    >
+                        Minhas Trilhas
                     </li>
-                    <li className={paginaAtiva === "simulados" ? "active" : ""}>
-                        Simulados
-                    </li>
-                    <li className={paginaAtiva === "configuracoes" ? "active" : ""}>
-                        Configurações
+                    <li 
+                        className={paginaAtiva === "perfil" ? "active" : ""}
+                        onClick={() => navigate("/perfil")}
+                    >
+                        Ver Perfil
                     </li>
                 </ul>
             </nav>

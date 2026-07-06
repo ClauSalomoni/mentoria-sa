@@ -7,6 +7,7 @@ import './Mentoria.css';
 import { IoSendSharp } from "react-icons/io5";
 import IconButton from '../components/IconButton';
 import api from '../services/api';  //AXIOS
+import ReactMarkdown from "react-markdown";
 
 export default function Mentoria() {
     const navigate = useNavigate();
@@ -84,7 +85,7 @@ export default function Mentoria() {
             <Sidebar paginaAtiva="mentoria" />
 
             <div className="main-content">
-                <Header onLogout={() => { localStorage.clear(); navigate('/login'); }} />
+                <Header onLogout={() => { localStorage.clear(); navigate('/login'); }} showBackButton={true}/>
                 
                 <main className="mentoria-body">
                     <div className="chat-container glass-effect">
@@ -99,7 +100,14 @@ export default function Mentoria() {
                                 <div key={msg.id} className={`message-wrapper ${msg.sender}`}>
                                     {msg.sender === 'ia' && <img src={robo} alt="IA" className="chat-avatar" />}
                                     <div className={`message-bubble ${msg.sender}`}>
-                                        <p>{msg.text}</p>
+                                        {/* ALTERAÇÃO AQUI: Se for a IA, renderiza como Markdown, se for usuário, texto simples */}
+                                        {msg.sender === 'ia' ? (
+                                            <div className="markdown-container">
+                                                <ReactMarkdown>{msg.text}</ReactMarkdown>
+                                            </div>
+                                        ) : (
+                                            <p>{msg.text}</p>
+                                        )}
                                     </div>
                                 </div>
                             ))}

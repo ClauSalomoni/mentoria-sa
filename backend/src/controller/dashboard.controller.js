@@ -1,3 +1,4 @@
+//codigo para avançar futuramente
 import { Curso } from "../models/curso.model.js";
 import { Matricula } from "../models/matricula.model.js";
 import { Aula } from "../models/aula.model.js";
