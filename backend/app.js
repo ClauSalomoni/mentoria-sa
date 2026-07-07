@@ -17,12 +17,13 @@ import DashboardRouter from './src/router/dashboardAulas.router.js';
 
 
 const app = express();
-app.use(express.json());
+app.use(configCors);
+
 // 1. Segurança de Cabeçalhos (Blindagem)
 app.use(configHelmet);
-app.use(configCors); // Isso permite que o seu React acesse o Backend
+ // Isso permite que o seu React acesse o Backend
 app.use(limitadorGlobal);
-
+app.use(express.json());
 
 //ROTAS
 app.use('/', DashboardRouter)
