@@ -20,9 +20,9 @@ const app = express();
 app.use(configCors);
 
 // 1. Segurança de Cabeçalhos (Blindagem)
-app.use(configHelmet);
+//app.use(configHelmet);
  // Isso permite que o seu React acesse o Backend
-app.use(limitadorGlobal);
+//app.use(limitadorGlobal);
 app.use(express.json());
 
 //ROTAS
