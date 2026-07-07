@@ -41,7 +41,7 @@ app.use('/minhas-trilhas', TrilhaRouter)
 //app.use('/avaliacao', AvaliacaoRouter);
 
 // ****       alterar para MIGRATIONS assim que sai de dev  ****
-sequelize.sync({alter: true}).then(() =>{
+sequelize.sync({alter: false}).then(() =>{
     app.listen(process.env.API_PORT, () =>{
         console.log(`Servidor rodando em: http://localhost:${process.env.API_PORT}`)
     });
