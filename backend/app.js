@@ -41,8 +41,13 @@ app.use('/minhas-trilhas', TrilhaRouter)
 //app.use('/avaliacao', AvaliacaoRouter);
 
 // ****       alterar para MIGRATIONS assim que sai de dev  ****
-sequelize.sync({alter: false}).then(() =>{
-    app.listen(process.env.API_PORT, () =>{
-        console.log(`Servidor rodando em: http://localhost:${process.env.API_PORT}`)
+// No final do seu app.js, altere para ler process.env.PORT primeiro:
+const PORT_TO_LISTEN = process.env.PORT || process.env.API_PORT || 3333;
+
+sequelize.sync({ alter: false }).then(() => {
+    app.listen(PORT_TO_LISTEN, '0.0.0.0', () => {
+        console.log(`Servidor rodando com sucesso na porta: ${PORT_TO_LISTEN}`);
     });
-}).catch(err => console.log("Erro ao montar a API: ", err));
+}).catch(err => {
+    console.error("Erro crítico ao conectar no banco/montar a API: ", err);
+});
