@@ -12,6 +12,7 @@ export default function Home() {
     useEffect(() => {
        
         const token = localStorage.getItem('@App:token');
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
         if (!token) {
             console.warn("🚨 Token não encontrado, redirecionando para o login.");
@@ -21,7 +22,7 @@ export default function Home() {
 
         console.log("Disparando fetch para buscar os cursos do Postgres...");
 
-        fetch("http://localhost:3000/cursos", { 
+        fetch(`${API_URL}/cursos`, { 
             method: "GET",
             headers: { 
                 "Authorization": `Bearer ${token}`,
