@@ -23,11 +23,11 @@ export default function Aulas() {
 
         // Carrega os detalhes do Curso e as Aulas em paralelo
         Promise.all([
-            fetch(`http://localhost:3000/curso/${cursoId}`, {
+            fetch(`${import.meta.env.VITE_API_URL}/curso/${cursoId}`, {
                 headers: { "Authorization": `Bearer ${token}` }
             }).then(res => res.json()),
             
-            fetch(`http://localhost:3000/curso/${cursoId}/aulas`, {
+            fetch(`${import.meta.env.VITE_API_URL}/${cursoId}/aulas`, {
                 headers: { "Authorization": `Bearer ${token}` }
             }).then(res => res.json())
         ])
