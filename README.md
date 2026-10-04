@@ -30,15 +30,12 @@ Abaixo está detalhada a jornada completa do estudante dentro da plataforma Ment
 
 ### 1. 📝 Tela de Cadastro
 Porta de entrada para novos alunos. O formulário captura as informações básicas de segurança (`nome`, `email`, `senha`) exigidas pelo modelo de dados. A validação de e-mail duplicado é tratada nativamente pelo banco através do Sequelize.
-* *Insira o print da sua tela de Cadastro aqui:* `![Cadastro](docs/printScreens/01TelaCadastro.png)`
 
 ### 2. 🔐 Tela de Login & Autenticação
 Garante o acesso seguro às funcionalidades internas da plataforma. Após a validação das credenciais no Backend, um token **JWT (JSON Web Token)** é gerado e armazenado, protegendo todas as rotas subsequentes através do componente `<RotaProtegida>`.
-* *Insira o print da sua tela de Login aqui:* `![Login](docs/printScreens/03TelaLogin.png)`
 
 ### 3. 🏠 Home (Dashboard de Vídeos)
 Ao se autenticar, o aluno é direcionado para a página inicial. Esta interface funciona como um hub centralizado de conteúdos, apresentando o catálogo de vídeos e aulas disponíveis para consumo imediato.
-* *Insira o print da sua tela Home aqui:* `![Home](docs/printScreens/04HomeVideos.png)`
 
 ### 4. 🎛️ Painel de Trilhas (`/trilhas`)
 Exibe os cards das trilhas de aprendizado ativas do usuário. Dentro de cada trilha, o estudante tem acesso ao seu **Plano de Estudos** estruturado de forma sequencial com:
@@ -51,11 +48,9 @@ Exibe os cards das trilhas de aprendizado ativas do usuário. Dentro de cada tri
 Ao criar uma nova trilha, o aluno escolhe a área que deseja aprender. O sistema oferece duas abordagens inovadoras:
 * **Seleção Direta:** O aluno escolhe o seu nível atual de conhecimento (`INICIANTE`, `INTERMEDIARIO` ou `AVANCADO`) e o seu objetivo.
 * **Avaliação Avançada com IA:** O botão **"Avaliar com IA"** aciona a API do Gemini, que gera perguntas diagnósticas personalizadas. A IA corrige as respostas, define o nível atual do aluno automaticamente, calcula a pontuação e salva o registro no `historicoAvaliacao`.
-* *Insira o print do formulário/chat com IA aqui:* `![Criar Trilha](docs/printScreens/09TelaCriarTrilha.png)`
 
 ### 6. 👤 Gerenciamento de Perfil (`/perfil`)
 Espaço dedicado para que o estudante mantenha seus dados atualizados. O formulário permite a edição de campos pessoais como `nome` e `email`, além de disponibilizar a alteração segura de senha diretamente integrada com o banco de dados.
-* *Insira o print da sua tela de Perfil aqui:* `![Perfil](docs/printScreens/13TelaEditarPerfil.png)`
 
 ---
 
