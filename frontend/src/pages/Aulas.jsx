@@ -27,7 +27,7 @@ export default function Aulas() {
                 headers: { "Authorization": `Bearer ${token}` }
             }).then(res => res.json()),
             
-            fetch(`${import.meta.env.VITE_API_URL}/${cursoId}/aulas`, {
+            fetch(`${import.meta.env.VITE_API_URL}/curso/${cursoId}/aulas`, {
                 headers: { "Authorization": `Bearer ${token}` }
             }).then(res => res.json())
         ])

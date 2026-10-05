@@ -81,7 +81,7 @@ export default function Mentoria() {
 
     return (
         <div className="home-layout">
-            {/* Mantemos a sua Sidebar Original para consistência de design */}
+            
             <Sidebar paginaAtiva="mentoria" />
 
             <div className="main-content">
