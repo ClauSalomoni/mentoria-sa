@@ -53,7 +53,7 @@ export default function Cadastro(){
         <div className="main-container">
             <div className="welcome-area" style={{ textAlign: 'center' }}>
                 <h1>Mentor IA</h1>
-                <p>Nossa plataforma conecta você a uma IA especialista que avalia o que você já sabe em tecnologia e identifica onde precisa melhorar. Faça testes práticos, receba um plano de estudos guiado sob medida e saiba exatamente o que e quanto estudar para dominar novas habilidades</p>
+                <p>Nossa plataforma conecta você a uma IA especialista que avalia o que você já sabe em tecnologia e identifica onde precisa melhorar.Faça testes práticos, receba um plano de estudos guiado sob medida e saiba exatamente o que e quanto estudar para dominar novas habilidades.</p>
             </div>
             <div className="auth-card glass-effect">
                 {/* Área da Logo integrada ao Card */}
@@ -65,9 +65,9 @@ export default function Cadastro(){
                 <p className="auth-subtitle">Crie uma Conta ou faça o login para usar a plataforma</p>
                 
                 <form onSubmit={handlerRegister}>
-                    <Input label="Nome Completo" type="text" value={nome} placeholder="Digite seu nome..." onChange={(e) => setNome(e.target.value)} required/>
-                    <Input label="E-mail" type="email" value={email} placeholder="Digite seu e-mail..." onChange={(e) => setEmail(e.target.value)} required/>
-                    <Input label="Senha" type="password" value={senha} placeholder="Digite sua senha..." onChange={(e) => setSenha(e.target.value)} required/>
+                    <Input label="Nome Completo" type="text" value={nome} placeholder="Seu Nome..." onChange={(e) => setNome(e.target.value)} required/>
+                    <Input label="E-mail" type="email" value={email} placeholder="Seu e-mail..." onChange={(e) => setEmail(e.target.value)} required/>
+                    <Input label="Senha" type="password" value={senha} placeholder="Sua senha (mínimo  8 caracteres)" onChange={(e) => setSenha(e.target.value)} required/>
                     <Input label="Confirmar Senha" type="password" value={confirmarSenha} placeholder="Confirme a sua senha" onChange={(e) => setConfirmarSenha(e.target.value)} required/>
                     
                 

@@ -38,8 +38,6 @@ export default function PerfilTrilha() {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            // 🌟 CORREÇÃO AQUI: Garanta que estamos pegando a propriedade 'questoes' que é o Array.
-            // Se ela não existir, usamos um array vazio de fallback para evitar o erro de .map()
             const listaQuestoes = response.data.questoes || (Array.isArray(response.data) ? response.data : []);
             
             if (listaQuestoes.length === 0) {
@@ -164,6 +162,9 @@ export default function PerfilTrilha() {
                 <main className="dashboard-body">
                     <section className="welcome-area">
                         <h1>Sua Área de Estudos</h1>
+                        <h4 className="dashboard-split-container">Descubra seu nível e crie sua trilha de estudos com Inteligência Artificial
+
+Faça uma avaliação rápida e receba um plano de aprendizado.</h4>
                     </section>
 
                     <div className={`dashboard-split-container ${statusFluxo === "simulado" ? "simulado-ativo" : ""} ${statusFluxo === "resultado-simulado" ? "resultado-ativo" : ""}`}>
@@ -248,7 +249,7 @@ export default function PerfilTrilha() {
                             <div className="card-cta-ai glass-effect">
                                 <div className="ai-badge">CHAT</div>
                                 <h3>Fale com a MentorIA</h3>
-                                <p>Tem alguma dúvida sobre os seus conteúdos ou quer gerar um simulado personalizado agora?</p>
+                                <p>Tem alguma dúvida sobre as suas trilhas ou os seus conteúdos? Inicie uma mentoria com IA agora.</p>
                                 <div className="ai-features">
                                     <span>✦ Resumos Rápidos</span>
                                     <span>✦ Tira-dúvidas 24/7</span>

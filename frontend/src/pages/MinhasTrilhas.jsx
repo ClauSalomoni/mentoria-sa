@@ -50,7 +50,7 @@ export default function MinhasTrilhas() {
                         </div>
                         {/* Botão para abrir o gerador extenso */}
                         <Button className="btn-criar-nova" onClick={() => navigate("/criar-trilha")}>
-                            + Criar Nova Trilha
+                            + Criar Trilha
                         </Button>
                     </section>
 

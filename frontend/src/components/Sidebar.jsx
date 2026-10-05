@@ -24,6 +24,12 @@ export default function Sidebar({ paginaAtiva }) {
                         Início 
                     </li>
                     <li 
+                        className={paginaAtiva === "trilha" ? "active" : ""}
+                        onClick={() => navigate("/trilhas")}
+                    >
+                        Minhas Trilhas
+                    </li>
+                    <li 
                         className={paginaAtiva === "mentoria" ? "active" : ""} 
                         onClick={() => navigate("/mentoria")}
                     >
@@ -38,12 +44,6 @@ export default function Sidebar({ paginaAtiva }) {
                     {/* <li className={paginaAtiva === "cursos" ? "active" : ""}>
                         Meus Cursos
                     </li> */}
-                    <li 
-                        className={paginaAtiva === "trilha" ? "active" : ""}
-                        onClick={() => navigate("/trilhas")}
-                    >
-                        Minhas Trilhas
-                    </li>
                     <li 
                         className={paginaAtiva === "perfil" ? "active" : ""}
                         onClick={() => navigate("/perfil")}

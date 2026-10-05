@@ -72,7 +72,7 @@ export default function EditarPerfil() {
                              />
                         </section>
 
-                        <section className="ai-column">
+                        {/* <section className="ai-column">
                             <div className="card-cta-ai glass-effect">
                                 <div className="ai-badge">CHAT</div>
                                 <h3>Fale com a MentorIA</h3>
@@ -83,7 +83,7 @@ export default function EditarPerfil() {
                                 </div>
                                 <Button onClick={() => navigate("/mentoria")}>Iniciar Mentoria por IA</Button>
                             </div>
-                        </section>
+                        </section> */}
                     </div>
                 </main>
             </div>

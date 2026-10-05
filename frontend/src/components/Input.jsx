@@ -11,7 +11,8 @@ export default function Input({
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
-                required={required}                
+                required={required} 
+                label={label}               
                 
                 />
             </div>

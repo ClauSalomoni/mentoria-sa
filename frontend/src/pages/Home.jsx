@@ -63,7 +63,13 @@ export default function Home() {
                 <main className="dashboard-body">
                     <section className="welcome-area">
                         <h1>Área do Aluno</h1>
-                        <p>Assista aos Vídeos</p>
+                            <div className="dashboard-split-container">
+                                <Button className="btn-criar-nova" onClick={() => navigate("/criar-trilha")}>
+                                    + Criar Trilha
+                                </Button>
+                            </div>
+                        
+                        
                     </section>
 
                     <div className="dashboard-split-container">
@@ -103,7 +109,7 @@ export default function Home() {
                             <div className="card-cta-ai glass-effect">
                                 <div className="ai-badge">CHAT</div>
                                 <h3>Fale com a MentorIA</h3>
-                                <p>Tem alguma dúvida sobre os seus conteúdos ou quer gerar um simulado personalizado agora?</p>
+                                <p>Tem alguma dúvida sobre as suas trilhas ou os seus conteúdos? Inicie uma mentoria com IA agora.</p>
                                 <div className="ai-features">
                                     <span>✦ Resumos Rápidos</span>
                                     <span>✦ Tira-dúvidas 24/7</span>

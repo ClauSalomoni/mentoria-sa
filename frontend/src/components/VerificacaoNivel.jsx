@@ -43,7 +43,7 @@ export default function VerificacaoNivel({ area, questoes, onCancelar, onEnviar 
                         <h4>{qIdx + 1}. {questao.pergunta}</h4>
                         
                         <div className="opcoes-lista">
-                            {/* 🌟 Correção: Mapeado de 'opcoes' para 'alternativas' */}
+                            
                             {questao.alternativas?.map((opcao, oIdx) => {
                                 // Extrai apenas a letra do marcador se a IA retornar "A) texto" ou usa a letra do array auxiliar
                                 const letraVisual = opcao.match(/^[A-E]\)/) ? "" : `${letrasAlternativas[oIdx]}) `;
