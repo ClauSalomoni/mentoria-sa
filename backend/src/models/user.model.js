@@ -1,5 +1,3 @@
-//cRiar Classes das tabelas
-// Aqui configuramos nosso codigo de acordo com o DB que temos!
 import sequelize from "../database/db.js";
 import pkg from 'sequelize';
 const { DataTypes } = pkg;
@@ -37,11 +35,11 @@ export const User = sequelize.define('User', {
             }
         }
     },
-    // ◄ ADICIONADO: Campo para armazenar a URL ou caminho do avatar do usuário
+   
     avatar: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: null // Começa sem avatar (o front usa o robô como fallback)
+        defaultValue: null // Começa com o 'avatar' :) que o front usa como fallback)
     },
     
     ativo: {
@@ -51,7 +49,7 @@ export const User = sequelize.define('User', {
     //RBAC:: definindo roles
     role: {
         type: DataTypes.ENUM('aluno', 'admin'),
-        defaultValue: 'aluno', // Todo mundo que se cadastrar pelo site nasce como aluno
+        defaultValue: 'aluno', 
         allowNull: false
     }
     

@@ -30,12 +30,10 @@ export async function atualizarPerfil(req, res) {
             return res.status(404).json({ message: "Usuário não encontrado" });
         }
 
-        // Atualiza campos básicos
         if (nome) user.nome = nome;
         if (email) user.email = email;
         if (avatar) user.avatar = avatar;
 
-        // Se enviou senha, gera novo hash
         if (senha) {
             user.senha = await bcrypt.hash(senha, 10);
         }
@@ -45,17 +43,13 @@ export async function atualizarPerfil(req, res) {
         // Retorna os dados atualizados sem a senha
         const usuarioAtualizado = user.toJSON();
         delete usuarioAtualizado.senha;
-        // ==========================================
-        // 🚀 ALTERAÇÃO PROPOSTA (BOA PRÁTICA):
-        // Editando Perfil e SALVANDO local
-        // (Use a mesma SecretKey e tempo de expiração do seu login)
+      
         const novoToken = jwt.sign(
             { id: usuarioAtualizado.id, email: usuarioAtualizado.email },
-            process.env.JWT_SECRET || "sua_chave_secreta", 
-            { expiresIn: "7d" } // mesmo tempo usado no login
+            process.env.JWT_SECRET, 
+            { expiresIn: "1h" }
         );
-        // ==========================================
-
+        
         // Retorna o par perfeito: token novo + dados novos
         return res.json({
             token: novoToken,
@@ -63,7 +57,8 @@ export async function atualizarPerfil(req, res) {
         });
 
     } catch (error) {
-        return res.status(500).json({ message: "Erro ao atualizar perfil", detalhes: error.message  });
+        console.error("Erro ao atualizar perfil:", error);
+        return res.status(500).json({ message: "Erro ao atualizar perfil" });
     }
     
 }

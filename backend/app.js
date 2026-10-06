@@ -3,14 +3,11 @@ import express from 'express';
 import sequelize from './src/database/db.js';
 import UserRouter from './src/router/user.router.js';
 import AuthRouter from './src/router/auth.router.js';
-//import DashboardRouter from './src/router/dashboardAulas.router.js';
 import TrilhaRouter from './src/router/trilha.router.js'
 import { configCors } from './src/config/cors.js';
 import { configHelmet} from './src/config/helmet.js';
 import { limitadorGlobal } from './src/config/rateLimit.js';
 import MentoriaRouter from './src/router/mentoria.router.js';
-//import AvaliacaoRouter from './src/router/avaliacao.router.js';
-//importar o modelo para garantir o registro do sequelize
 import './src/models/user.model.js'
 import './src/models/index.js'
 import DashboardRouter from './src/router/dashboardAulas.router.js';
@@ -30,18 +27,11 @@ app.use('/', DashboardRouter)
 
 app.use('/user', UserRouter)
 app.use('/auth', AuthRouter)
-//app.use('/', DashboardRouter);
 app.use("/mentoria", MentoriaRouter);
 app.use('/trilhas', TrilhaRouter)
 app.use('/minhas-trilhas', TrilhaRouter)
 
-// 🚀 2. Registrar o prefixo da rota de simulados e avaliações
-// Ex de chamadas no Front: fetch('/avaliacao/questoes') ou fetch('/avaliacao/enviar')
 
-//app.use('/avaliacao', AvaliacaoRouter);
-
-// ****       alterar para MIGRATIONS assim que sai de dev  ****
-// No final do seu app.js, altere para ler process.env.PORT primeiro:
 const PORT_TO_LISTEN = process.env.PORT || process.env.API_PORT || 3333;
 
 sequelize.sync({ alter: false }).then(() => {

@@ -3,13 +3,13 @@ import { Curso } from "../models/curso.model.js";
 import { Matricula } from "../models/matricula.model.js";
 import { Aula } from "../models/aula.model.js";
 
-// 1. Listar TODOS os cursos existentes para o aluno escolher
 export async function listarCursos(req, res) {
     try {
         const cursos = await Curso.findAll();
         return res.status(200).json(cursos);
     } catch (error) {
-        return res.status(500).json({ message: "Erro ao carregar catálogo", erro: error.message });
+        console.error("Erro ao carregar catálogo: ", error)
+        return res.status(500).json({ message: "Erro ao carregar catálogo" });
     }
 }
 
@@ -28,7 +28,8 @@ export async function matricularEmCurso(req, res) {
         const novaMatricula = await Matricula.create({ userId, cursoId, progresso: 0 });
         return res.status(201).json({ message: "Inscrição realizada com sucesso!", novaMatricula });
     } catch (error) {
-        return res.status(500).json({ message: "Erro ao se matricular", erro: error.message });
+        console.error("Erro ao se matricular: ", error)
+        return res.status(500).json({ message: "Erro ao se matricular" });
     }
 }
     export async function buscarDetalhesDoCurso(req, res) {
@@ -46,19 +47,19 @@ export async function matricularEmCurso(req, res) {
     }
 }
 
-// 4. NOVA FUNÇÃO: Busca a playlist de aulas daquele curso ordenadas pela coluna 'ordem'
 export async function buscarAulasDoCurso(req, res) {
     try {
         const { cursoId } = req.params;
 
         const aulas = await Aula.findAll({
             where: { cursoId },
-            order: [['ordem', 'ASC']] // Garante que a aula 1 venha antes da aula 2 no React
+            order: [['ordem', 'ASC']] 
         });
 
         return res.status(200).json(aulas);
     } catch (error) {
-        return res.status(500).json({ message: "Erro ao carregar as aulas do curso", erro: error.message });
+        console.error("Erro ao carregar as aulas do curso: ", error)
+        return res.status(500).json({ message: "Erro ao carregar as aulas do curso" });
     }
 
 }

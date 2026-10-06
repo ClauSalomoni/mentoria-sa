@@ -24,6 +24,7 @@ export async function criarAula(req, res) {
                 }))
             });
         }
-        return res.status(500).json({ message: "Erro ao adicionar aula", detalhes: error.message });
+        console.error("Erro ao adicionar aula: ", error)
+        return res.status(500).json({ message: "Erro ao adicionar aula" });
     }
 }

@@ -11,10 +11,7 @@ export async function perguntarChat(req, res) {
   try {
     const pergunta = req.body.mensagem;
     const userId = req.user.id;
-    // const trilhaId = "" 
-    // const promptCompleto = ""
-    console.log(pergunta, req.body, userId, req.user, req);
-    
+        
     if (!pergunta) {
       return res.status(400).json({
         mensagem: "A pergunta é obrigatória.",
@@ -27,14 +24,10 @@ export async function perguntarChat(req, res) {
     });
 
 
- // Completar e validar apos criação de TRILHA!!
- //temos que que buscar trilhaId
-
-// 🌟 DINÂMICO: Pegamos o ID da trilha mais recente criada por este usuário
+// DINÂMICO: Pegamos o ID da trilha mais recente criada por este usuário
     const trilhaId = trilhas.length > 0 ? trilhas[trilhas.length - 1].id : null;
     let promptCompleto = "";
 
-    // 2. Se o aluno tiver uma trilha, busca o histórico de avaliações dela para dar contexto à IA
     if (trilhaId) {
       const avaliacoes = await historicoAvaliacao.findAll({
         where: { trilhaId },
@@ -84,7 +77,7 @@ REGRAS:
       dataHora: new Date(),
       userId,
     });
-    console.log(conversaSalva, pergunta)
+    
 
     return res.status(201).json({
       mensagem: "Resposta gerada com sucesso.",
@@ -92,9 +85,9 @@ REGRAS:
       conversa: conversaSalva,
     });
   } catch (error) {
+    console.error("Erro ao conversar com a IA: ", error)
     return res.status(500).json({
-      mensagem: "Erro ao conversar com a IA.",
-      erro: error.message,
+      mensagem: "Erro ao conversar com a IA."
     });
   }
 }
@@ -103,17 +96,16 @@ export async function obterHistoricoChat(req, res) {
   try {
     const userId = req.user.id;
 
-    // Busca o histórico ordenado do mais antigo para o mais recente (ou vice-versa)
     const historico = await historicoChat.findAll({
       where: { userId },
-      order: [["createdAt", "ASC"]], // ASC para o chat ler de cima para baixo
+      order: [["createdAt", "ASC"]], 
     });
 
     return res.status(200).json(historico);
   } catch (error) {
+    console.error("Erro ao buscar histórico do chat: ", error)
     return res.status(500).json({
-      mensagem: "Erro ao buscar histórico do chat.",
-      erro: error.message,
+      mensagem: "Erro ao buscar histórico do chat."
     });
   }
 }

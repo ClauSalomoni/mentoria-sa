@@ -1,6 +1,5 @@
 //ROTAS PUBLICAS, inicio acesso sem token necessario
-import 'dotenv/config'; // ← sempre primeira linha
-//import { where } from 'sequelize';
+import 'dotenv/config'; 
 import { cadastroUsuarioSchema } from "../validator/user.validator.js";
 import { User} from'../models/user.model.js';
 import bcrypt from 'bcryptjs';
@@ -8,13 +7,12 @@ import jwt from 'jsonwebtoken';
 import { z } from 'zod'; //
 
 export async function createUser(req, res){
-    // console.log("--> ENTRANDO NA FUNÇÃO CREATEUSER");
-    // console.log("--> DADOS RECEBIDOS:", req.body);
+    
     try{
         // O Zod intercepta e valida os dados do body
         const dadosValidados = cadastroUsuarioSchema.parse(req.body);
         const {nome, email, senha} = dadosValidados
-        console.log("Dados extraídos com sucesso:", { nome, email });
+        
         if(!nome || !email || !senha){
             return res.status(403).json({message: "requisição incompleta"})
         }
@@ -44,7 +42,7 @@ export async function createUser(req, res){
         }
         
         console.error("❌ Erro interno no servidor:", error);
-        return res.status(500).json({ message: "Erro interno no servidor", detalhes: error.message });
+        return res.status(500).json({ message: "Erro interno no servidor" });
     }
 }
 export async function login(req, res){
@@ -55,8 +53,7 @@ export async function login(req, res){
             return res.status(400).json({message: "requisição incompleta"})
         }
         const usuarioEncontrado = await User.findOne({where:{email: email}})
-        console.log("--> USUÁRIO ENCONTRADO NO BANCO:", usuarioEncontrado ? "SIM" : "NÃO");
-
+        
         if (!usuarioEncontrado){
             return res.status(401).json({message: "Dados Inválidos"})
         };
@@ -66,14 +63,13 @@ export async function login(req, res){
         }
 
         const compareSenha = await bcrypt.compare(senha, usuarioEncontrado.senha)
-        console.log("--> A SENHA COINCIDE?:", compareSenha);
-        
+                
         if (!compareSenha){
             return res.status(401).json({message: "Dados invalidos"})
         }  
         const token = jwt.sign(
             { id: usuarioEncontrado.id, email: usuarioEncontrado.email, role: usuarioEncontrado.role }, //payload dentro token
-            process.env.JWT_SECRET,  //chave secreta
+            process.env.JWT_SECRET,  
             { expiresIn: process.env.JWT_EXPIRES_IN } //tempo de validade
         )
         
@@ -90,7 +86,7 @@ export async function login(req, res){
         });
 
     }catch(error){
-        console.log(error)
+        console.error("Erro interno no servidor: ", error)
         return res.status(500).json({message: "Erro interno no servidor"});
     }
 }

@@ -129,7 +129,7 @@ export async function responderAvaliacao(req, res) {
 
     const planos = await planoEstudo.bulkCreate(
       dados.trilha.planos.map((plano) => {
-        // 🌟 EXTRAI APENAS OS NÚMEROS DO TEXTO (Ex: "2h" ou "2 horas" vira 2)
+        // EXTRAI APENAS OS NÚMEROS DO TEXTO (Ex: "2h" ou "2 horas" vira 2)
         const horasNumericas = parseFloat(String(plano.tempoEstimado || '').replace(/[^0-9.]/g, ''));
         return {
         titulo: plano.titulo,
@@ -160,9 +160,9 @@ export async function responderAvaliacao(req, res) {
 
     return res.status(201).json(respostaFormatada);
   } catch (error) {
+    console.error("Erro ao responder avaliação e gerar trilha: ", error)
     return res.status(500).json({
-      mensagem: "Erro ao responder avaliação e gerar trilha",
-      erro: error.message,
+      mensagem: "Erro ao responder avaliação e gerar trilha"
     });
   }
 }
@@ -179,9 +179,6 @@ export async function listarTrilhas(req, res) {
       include: [planoEstudo],
     });
 
-    // 🌟 NORMALIZAÇÃO DIRETA NO CONTROLLER:
-    // Mapeamos a resposta para garantir compatibilidade sem quebrar nenhum arquivo.
-    // Injetamos a chave ".planos" com os mesmos dados de ".planoEstudos" que o Sequelize gerou.
     const trilhasFormatadas = trilhas.map(t => {
     const item = t.toJSON();
     
@@ -268,7 +265,6 @@ export async function atualizarTrilha(req, res) {
 export async function criarTrilha(req, res) {
   try { 
     const { nome, nivelAtual, nivelObjetivo } = req.body
-    console.log("verificação reqbody", req.body);
     
     if( !nome || !nivelObjetivo) {
       return res.status(400).json({ mensagem: " Nome e nivel do objetivo são obrigatórios"})
@@ -336,9 +332,9 @@ export async function criarTrilha(req, res) {
     });
 
   } catch (error) {
+    console.error("Erro ao criar trilha com IA: ",error)
     return res.status(500).json({
-      mensagem: "Erro ao criar trilha com IA",
-      erro: error.message,
+      mensagem: "Erro ao criar trilha com IA"
     });
   }
 }
@@ -370,9 +366,9 @@ export async function excluirTrilha(req, res) {
       mensagem: "Trilha excluída com sucesso",
     });
   } catch (error) {
+    console.error("Erro ao excluir a trilha: ", error)
     return res.status(500).json({
-      mensagem: "Erro ao excluir a trilha",
-      erro: error.message,
+      mensagem: "Erro ao excluir a trilha"
     });
   }
 }
@@ -389,7 +385,7 @@ export async function obterHistoricoAvaliacoes(req, res) {
         where: { userId },
         attributes: ['nome'] // Traz o nome da trilha para exibir na tabela
       }],
-      order: [["dataAvaliacao", "DESC"]], // Exibe as mais recentes primeiro
+      order: [["dataAvaliacao", "DESC"]], 
     });
 
     return res.status(200).json(avaliacoes);

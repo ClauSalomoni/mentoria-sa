@@ -20,8 +20,6 @@ export default function Home() {
             return;
         }
 
-        console.log("Disparando fetch para buscar os cursos do Postgres...");
-
         fetch(`${API_URL}/cursos`, { 
             method: "GET",
             headers: { 
@@ -38,7 +36,6 @@ export default function Home() {
             return res.json();
         })
         .then(dados => {
-            console.log("Cursos vindos do banco de dados:", dados);
             setCursos(dados);
         })
         .catch(err => console.error("❌ Erro no fetch da Home:", err));
